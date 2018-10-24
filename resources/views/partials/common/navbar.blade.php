@@ -68,14 +68,14 @@
                 </ul>
                 <ul class="nav navbar-nav">
                     <li aria-haspopup="true" class="menu-dropdown classic-menu-dropdown">
-                        <a href="/members/manage-members"> Manage Members
+                        <a href="/member/manage"> Manage Members
                             <span class="arrow"></span>
                         </a>
                     </li>
                 </ul>
                 <ul class="nav navbar-nav">
                     <li aria-haspopup="true" class="menu-dropdown classic-menu-dropdown">
-                        <a href="/committee/manage-committee"> Manage Committee
+                        <a href="/committee/manage"> Manage Committee
                             <span class="arrow"></span>
                         </a>
                     </li>

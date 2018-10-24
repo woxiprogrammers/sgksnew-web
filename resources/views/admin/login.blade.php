@@ -87,7 +87,7 @@
 </div>
 <!-- END LOGIN -->
 <!-- BEGIN COPYRIGHT -->
-<div class="copyright"> Copyright &copy; sgks Organisation <?php echo date("Y");?> </div>
+<div class="copyright"> Copyright &copy; sgks organization <?php echo date("Y");?> </div>
 <!-- END COPYRIGHT -->
 <!--[if lt IE 9]>
 <script src="/assets/global/plugins/respond.min.js"></script>
