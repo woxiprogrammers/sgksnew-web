@@ -27,7 +27,7 @@ Route::group(['prefix' => 'member'], function() {
 
 Route::group(['prefix' => 'committee'], function() {
     Route::get('/manage',array('uses' => 'Committee\CommitteeController@manageCommittee'));
-    Route::get('/create',array('uses' => 'Committee\CommitteeController@createView'));
+    Route::get('/create',array('uses' => 'Committee\CommitteeController@createCommitteeView'));
     Route::post('/create',array('uses' => 'Committee\CommitteeController@createCommittee'));
     Route::get('/get-all-states/{id}',array('uses' => 'Committee\CommitteeController@getAllStates'));
     Route::get('/get-all-cities/{id}',array('uses' => 'Committee\CommitteeController@getAllCities'));

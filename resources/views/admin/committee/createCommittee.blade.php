@@ -45,7 +45,7 @@
                                     <!-- BEGIN VALIDATION STATES-->
                                     <div class="portlet light ">
                                         <div class="portlet-body form">
-                                            <form role="form" id="create-members" class="form-horizontal" action="/committee/create" method="post">
+                                            <form role="form" id="create-committee" class="form-horizontal" action="/committee/create" method="post">
                                                 {!! csrf_field() !!}
                                                 <div class="tab-content">
                                                     <div class="tab-pane fade in active" id="tab_general">
@@ -139,7 +139,7 @@
 
     <script>
         $(document).ready(function () {
-            CreateMembers.init();
+            Create.init();
         });
 
 

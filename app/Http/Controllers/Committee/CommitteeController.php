@@ -15,7 +15,7 @@ class committeeController extends Controller
 {
     public function manageCommittee(Request $request){
         try{
-            return view('admin.committee.view');
+            return view('admin.committee.manageCommittees');
         }catch(\Exception $exception){
             $data = [
                 'action' => 'Committees View page',
@@ -27,10 +27,10 @@ class committeeController extends Controller
         }
     }
 
-    public function createView(Request $request){
+    public function createCommitteeView(Request $request){
         try{
             $countries = Countries::get();
-            return view('admin.committee.create')->with(compact('countries'));
+            return view('admin.committee.createCommittee')->with(compact('countries'));
         }catch(\Exception $exception){
             $data = [
                 'action' => 'Create committee View',

@@ -51,7 +51,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <table class="table table-striped table-bordered table-hover table-checkable order-column" id="memberTable">
+                                                <table class="table table-striped table-bordered table-hover table-checkable order-column" id="committeeTable">
                                                     <thead>
                                                     <tr>
                                                         <th style="width: 20%"> Name </th>
@@ -103,7 +103,7 @@
 
     <script>
         $(document).ready(function() {
-            $('#memberTable').DataTable();
+            $('#committeeTable').DataTable();
         });
     </script>
 @endsection
