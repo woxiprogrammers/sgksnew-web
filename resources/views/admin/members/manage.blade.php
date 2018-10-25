@@ -26,7 +26,7 @@
                                 <div class="page-title">
                                     <h1>Members Listing</h1>
                                 </div>
-                                <div id="members_add" class="btn red-flamingo" style="margin-top: 1%; margin-left: 77%"><a href="/members/create" style="color: white">
+                                <div id="members_add" class="btn red-flamingo" style="margin-top: 1%; margin-left: 77%"><a href="/member/create" style="color: white">
                                         Add Members
                                     </a>
                                 </div>
@@ -52,14 +52,16 @@
                                                 <table class="table table-striped table-bordered table-hover table-checkable order-column" id="memberTable">
                                                     <thead>
                                                     <tr>
+                                                        <th>Sr.No</th>
                                                         <th style="width: 20%"> Name </th>
-                                                        <th> email </th>
-                                                        <th> Created On </th>
+                                                        <th> Mobile </th>
+                                                        <th> Status </th>
                                                         <th> Actions </th>
                                                     </tr>
                                                     <tr class="filter">
+                                                        <th></th>
                                                         <th style="width: 20%"> <input type="text" class="form-control form-filter" name="search_name"> </th>
-                                                        <th > <input type="text" class="form-control form-filter" name="search_email"> </th>
+                                                        <th> <input type="text" class="form-control form-filter" name="search_mobile"> </th>
                                                         <th></th>
                                                         <th>
                                                             <button class="btn btn-xs blue filter-submit"> Search <i class="fa fa-search"></i> </button>
@@ -97,6 +99,7 @@
     <script  src="/assets/global/plugins/datatables/datatables.min.js"></script>
     <script src="/assets/global/scripts/datatable.js" type="text/javascript"></script>
     <script src="/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js" type="text/javascript"></script>
+    <script src="/assets/custom/admin/members/manage-datatable.js" type="text/javascript"></script>
 
     <script>
         $(document).ready(function() {
