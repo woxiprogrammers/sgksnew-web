@@ -72,15 +72,6 @@
                                                     </tr>
                                                     </thead>
                                                     <tbody>
-                                                    <td>1</td>
-                                                    <td>1</td>
-                                                    <td>1</td>
-                                                    <td>1</td>
-                                                    <td>
-                                                        <button><a href="/committee/create">Edit</a><i class="fa fa-edit"></i> </button>
-                                                        <button> <a href="/committee/viewMembers">View Members</a><i class="fa fa-street-view"></i> </button>
-                                                    </td>
-
                                                     </tbody>
                                                 </table>
                                             </div>
