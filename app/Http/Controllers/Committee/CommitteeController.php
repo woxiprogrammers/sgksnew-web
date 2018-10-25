@@ -47,7 +47,6 @@ class committeeController extends Controller
     public function createCommittee(Request $request){
         try{
             $data = $request->all();
-            dd($data);
             $committeeData['name'] = $data->committee_name;
             $committeeData['description'] = $data->description;
             $committeeData['country'] = $data->country;
