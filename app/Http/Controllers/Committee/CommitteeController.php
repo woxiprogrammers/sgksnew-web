@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Committee;
 
+use App\Committees;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Log;
@@ -11,7 +12,7 @@ use App\States;
 use Illuminate\Support\Facades\File;
 
 
-class committeeController extends Controller
+class CommitteeController extends Controller
 {
     public function manageCommittee(Request $request){
         try{
@@ -47,12 +48,10 @@ class committeeController extends Controller
     public function createCommittee(Request $request){
         try{
             $data = $request->all();
-            $committeeData['name'] = $data->committee_name;
-            $committeeData['description'] = $data->description;
-            $committeeData['country'] = $data->country;
-            $committeeData['state'] = $data->state;
-            $committeeData['city'] = $data->city;
-            $createCommittee = Committee::create($committeeData);
+            $committeeData['committee_name'] = $data['committee_name'];
+            $committeeData['description'] = $data['description'];
+            $committeeData['city_id'] = $data['city'];
+            $createCommittee = Committees::create($committeeData);
             if($createCommittee){
                 $request->session()->flash('success','Committee Created Successfully');
             }else{
