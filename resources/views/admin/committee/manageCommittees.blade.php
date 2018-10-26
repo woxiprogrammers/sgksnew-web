@@ -54,6 +54,7 @@
                                                 <table class="table table-striped table-bordered table-hover table-checkable order-column" id="committeeTable">
                                                     <thead>
                                                     <tr>
+                                                        <th> Sr.No </th>
                                                         <th style="width: 20%"> Name </th>
                                                         <th> Description </th>
                                                         <th> Total Members </th>
@@ -61,6 +62,7 @@
                                                         <th> Action </th>
                                                     </tr>
                                                     <tr class="filter">
+                                                        <th></th>
                                                         <th style="width: 20%"> <input type="text" class="form-control form-filter" name="search_committee"> </th>
                                                         <th></th>
                                                         <th></th>
@@ -101,9 +103,11 @@
     <script src="/assets/global/scripts/datatable.js" type="text/javascript"></script>
     <script src="/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js" type="text/javascript"></script>
 
+    <script src="/assets/custom/admin/committees/manage-committee-listing.js" type="text/javascript"></script>
+
     <script>
         $(document).ready(function() {
-            $('#committeeTable').DataTable();
+           $('#committeeTable').DataTable();
         });
     </script>
 @endsection
