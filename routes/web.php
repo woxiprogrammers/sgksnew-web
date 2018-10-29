@@ -22,8 +22,8 @@ Route::group(['prefix' => 'member'], function() {
     Route::get('/create',array('uses' => 'Member\MemberController@createView'));
     Route::post('/create',array('uses' => 'Member\MemberController@create'));
     Route::post('/listing',array('uses' => 'Member\MemberController@memberListing'));
-    Route::get('/edit/{id}',array('uses' => 'Member\MemberController@editView'));
-    Route::post('/edit/{id}',array('uses' => 'Member\MemberController@edit'));
+    Route::get('/edit/{member}',array('uses' => 'Member\MemberController@editView'));
+    Route::post('/edit/{member}',array('uses' => 'Member\MemberController@edit'));
     Route::get('/get-all-states/{id}',array('uses' => 'Member\MemberController@getAllStates'));
     Route::get('/get-all-city/{id}',array('uses' => 'Member\MemberController@getAllCities'));
 });
