@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Committee;
 
+use App\CommitteeMembers;
 use App\Committees;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -16,7 +17,7 @@ class CommitteeController extends Controller
 {
     public function manageCommittee(Request $request){
         try{
-            return view('admin.committee.manageCommittees');
+            return view('admin.committee.manage');
         }catch(\Exception $exception){
             $data = [
                 'action' => 'Committees View page',
@@ -31,7 +32,7 @@ class CommitteeController extends Controller
     public function createCommitteeView(Request $request){
         try{
             $countries = Countries::get();
-            return view('admin.committee.createCommittee')->with(compact('countries'));
+            return view('admin.committee.create')->with(compact('countries'));
         }catch(\Exception $exception){
             $data = [
                 'action' => 'Create committee View',
@@ -129,17 +130,18 @@ class CommitteeController extends Controller
                     $committeeName = $finalCommitteesData[$pagination]->committee_name;
                     $description = $finalCommitteesData[$pagination]->description;
                     $srNo = $finalCommitteesData[$pagination]->id;
+                    $totalMembers = CommitteeMembers::where('committee_id',$srNo)->count();
                     $actionButton = '<div id="sample_editable_1_new" class="btn btn-small blue" >
                         <a href="/committee/edit/' . $finalCommitteesData[$pagination]['id'] . '" style="color: white"> Edit
                     </div>
                     <div id="sample_editable_1_new" class="btn btn-small blue" >
-                        <a href="/committee/edit/' . $finalCommitteesData[$pagination]['id'] . '" style="color: white"> View Members
+                        <a href="/committee-members/manage/' . $finalCommitteesData[$pagination]['id'] . '" style="color: white"> View Members
                     </div>';
                     $records['data'][$iterator] = [
                         $srNo,
                         $committeeName,
                         $description,
-                        $mem,
+                        $totalMembers,
                         $mem,
                         $actionButton
                     ];
@@ -159,11 +161,11 @@ class CommitteeController extends Controller
         return response()->json($records,$status);
     }
 
-    public function editCommittee(Request $request,$id){
+    public function editCommitteeView(Request $request,$id){
         try{
             $countries = Countries::get();
             $committeeData  = Committees::where('id',$id)->first();
-            return view('admin.committee.editCommitteeView')->with(compact('committeeData','countries'));
+            return view('admin.committee.edit')->with(compact('committeeData','countries'));
         }catch(\Exception $exception){
             $data = [
                 'action' => 'Committee Edit View',
@@ -173,5 +175,160 @@ class CommitteeController extends Controller
             Log::critical(json_encode($data));
             abort(500);
         }
+    }
+
+    public function editCommittee(Request $request,$id){
+        try{
+            $data = $request->all();
+            $committeeData['committee_name'] = $data['committee_name'];
+            $committeeData['description'] = $data['description'];
+            $committeeData['city_id'] = $data['city'];
+            $createCommittee = Committees::where('id',$id)->update($committeeData);
+            if ($createCommittee) {
+                    $request->session()->flash('success', 'Committee Created Successfully');
+            } else {
+                    $request->session()->flash('error', 'Something went wrong');
+            }
+            return redirect('/committee/manage');
+        }catch(\Exception $exception){
+            $data = [
+                'action' => 'Create committee',
+                'params' => $request->all(),
+                'exception' => $exception->getMessage()
+            ];
+            Log::critical(json_encode($data));
+            abort(500);
+        }
+    }
+
+    public function manageMembers(Request $request,$id){
+        try{
+
+            return view('admin.committee.members.manage')->with(compact('id'));
+        }catch(\Exception $exception){
+            $data = [
+                'action' => 'Member View page',
+                'params' => $request->all(),
+                'exception' => $exception->getMessage()
+            ];
+            Log::critical(json_encode($data));
+            abort(500);
+        }
+    }
+
+
+    public function createMemberView(Request $request,$id){
+        try{
+            return view('admin.committee.members.create')->with(compact('id'));
+        }catch(\Exception $exception){
+            $data = [
+                'action' => 'Create Member View',
+                'params' => $request->all(),
+                'exception' => $exception->getMessage()
+            ];
+            Log::critical(json_encode($data));
+            abort(500);
+        }
+    }
+
+    public function createMember(Request $request,$id){
+        try{
+            $data = $request->all();
+            $membersData['committee_id'] = $id;
+            $membersData['full_name'] = $data['full_name'];
+            $membersData['designation'] = $data['designation'];
+            $membersData['mobile_number'] = $data['mobile_number'];
+            $membersData['email_id'] = $data['email_id'];
+            $createMember = CommitteeMembers::create($membersData);
+            if($request->has('profile_images')){
+                $createMemberDirectoryName = sha1($createMember->id);
+                $imageUploadPath = public_path().env('MEMBER_IMAGES_UPLOAD').DIRECTORY_SEPARATOR.$createMemberDirectoryName;
+                if (!file_exists($imageUploadPath)) {
+                    File::makeDirectory($imageUploadPath, $mode = 0777, true, true);
+                }
+                $imageArray = explode(';',$data['profile_images']);
+                $image = explode(',',$imageArray[1])[1];
+                $pos  = strpos($data['profile_images'], ';');
+                $type = explode(':', substr($data['profile_images'], 0, $pos))[1];
+                $extension = explode('/',$type)[1];
+                $filename = mt_rand(1,10000000000).sha1(time()).".{$extension}";
+                $fileFullPath = $imageUploadPath.DIRECTORY_SEPARATOR.$filename;
+                file_put_contents($fileFullPath,base64_decode($image));
+                $createMember->update([
+                    'profile_image' => $filename,
+                ]);
+            }
+            if($createMember){
+                $request->session()->flash('success','Member Created Successfully');
+            }else{
+                $request->session()->flash('error','Something went wrong');
+            }
+            return redirect('/committee-members/manage');
+        }catch(\Exception $exception){
+            $data = [
+                'action' => 'Create members',
+                'params' => $request->all(),
+                'exception' => $exception->getMessage()
+            ];
+            Log::critical(json_encode($data));
+            abort(500);
+        }
+    }
+
+    public function committeeMemberListing(Request $request){
+        try{
+            $records = array();
+            $status = 200;
+            $mem=10;
+            $records['data'] = array();
+            $records["draw"] = intval($request->draw);
+            $membersData = CommitteeMembers::orderBy('created_at','desc')->pluck('id')->toArray();
+            $filterFlag = true;
+            if($request->has('search_name') /*&& $request->search_name != ''*/){
+                $membersData = CommitteeMembers::where('full_name','like','%'.$request->search_name.'%')
+                    ->whereIn('id',$membersData)
+                    ->pluck('id')->toArray();
+                if(count($membersData) > 0){
+                    $filterFlag = false;
+                }
+            }
+
+            $finalMembersData = CommitteeMembers::whereIn('id', $membersData)->orderBy('created_at','desc')->get();
+            {
+                $records["recordsFiltered"] = $records["recordsTotal"] = count($finalMembersData);
+                if ($request->length == -1) {
+                    $length = $records["recordsTotal"];
+                } else {
+                    $length = $request->length;
+                }
+                for ($iterator = 0, $pagination = $request->start; $iterator < $length && $pagination < count($finalMembersData); $iterator++, $pagination++) {
+                    $memberName = $finalMembersData[$pagination]->full_name;
+                    $mobileNumber = $finalMembersData[$pagination]->mobile_number;
+                    $emailId = $finalMembersData[$pagination]->email_id;
+                    $srNo = $finalMembersData[$pagination]->id;
+                    $actionButton = '<div id="sample_editable_1_new" class="btn btn-small blue" >
+                        <a href="/committee-members/manage/' . $finalMembersData[$pagination]['id'] . '" style="color: white"> Edit
+                    </div>';
+                    $records['data'][$iterator] = [
+                        $srNo,
+                        $memberName,
+                        $mobileNumber,
+                        $emailId,
+                        $actionButton
+                    ];
+                }
+            }
+        }catch(\Exception $e){
+            $data = [
+                'action' => 'Committee Member listing',
+                'params' => $request->all(),
+                'exception' => $e->getMessage()
+            ];
+            $status = 500;
+            $records = array();
+            Log::critical(json_encode($data));
+            abort(500);
+        }
+        return response()->json($records,$status);
     }
 }

@@ -1,11 +1,13 @@
-
-var CommitteeListing = function () {
+/**
+ * Created by Ameya Joshi on 24/10/18.
+ */
+var MembersListing = function () {
     var handleOrders = function () {
 
         var grid = new Datatable();
 
         grid.init({
-            src: $("#committeeTable"),
+            src: $("#memberTable"),
             onSuccess: function (grid) {
                 // execute some code after table records loaded
             },
@@ -25,7 +27,7 @@ var CommitteeListing = function () {
                 ],
                 "pageLength": 50, // default record count per page
                 "ajax": {
-                    "url": "/committee/listing" // ajax source
+                    "url": "/committee-members/listing" // ajax source
                 },
                 "order": [
                     [1, "asc"]
@@ -73,12 +75,9 @@ var CommitteeListing = function () {
 
 
 jQuery(document).ready(function() {
-    CommitteeListing.init();
-    /*$("input[name='search_name']").on('keyup',function(){
+    MembersListing.init();
+    $("input[name='search_name']").on('keyup',function(){
         $(".filter-submit").trigger('click');
     });
-    $("input[name='search_email']").on('keyup',function(){
-        $(".filter-submit").trigger('click');
-    });*/
 
 });

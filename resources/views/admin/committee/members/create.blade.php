@@ -2,8 +2,8 @@
 /**
  * Created by PhpStorm.
  * User: vaibhav
- * Date: 24/10/18
- * Time: 2:38 PM
+ * Date: 29/10/18
+ * Time: 9:57 AM
  */
 ?>
 @extends('layout.master')
@@ -35,7 +35,7 @@
                             <div class="container">
                                 <!-- BEGIN PAGE TITLE -->
                                 <div class="page-title">
-                                    <h1>Create Committee</h1>
+                                    <h1>Create Members</h1>
                                 </div>
                             </div>
                         </div>
@@ -45,59 +45,53 @@
                                     <!-- BEGIN VALIDATION STATES-->
                                     <div class="portlet light ">
                                         <div class="portlet-body form">
-                                            <form role="form" id="create-committee" class="form-horizontal" action="/committee/create" method="post">
+                                            <form role="form" id="create-members" class="form-horizontal" action="/committee/create-member/{{$id}}" method="post">
                                                 {!! csrf_field() !!}
                                                 <div class="tab-content">
                                                     <div class="tab-pane fade in active" id="tab_general">
                                                         <fieldset>
-
                                                             <div class="form-group">
-                                                                <label class="col-md-3 control-label">Committee Name
+                                                                <label class="col-md-3 control-label">Full Name
                                                                     <span style="color: red">*</span>
                                                                 </label>
 
                                                                 <div class="col-md-4">
-                                                                    <input type="text" id="committee_name" value="{{$committeeData['committee_name']}}" name="committee_name" class="form-control " placeholder="Enter Committee Name" required>
+                                                                    <input type="text" id="full_name" name="full_name" class="form-control " placeholder="Enter Full Name" required>
                                                                 </div>
                                                             </div>
-
                                                             <div class="form-group">
-                                                                <label class="col-md-3 control-label">Description
+                                                                <label class="col-md-3 control-label">Designation
+                                                                    <span style="color: red">*</span>
+                                                                </label>
+
+                                                                <div class="col-md-4">
+                                                                    <input type="text" id="designation" name="designation" class="form-control " placeholder="Enter Designation" required>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="col-md-3 control-label">Mobile
                                                                     <span style="color: red">*</span>
                                                                 </label>
                                                                 <div class="col-md-4">
-                                                                    <textarea id="description" name="description" class="form-control " placeholder="Enter Committee description" required></textarea>
+                                                                    <input type="text" id="mobile_number" name="mobile_number" class="form-control" maxlength="10" placeholder="Enter Mobile Number" required>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
-                                                                <label class="col-md-3 control-label">Country</label>
+                                                                <label class="col-md-3 control-label">Email ID</label>
                                                                 <div class="col-md-4">
-                                                                    <select class="form-control" id="country" name="country">
-                                                                        <option value="">-</option>
-                                                                        @foreach($countries as $country)
-                                                                            <option value="{{$country['id']}}">{{$country['name']}}</option>
-                                                                        @endforeach
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="form-group">
-                                                                <label class="col-md-3 control-label">State</label>
-                                                                <div class="col-md-4">
-                                                                    <select class="form-control" id="state" name="state">
-
-                                                                    </select>
+                                                                    <input type="email" id="email_id" name="email_id" class="form-control " placeholder="Enter email">
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
-                                                                <label class="col-md-3 control-label">City</label>
-                                                                <div class="col-md-4">
-                                                                    <select class="form-control " id="city" name="city">
+                                                                <label class="control-label col-md-3">Select Images :</label>
+                                                                <input id="imageupload" type="file" class="btn blue"/>
+                                                                <br />
+                                                                <div class="row" >
+                                                                    <div id="preview-image" class="row">
 
-                                                                    </select>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-
                                                         </fieldset>
                                                         <fieldset>
                                                             <div class="form-group">
@@ -139,45 +133,34 @@
 
     <script>
         $(document).ready(function () {
-            Create.init();
+            CreateMembers.init();
         });
 
 
-        $('#country').change(function(){
-            var id=this.value;
-            var route='/committee/get-all-states/'+id;
-            $.get(route,function(res){
-                if (res.length == 0)
-                {
-                    $('#state').html("no record found");
-                } else {
-                    var str='<option value="">Please select state</option>';
-                    for(var i=0; i<res.length; i++)
-                    {
-                        str+='<option value="'+res[i]['id']+'">'+res[i]['name']+'</option>';
+        $("#imageupload").on('change', function () {
+            var countFiles = $(this)[0].files.length;
+            var imgPath = $(this)[0].value;
+            var extn = imgPath.substring(imgPath.lastIndexOf('.') + 1).toLowerCase();
+            var image_holder = $("#preview-image");
+            image_holder.empty();
+            if (extn == "gif" || extn == "png" || extn == "jpg" || extn == "jpeg") {
+                if (typeof (FileReader) != "undefined") {
+                    for (var i = 0; i < countFiles; i++) {
+                        var reader = new FileReader()
+                        reader.onload = function (e) {
+                            var imagePreview = '<div class="col-md-2"><input type="hidden" name="profile_images" value="'+e.target.result+'"><img src="'+e.target.result+'" class="thumbimage" /></div>';
+                            image_holder.append(imagePreview);
+                        };
+                        image_holder.show();
+                        reader.readAsDataURL($(this)[0].files[i]);
                     }
-                    $('#state').html(str);
-                }
-            });
-        });
-        $('#state').change(function(){
-            var id=this.value;
-            var route='/committee/get-all-cities/'+id;
-            $.get(route,function(res){
-                if (res.length == 0)
-                {
-                    $('#city').html("no record found");
                 } else {
-                    var str='<option value="">Please select city</option>';
-                    for(var i=0; i<res.length; i++)
-                    {
-                        str+='<option value="'+res[i]['id']+'">'+res[i]['name']+'</option>';
-                    }
-                    $('#city').html(str);
+                    alert("It doesn't supports");
                 }
-            });
+            } else {
+                alert("Select Only images");
+            }
         });
-
     </script>
 @endsection
 

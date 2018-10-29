@@ -2,8 +2,8 @@
 /**
  * Created by PhpStorm.
  * User: vaibhav
- * Date: 24/10/18
- * Time: 2:36 PM
+ * Date: 29/10/18
+ * Time: 10:22 AM
  */
 ?>
 @extends('layout.master')
@@ -24,12 +24,11 @@
                         <div class="page-head">
                             <div class="container">
                                 <!-- BEGIN PAGE TITLE -->
-
                                 <div class="page-title">
-                                    <h1>Committee Listing</h1>
+                                    <h1>Members Listing</h1>
                                 </div>
-                                <div id="committee_add" class="btn red-flamingo" style="margin-top: 1%; margin-left: 77%"><a href="/committee/create" style="color: white">
-                                    Add Committee
+                                <div id="members_add" class="btn red-flamingo" style="margin-top: 1%; margin-left: 77%"><a href="/committee-members/create/{{$id}}" style="color: white">
+                                        Add Members
                                     </a>
                                 </div>
                             </div>
@@ -40,7 +39,6 @@
                                     <div class="col-md-12">
                                         <!-- BEGIN EXAMPLE TABLE PORTLET-->
                                         <div class="portlet light ">
-                                            {!! csrf_field() !!}
                                             <div class="portlet-body">
                                                 <div class="table-toolbar">
                                                     <div class="row" style="text-align: right">
@@ -51,20 +49,18 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <table class="table table-striped table-bordered table-hover table-checkable order-column" id="committeeTable">
+                                                <table class="table table-striped table-bordered table-hover table-checkable order-column" id="memberTable">
                                                     <thead>
                                                     <tr>
-                                                        <th> Sr.No </th>
+                                                        <th>Sr.No</th>
                                                         <th style="width: 20%"> Name </th>
-                                                        <th> Description </th>
-                                                        <th> Total Members </th>
-                                                        <th> Toggle </th>
-                                                        <th> Action </th>
+                                                        <th> Mobile </th>
+                                                        <th> Email </th>
+                                                        <th> Actions </th>
                                                     </tr>
                                                     <tr class="filter">
                                                         <th></th>
-                                                        <th style="width: 20%"> <input type="text" class="form-control form-filter" name="search_committee"> </th>
-                                                        <th></th>
+                                                        <th style="width: 20%"> <input type="text" class="form-control form-filter" name="search_name"> </th>
                                                         <th></th>
                                                         <th></th>
                                                         <th>
@@ -74,6 +70,7 @@
                                                     </tr>
                                                     </thead>
                                                     <tbody>
+
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -102,12 +99,14 @@
     <script  src="/assets/global/plugins/datatables/datatables.min.js"></script>
     <script src="/assets/global/scripts/datatable.js" type="text/javascript"></script>
     <script src="/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js" type="text/javascript"></script>
+    {{--for this page--}}
 
-    <script src="/assets/custom/admin/committees/manage-committee-listing.js" type="text/javascript"></script>
+
+    <script src="/assets/custom/admin/committees/committee-members-listing.js" type="text/javascript"></script>
 
     <script>
         $(document).ready(function() {
-           $('#committeeTable').DataTable();
+            $('#memberTable').DataTable();
         });
     </script>
 @endsection
