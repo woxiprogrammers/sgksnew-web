@@ -44,6 +44,23 @@
                                                         <fieldset>
                                                             <div class="form-group">
                                                                 <div class="row">
+                                                                    <div class="col-md-12">
+                                                                        <div class="col-md-6" style="text-align: right">
+                                                                            <label class=" control-label">
+                                                                                Member Profile Picture :
+                                                                            </label>
+                                                                        </div>
+                                                                        <div class="col-md-6 ">
+                                                                            <img src="{{env('MEMBER_IMAGES_UPLOAD')."/".sha1($memberData['id'])."/".$memberData['profile_image']}}" height="150px"; width="200px;">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                        </fieldset>
+                                                        <fieldset>
+                                                            <div class="form-group">
+                                                                <div class="row">
                                                                     <div class="col-md-8 pull-left">
                                                                         <h4 style="margin-left: 500px">
                                                                             English
@@ -282,6 +299,10 @@
     <script src="/assets/global/scripts/datatable.js" type="text/javascript"></script>
     <script src="/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js" type="text/javascript"></script>
     <script src="/assets/custom/admin/members/create-members-validation.js" type="text/javascript"></script>
+    <script src="/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.js" type="text/javascript"></script>
+    <script src="/assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+    <script src="/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
+    <script src="/assets/pages/scripts/components-date-time-pickers.min.js" type="text/javascript"></script>
 
     <script>
         $(document).ready(function () {
