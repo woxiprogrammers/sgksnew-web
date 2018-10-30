@@ -52,8 +52,9 @@
                                                 <table class="table table-striped table-bordered table-hover table-checkable order-column" id="memberTable">
                                                     <thead>
                                                     <tr>
-                                                        <th style="width: 15%"> Name </th>
-                                                        <th style="width: 15%"> Gujarati Name </th>
+                                                        <th>Member Id</th>
+                                                        <th width="10%"> Name </th>
+                                                        <th> Gujarati Name </th>
                                                         <th> Address </th>
                                                         <th> Gujarati Address </th>
                                                         <th> Mobile </th>
@@ -62,12 +63,13 @@
                                                         <th> Actions </th>
                                                     </tr>
                                                     <tr class="filter">
-                                                        <th style="width: 15%"> <input type="text" class="form-control form-filter" name="search_name"> </th>
+                                                        <th></th>
+                                                        <th> <input type="text" class="form-control form-filter" name="search_name"> </th>
                                                         <th></th>
                                                         <th></th>
                                                         <th></th>
                                                         <th> <input type="text" class="form-control form-filter" name="search_mobile"> </th>
-                                                        <th><input type="text" class="form-control form-filter" name="search_city"></th>
+                                                        <th style="width: 15%"><input type="text" class="form-control form-filter" name="search_city"></th>
                                                         <th></th>
                                                         <th>
                                                             <button class="btn btn-xs blue filter-submit"> Search <i class="fa fa-search"></i> </button>

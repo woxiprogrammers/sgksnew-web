@@ -177,7 +177,7 @@ class MemberController extends Controller
                     $filterFlag = false;
                 }
             }
-            $finalMembersData = Members::whereIn('id', $membersData)->orderBy('created_at','desc')->get();
+            $finalMembersData = Members::whereIn('id', $membersData)->orderBy('id','asc')->get();
             {
                 $records["recordsFiltered"] = $records["recordsTotal"] = count($finalMembersData);
                 if ($request->length == -1) {
@@ -208,6 +208,7 @@ class MemberController extends Controller
                     </div>';
 
                     $records['data'][$iterator] = [
+                        $memberId,
                         $firstName ." ".$middleName ." ".$lastName,
                         $gujaratiDetails['first_name']." ".$gujaratiDetails['middle_name']." ".$gujaratiDetails['last_name'],
                         $address,
@@ -269,6 +270,7 @@ class MemberController extends Controller
             $membersData['latitude'] = $data['en']['longitude'];
             $member->update($membersData);
             $memberTranslation = MemberTranslations::where('member_id',$member['id'])->first();
+
             if(array_key_exists('gj',$data)){
                 if(array_key_exists('first_name',$data['gj'])){
                     $gujaratiMembersData['first_name'] = $data['gj']['first_name'];
@@ -279,8 +281,7 @@ class MemberController extends Controller
                 }if (array_key_exists('address',$data['gj'])){
                     $gujaratiMembersData['address'] = $data['gj']['address'];
                 }
-                if(count($memberTranslation) > 0){
-
+                if($memberTranslation != null){
                     MemberTranslations::where('member_id',$member['id'])->update($gujaratiMembersData);
                 }else{
                    $gujaratiMembersData['language_id'] =  Languages::where('abbreviation','=','gj')->pluck('id')->first();
