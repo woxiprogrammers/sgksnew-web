@@ -38,7 +38,7 @@
 <!-- BEGIN LOGO -->
 <div class="logo">
     <a href="javascript:void(0);">
-        <img src="/assets/global/img/sgks.jpg" alt="logo" class="logo-default" width="150" height="100"> </a>
+        <img src="/assets/global/img/sgkks_logo.png" alt="logo" class="logo-default" width="150" height="150"> </a>
 </div>
 <!-- END LOGO -->
 <!-- BEGIN LOGIN -->
