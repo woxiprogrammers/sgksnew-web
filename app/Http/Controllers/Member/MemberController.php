@@ -23,8 +23,8 @@ class MemberController extends Controller
             return view('admin.members.manage');
         }catch(\Exception $exception){
             $data = [
-                'action' => 'Members View page',
                 'params' => $request->all(),
+                'action' => 'Members View page',
                 'exception' => $exception->getMessage()
             ];
             Log::critical(json_encode($data));
@@ -39,8 +39,8 @@ class MemberController extends Controller
             return view('admin.members.create')->with(compact('blood_group_types','countries'));
         }catch(\Exception $exception){
             $data = [
-                'action' => 'Create members View',
                 'params' => $request->all(),
+                'action' => 'Create members View',
                 'exception' => $exception->getMessage()
             ];
             Log::critical(json_encode($data));
@@ -105,8 +105,8 @@ class MemberController extends Controller
             return redirect('/member/manage');
         }catch(\Exception $exception){
             $data = [
-                'action' => 'Create members',
                 'params' => $request->all(),
+                'action' => 'Create members',
                 'exception' => $exception->getMessage()
             ];
             Log::critical(json_encode($data));
@@ -119,8 +119,8 @@ class MemberController extends Controller
             return $states;
         }catch(\Exception $exception){
             $data = [
-                'action' => 'listing of states',
                 'params' => $request->all(),
+                'action' => 'listing of states',
                 'exception' => $exception->getMessage()
             ];
             Log::critical(json_encode($data));
@@ -133,8 +133,8 @@ class MemberController extends Controller
             return $cities;
         }catch(\Exception $exception){
             $data = [
-                'action' => 'listing of states',
                 'params' => $request->all(),
+                'action' => 'listing of states',
                 'exception' => $exception->getMessage()
             ];
             Log::critical(json_encode($data));
@@ -187,10 +187,11 @@ class MemberController extends Controller
                 }
                 for ($iterator = 0, $pagination = $request->start; $iterator < $length && $pagination < count($finalMembersData); $iterator++, $pagination++) {
                     $firstName = $finalMembersData[$pagination]->first_name;
+                    $memberId= $finalMembersData[$pagination]->id;
                     $middleName = $finalMembersData[$pagination]->middle_name;
                     $lastName = $finalMembersData[$pagination]->last_name;
-                    $srNo = $finalMembersData[$pagination]->id;
                     $mobile = $finalMembersData[$pagination]->mobile;
+                    $gujaratiDetails = MemberTranslations::where('member_id',$finalMembersData[$pagination]->id)->first();
                     $city = Cities::where('id',$finalMembersData[$pagination]->city_id)->pluck('name')->first();
                     if($finalMembersData[$pagination]->address == null){
                         $address = "-";
@@ -198,20 +199,21 @@ class MemberController extends Controller
                         $address = $finalMembersData[$pagination]->address;
                     }
                     if($finalMembersData[$pagination]->is_active == true ){
-                        $memberStatus = "Enable";
+                        $memberStatus = "<input type='checkbox' class='js-switch' onchange='return statusFolder(this.checked,$memberId)' id='status$memberId' value='$memberId' checked/>";
                     }else{
-                        $memberStatus = "Disable";
+                        $memberStatus = "<input type='checkbox' class='js-switch' onchange='return statusFolder(this.checked,$memberId)' id='status$memberId' value='$memberId'/>";
                     }
                         $actionButton = '<div id="sample_editable_1_new" class="btn btn-small blue" >
                         <a href="/member/edit/' . $finalMembersData[$pagination]['id'] . '" style="color: white"> Edit
                     </div>';
 
                     $records['data'][$iterator] = [
-                        $srNo,
                         $firstName ." ".$middleName ." ".$lastName,
+                        $gujaratiDetails['first_name']." ".$gujaratiDetails['middle_name']." ".$gujaratiDetails['last_name'],
+                        $address,
+                        $gujaratiDetails['address'],
                         $mobile,
                         $city,
-                        $address,
                         $memberStatus,
                         $actionButton
                     ];
@@ -219,8 +221,8 @@ class MemberController extends Controller
                 }
         }catch(\Exception $e){
            $data = [
-               'action' => 'Members listing',
                'params' => $request->all(),
+               'action' => 'Members listing',
                'exception' => $e->getMessage()
            ];
            $status = 500;
@@ -240,8 +242,8 @@ class MemberController extends Controller
             return view('admin.members.edit')->with(compact('memberData','bloodGroups','states','cities','countries','memberTranslation'));
         }catch(\Exception $exception){
             $data = [
-                'action' => 'Member Edit View',
                 'params' => $request->all(),
+                'action' => 'Member Edit View',
                 'exception' => $exception->getMessage()
             ];
             Log::critical(json_encode($data));
@@ -284,6 +286,9 @@ class MemberController extends Controller
                 if($member['profile_image'] != null){
                     unlink($imageUploadPath.DIRECTORY_SEPARATOR.$member['profile_image']);
                 }
+                if (!file_exists($imageUploadPath)) {
+                    File::makeDirectory($imageUploadPath, $mode = 0777, true, true);
+                }
                 $imageArray = explode(';',$data['profile_images']);
                 $image = explode(',',$imageArray[1])[1];
                 $pos  = strpos($data['profile_images'], ';');
@@ -305,12 +310,29 @@ class MemberController extends Controller
             return redirect('/member/manage');
         }catch(\Exception $e){
             $data = [
-                'action' => 'Member Edit',
                 'params' => $request->all(),
+                'action' => 'Member Edit',
                 'exception' => $e->getMessage()
             ];
             Log::critical(json_encode($data));
             abort(500);
         }
+    }
+    public function changeStatus(Request $request,$memberId){
+        try{
+            $status = 200;
+            $changeStatus = (boolean)!$memberId->is_active;
+            $memberId->update(['is_active' => $changeStatus]);
+        }catch(\Exception $e){
+            $status = 500;
+            $data = [
+                'params' => $request->all(),
+                'action' => 'Member Activate',
+                'exception' => $e->getMessage()
+            ];
+            Log::critical(json_encode($data));
+            abort(500);
+        }
+         return (json_encode($status));
     }
 }

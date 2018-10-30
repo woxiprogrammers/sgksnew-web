@@ -26,6 +26,7 @@ Route::group(['prefix' => 'member'], function() {
     Route::post('/edit/{member}',array('uses' => 'Member\MemberController@edit'));
     Route::get('/get-all-states/{id}',array('uses' => 'Member\MemberController@getAllStates'));
     Route::get('/get-all-city/{id}',array('uses' => 'Member\MemberController@getAllCities'));
+    Route::get('change-status/{member}',array('uses' => 'Member\MemberController@changeStatus'));
 });
 
 Route::group(['prefix' => 'committee'], function() {
