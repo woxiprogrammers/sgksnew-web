@@ -86,7 +86,7 @@
                                                                     @if($memberTranslation['first_name'] == null)
                                                                     <input type="text" id="first_name_gj" name="gj[first_name]" class="form-control " placeholder="Enter First Name in gujarati" >
                                                                         @else
-                                                                        <input type="text" id="first_name_gj" value="{{$memberTranslation['first_name']}}" name="gj[first_name]" class="form-control ">
+                                                                        <input type="text" id="first_name_gj" value="{{$memberTranslation['first_name']}}" name="gj[first_name]" class="form-control " placeholder="Enter First Name in gujarati">
                                                                     @endif
                                                                 </div>
                                                             </div>
@@ -101,7 +101,7 @@
                                                                     @if($memberTranslation['middle_name'] == null)
                                                                         <input type="text" id="middle_name_gj" name="gj[middle_name]" class="form-control " placeholder="Enter Middle Name in gujarati" >
                                                                         @else
-                                                                        <input type="text" id="middle_name_gj" value="{{$memberTranslation['middle_name']}}" name="gj[middle_name]" class="form-control ">
+                                                                        <input type="text" id="middle_name_gj" value="{{$memberTranslation['middle_name']}}" name="gj[middle_name]" class="form-control " placeholder="Enter Middle Name in gujarati">
                                                                     @endif
                                                                 </div>
                                                             </div>
@@ -116,7 +116,7 @@
                                                                     @if($memberTranslation['last_name'] == null)
                                                                         <input type="text" id="last_name_gj" name="gj[last_name]" class="form-control " placeholder="Enter Last Name in gujarati" >
                                                                         @else
-                                                                        <input type="text" id="last_name_gj" value="{{$memberTranslation['last_name']}}" name="gj[last_name]" class="form-control">
+                                                                        <input type="text" id="last_name_gj" value="{{$memberTranslation['last_name']}}" name="gj[last_name]" class="form-control" placeholder="Enter Last Name in gujarati" >
                                                                     @endif
                                                                 </div>
                                                             </div>
@@ -135,7 +135,7 @@
                                                                     @if($memberData['address'] == null)
                                                                         <textarea id="address_gj" name="gj[address]" class="form-control" placeholder="Enter Address in gujarati"></textarea>
                                                                     @else
-                                                                        <textarea id="address_gj" name="gj[address]" class="form-control">{{$memberTranslation['address']}}</textarea>
+                                                                        <textarea id="address_gj" name="gj[address]" class="form-control"  placeholder="Enter Address in gujarati">{{$memberTranslation['address']}}</textarea>
                                                                     @endif
                                                                 </div>
                                                             </div>
@@ -170,6 +170,7 @@
                                                                 <label class="col-md-3 control-label">Blood Group</label>
                                                                 <div class="col-md-4">
                                                                     <select class="form-control " id="blood_group" name="en[blood_group]">
+                                                                        <option value="" >-</option>
                                                                         @foreach($bloodGroups as $bloodGroup)
                                                                             @if($bloodGroup['id'] == $memberData['blood_group_id'])
                                                                                 <option value="{{$bloodGroup['id']}}" selected>{{$bloodGroup['blood_group_type']}}</option>
