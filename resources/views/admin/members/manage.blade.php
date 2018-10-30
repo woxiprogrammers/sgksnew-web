@@ -59,7 +59,7 @@
                                                         <th> Gujarati Address </th>
                                                         <th> Mobile </th>
                                                         <th> City </th>
-                                                        <th> Status </th>
+                                                        <th> Status <i class="fa fa-check-square"> Enable</i></th>
                                                         <th> Actions </th>
                                                     </tr>
                                                     <tr class="filter">

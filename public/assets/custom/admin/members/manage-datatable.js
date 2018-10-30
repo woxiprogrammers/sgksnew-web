@@ -79,7 +79,7 @@ jQuery(document).ready(function() {
     $("input[name='search_name']").on('keyup',function(){
         $(".filter-submit").trigger('click');
     });
-    $("input[name='search_email']").on('keyup',function(){
+    $("input[name='search_mobile']").on('keyup',function(){
         $(".filter-submit").trigger('click');
     });
     $("input[name='search_city']").on('keyup',function(){
