@@ -55,6 +55,8 @@
                                                         <th>Sr.No</th>
                                                         <th style="width: 20%"> Name </th>
                                                         <th> Mobile </th>
+                                                        <th> City </th>
+                                                        <th> Address </th>
                                                         <th> Status </th>
                                                         <th> Actions </th>
                                                     </tr>
@@ -62,6 +64,8 @@
                                                         <th></th>
                                                         <th style="width: 20%"> <input type="text" class="form-control form-filter" name="search_name"> </th>
                                                         <th> <input type="text" class="form-control form-filter" name="search_mobile"> </th>
+                                                        <th><input type="text" class="form-control form-filter" name="search_city"></th>
+                                                        <th></th>
                                                         <th></th>
                                                         <th>
                                                             <button class="btn btn-xs blue filter-submit"> Search <i class="fa fa-search"></i> </button>

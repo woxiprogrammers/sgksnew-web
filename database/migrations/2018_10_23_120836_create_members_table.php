@@ -19,6 +19,7 @@ class CreateMembersTable extends Migration
             $table->string('middle_name','255')->nullable();
             $table->string('last_name','255')->nullable();
             $table->string('gender',255)->nullable();
+            $table->text('address')->nullable();
             $table->timestamp('date_of_birth')->nullable();
             $table->unsignedInteger('blood_group_id')->nullable();
             $table->foreign('blood_group_id')->references('id')->on('blood_group_types')->onUpdate('cascade')->onDelete('cascade');

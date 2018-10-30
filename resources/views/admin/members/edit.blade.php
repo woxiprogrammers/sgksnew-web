@@ -37,17 +37,40 @@
                                     <!-- BEGIN VALIDATION STATES-->
                                     <div class="portlet light ">
                                         <div class="portlet-body form">
-                                            <form role="form" id="edit-members" class="form-horizontal" action="/member/edit" method="post">
+                                            <form role="form" id="edit-members" class="form-horizontal" action="/member/edit/{{$memberData['id']}}" method="post">
                                                 {!! csrf_field() !!}
                                                 <div class="tab-content">
                                                     <div class="tab-pane fade in active" id="tab_general">
+                                                        <fieldset>
+                                                            <div class="form-group">
+                                                                <div class="row">
+                                                                    <div class="col-md-8 pull-left">
+                                                                        <h4 style="margin-left: 500px">
+                                                                            English
+                                                                        </h4>
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <h4>
+                                                                            Gujarati
+                                                                        </h4>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </fieldset>
                                                         <fieldset>
                                                             <div class="form-group">
                                                                 <label class="col-md-3 control-label">First Name
                                                                     <span style="color: red">*</span>
                                                                 </label>
                                                                 <div class="col-md-4">
-                                                                    <input type="text" id="first_name" value="{{$memberData['first_name']}}" name="first_name" class="form-control " placeholder="Enter First Name" required>
+                                                                    <input type="text" id="first_name" value="{{$memberData['first_name']}}" name="en[first_name]" class="form-control " placeholder="Enter First Name" required>
+                                                                </div>
+                                                                <div class="col-md-4" >
+                                                                    @if($memberTranslation['first_name'] == null)
+                                                                    <input type="text" id="first_name_gj" name="gj[first_name]" class="form-control " placeholder="Enter First Name in gujarati" >
+                                                                        @else
+                                                                        <input type="text" id="first_name_gj" value="{{$memberTranslation['first_name']}}" name="gj[first_name]" class="form-control ">
+                                                                    @endif
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
@@ -55,7 +78,14 @@
                                                                     <span style="color: red">*</span>
                                                                 </label>
                                                                 <div class="col-md-4">
-                                                                    <input type="text" id="middle_name" name="middle_name" value="{{$memberData['middle_name']}}" class="form-control " placeholder="Enter Middle Name" required>
+                                                                    <input type="text" id="middle_name" name="en[middle_name]" value="{{$memberData['middle_name']}}" class="form-control ">
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    @if($memberTranslation['middle_name'] == null)
+                                                                        <input type="text" id="middle_name_gj" name="gj[middle_name]" class="form-control " placeholder="Enter Middle Name in gujarati" >
+                                                                        @else
+                                                                        <input type="text" id="middle_name_gj" value="{{$memberTranslation['middle_name']}}" name="gj[middle_name]" class="form-control ">
+                                                                    @endif
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
@@ -63,30 +93,56 @@
                                                                     <span style="color: red">*</span>
                                                                 </label>
                                                                 <div class="col-md-4">
-                                                                    <input type="text" id="last_name" name="last_name" value="{{$memberData['last_name']}}" class="form-control" placeholder="Enter Last Name" required>
+                                                                    <input type="text" id="last_name" name="en[last_name]" value="{{$memberData['last_name']}}" class="form-control" placeholder="Enter Last Name" required>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    @if($memberTranslation['last_name'] == null)
+                                                                        <input type="text" id="last_name_gj" name="gj[last_name]" class="form-control " placeholder="Enter Last Name in gujarati" >
+                                                                        @else
+                                                                        <input type="text" id="last_name_gj" value="{{$memberTranslation['last_name']}}" name="gj[last_name]" class="form-control">
+                                                                    @endif
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="col-md-3 control-label">Address
+                                                                    <span style="color: red">*</span>
+                                                                </label>
+                                                                <div class="col-md-4">
+                                                                    @if($memberData['address'] == null)
+                                                                        <textarea id="address" name="en[address]" class="form-control" placeholder="Enter Address" required></textarea>
+                                                                    @else
+                                                                        <textarea id="address" name="en[address]" class="form-control" placeholder="Enter Address" required>{{$memberData['address']}}</textarea>
+                                                                    @endif
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    @if($memberData['address'] == null)
+                                                                        <textarea id="address_gj" name="gj[address]" class="form-control" placeholder="Enter Address in gujarati"></textarea>
+                                                                    @else
+                                                                        <textarea id="address_gj" name="gj[address]" class="form-control">{{$memberTranslation['address']}}</textarea>
+                                                                    @endif
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label class="col-md-3 control-label">Gender</label>
                                                                 <div class="col-md-4" style="margin-top: 5px">
                                                                     @if($memberData['gender'] == "male")
-                                                                        <input type="radio" value="male" name="gender" checked>Male
-                                                                        <input type="radio" value="female" name="gender"> Female
+                                                                        <input type="radio" value="male" name="en[gender]" checked>Male
+                                                                        <input type="radio" value="female" name="en[gender]"> Female
                                                                     @else
-                                                                        <input type="radio" value="male" name="gender" >Male
-                                                                        <input type="radio" value="female" name="gender" checked> Female
+                                                                        <input type="radio" value="male" name="en[gender]" >Male
+                                                                        <input type="radio" value="female" name="en[gender]" checked> Female
                                                                     @endif
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label class="col-md-3 control-label">Date of birth</label>
                                                                 @if($memberData['date_of_birth'] == null)
-                                                                <div class="col-md-4">
-                                                                    <input type="date" id="dob" name="dob" class="form-control">
-                                                                </div>
-                                                                    @else
-                                                                    <div class="col-md-5 date date-picker">
-                                                                        <input type="text" class="form-control" id="dob" name="dob" value="{{date('d-m-Y',strtotime($memberData['date_of_birth']))}}" required="required">
+                                                                    <div class="col-md-4">
+                                                                        <input type="date" id="dob" name="en[dob]" class="form-control">
+                                                                    </div>
+                                                                @else
+                                                                    <div class="col-md-4 date date-picker">
+                                                                        <input type="text" class="form-control" id="dob" name="en[dob]" value="{{date('d-m-Y',strtotime($memberData['date_of_birth']))}}" required="required">
                                                                         <button class="btn btn-sm default" type="button">
                                                                             <i class="fa fa-calendar"></i>
                                                                         </button>
@@ -96,9 +152,14 @@
                                                             <div class="form-group">
                                                                 <label class="col-md-3 control-label">Blood Group</label>
                                                                 <div class="col-md-4">
-                                                                    <select class="form-control " id="blood_group" name="blood_group">
-                                                                        <option value="">-</option>
-
+                                                                    <select class="form-control " id="blood_group" name="en[blood_group]">
+                                                                        @foreach($bloodGroups as $bloodGroup)
+                                                                            @if($bloodGroup['id'] == $memberData['blood_group_id'])
+                                                                                <option value="{{$bloodGroup['id']}}" selected>{{$bloodGroup['blood_group_type']}}</option>
+                                                                            @else
+                                                                                <option value="{{$bloodGroup['id']}}">{{$bloodGroup['blood_group_type']}}</option>
+                                                                            @endif
+                                                                        @endforeach
                                                                     </select>
                                                                 </div>
                                                             </div>
@@ -107,50 +168,70 @@
                                                                     <span style="color: red">*</span>
                                                                 </label>
                                                                 <div class="col-md-4">
-                                                                    <input type="text" id="mobile_number" name="mobile_number" value="{{$memberData['mobile']}}" class="form-control" maxlength="10" placeholder="Enter number" required>
+                                                                    <input type="text" id="mobile_number" name="en[mobile_number]" value="{{$memberData['mobile']}}" class="form-control" maxlength="10" placeholder="Enter number" required>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label class="col-md-3 control-label">Email ID</label>
                                                                 <div class="col-md-4">
-                                                                    <input type="email" id="email_id" name="email_id" value="{{$memberData['email']}}" class="form-control " placeholder="Enter email">
+                                                                    <input type="email" id="email_id" name="en[email_id]" value="{{$memberData['email']}}" class="form-control " placeholder="Enter email">
                                                                 </div>
                                                             </div>
+                                                            <?php $selectedState = \App\Cities::where('id',$memberData['city_id'])->first();
+                                                            $selectedCountry = \App\States::where('id',$selectedState['country_id'])->first();
+                                                            ?>
                                                             <div class="form-group">
                                                                 <label class="col-md-3 control-label">Country</label>
                                                                 <div class="col-md-4">
-                                                                    <select class="form-control" id="country" name="country">
-                                                                        <option value="">-</option>
-
+                                                                    <select class="form-control" id="country" name="en[country]">
+                                                                        @foreach($countries as $country)
+                                                                            @if($country['id'] == $selectedCountry['country_id'])
+                                                                                <option value="{{$country['id']}}" selected>{{$country['name']}}</option>
+                                                                            @else
+                                                                                <option value="{{$country['id']}}">{{$country['name']}}</option>
+                                                                            @endif
+                                                                        @endforeach
                                                                     </select>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label class="col-md-3 control-label">State</label>
                                                                 <div class="col-md-4">
-                                                                    <select class="form-control" id="state" name="state">
-
+                                                                    <select class="form-control" id="state" name="en[state]">
+                                                                        @foreach($states as $state)
+                                                                            @if($state['id'] == $selectedState['state_id'])
+                                                                                <option value="{{$state['id']}}" selected>{{$state['name']}}</option>
+                                                                            @else
+                                                                                <option value="{{$state['id']}}">{{$state['name']}}</option>
+                                                                            @endif
+                                                                        @endforeach
                                                                     </select>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label class="col-md-3 control-label">City</label>
                                                                 <div class="col-md-4">
-                                                                    <select class="form-control " id="city" name="city">
-
+                                                                    <select class="form-control " id="city" name="en[city]">
+                                                                        @foreach($cities as $city)
+                                                                            @if($city['id'] == $memberData['city_id'])
+                                                                                <option value="{{$city['id']}}" selected>{{$city['name']}}</option>
+                                                                            @else
+                                                                                <option value="{{$city['id']}}">{{$city['name']}}</option>
+                                                                            @endif
+                                                                        @endforeach
                                                                     </select>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label class="col-md-3 control-label">Latitude</label>
                                                                 <div class="col-md-4">
-                                                                    <input type="text" id="latitude" name="latitude" value="{{$memberData['latitude']}}" class="form-control" placeholder="Enter latitude">
+                                                                    <input type="text" id="latitude" name="en[latitude]" value="{{$memberData['latitude']}}" class="form-control" placeholder="Enter latitude">
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label class="col-md-3 control-label">Longitude</label>
                                                                 <div class="col-md-4">
-                                                                    <input type="text" id="longitude" name="longitude" value="{{$memberData['longitude']}}" class="form-control " placeholder="Enter longitude">
+                                                                    <input type="text" id="longitude" name="en[longitude]" value="{{$memberData['longitude']}}" class="form-control " placeholder="Enter longitude">
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
@@ -206,8 +287,6 @@
         $(document).ready(function () {
             CreateMembers.init();
         });
-
-
         $('#country').change(function(){
             var id=this.value;
             var route='/member/get-all-states/'+id;
@@ -265,6 +344,35 @@
             } else {
                 alert("Select Only images");
             }
+        });
+    </script>
+    <script>
+        $('form').submit(function(){
+            var address = $.trim($("#address_gj").val());
+            if(address == ''){
+                $('#address_gj').hide();
+                $("#address_gj").prop("disabled", true);
+                $('#address_gj').removeAttr('name');
+            }
+            var firstName = $('#first_name_gj').val();
+            if(firstName == ''){
+                $('#first_name_gj').hide();
+                $("#first_name_gj").prop("disabled", true);
+                $('#first_name_gj').removeAttr('name');
+            }
+            var middleName = $('#middle_name_gj').val();
+            if(middleName == ''){
+                $('#middle_name_gj').hide();
+                $("#middle_name_gj").prop("disabled", true);
+                $('#middle_name_gj').removeAttr('name');
+            }
+            var lastName = $('#last_name_gj').val();
+            if(lastName == ''){
+                $('#last_name_gj').hide();
+                $("#last_name_gj").prop("disabled", true);
+                $('#last_name_gj').removeAttr('name');
+            }
+
         });
     </script>
 @endsection

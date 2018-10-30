@@ -8,32 +8,57 @@ var  CreateMembers = function () {
             errorClass: 'help-block', // default input error message class
             focusInvalid: false, // do not focus the last invalid input
             rules: {
-                first_name: {
+                "en[first_name]": {
                     required: true
                 },
-                middle_name: {
+                "en[middle_name]": {
                     required: true
                 },
-                last_name: {
+                "en[last_name]": {
                     required: true
                 },
-                mobile:{
+                "en[mobile_number]":{
                     required: true,
                     maxlength : 10
+                },
+                "en[country]":{
+                  required : true
+                },
+                "en[state]":{
+                    required : true
+                },
+                "en[city]":{
+                    required : true
+                },
+                "en[address]":{
+                    required : true
                 }
             },
             messages: {
-                name: {
+                "en[first_name]": {
                     required: "first name is required.",
                 },
-                middle_name: {
+                "en[middle_name]": {
                     required: "middle name is required."
                 },
-                last_name: {
+                "en[last_name]": {
                     required: "last name is required."
-                },mobile: {
+                },
+                "en[mobile_number]": {
                     required: "mobile number required",
                     maxlength: "number should not be greater than 10"
+                },
+                "en[country]":{
+                    required : "please select the country"
+                },
+                "en[state]":{
+                    required : "please select the state"
+                },
+                "en[city]":{
+                    required : "please select the city"
+                },
+                "en[address]": {
+                    required : "please enter the address"
                 }
             },
             invalidHandler: function (event, validator) { //display error alert on form submit
