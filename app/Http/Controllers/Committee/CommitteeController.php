@@ -192,7 +192,7 @@ class CommitteeController extends Controller
             return redirect('/committee/manage');
         }catch(\Exception $exception){
             $data = [
-                'action' => 'Create committee',
+                'action' => 'Edit committee',
                 'params' => $request->all(),
                 'exception' => $exception->getMessage()
             ];
@@ -263,7 +263,7 @@ class CommitteeController extends Controller
             }else{
                 $request->session()->flash('error','Something went wrong');
             }
-            return redirect('/committee-members/manage');
+            return redirect("/committee-members/manage/$id");
         }catch(\Exception $exception){
             $data = [
                 'action' => 'Create members',
@@ -307,7 +307,7 @@ class CommitteeController extends Controller
                     $emailId = $finalMembersData[$pagination]->email_id;
                     $srNo = $finalMembersData[$pagination]->id;
                     $actionButton = '<div id="sample_editable_1_new" class="btn btn-small blue" >
-                        <a href="/committee-members/manage/' . $finalMembersData[$pagination]['id'] . '" style="color: white"> Edit
+                        <a href="/committee-members/edit/' . $finalMembersData[$pagination]['id'] . '" style="color: white"> Edit
                     </div>';
                     $records['data'][$iterator] = [
                         $srNo,
@@ -330,5 +330,48 @@ class CommitteeController extends Controller
             abort(500);
         }
         return response()->json($records,$status);
+    }
+
+    public function editMemberView(Request $request,$id){
+        try{
+            $memberData  = CommitteeMembers::where('id',$id)->first();
+            return view('admin.committee.members.edit')->with(compact('memberData'));
+        }catch(\Exception $exception){
+            $data = [
+                'action' => 'Member Edit View',
+                'params' => $request->all(),
+                'exception' => $exception->getMessage()
+            ];
+            Log::critical(json_encode($data));
+            abort(500);
+        }
+    }
+
+    public function editMember(Request $request,$id){
+        try{
+            $data = $request->all();
+            $memberData['full_name'] = $data['full_name'];
+            $memberData['designation'] = $data['designation'];
+            $memberData['mobile_number'] = $data['mobile_number'];
+            $memberData['email_id'] = $data['email_id'];
+            $createMember = CommitteeMembers::where('id',$id)->update($memberData);
+            if ($createMember) {
+                $request->session()->flash('success', 'Member Edited Successfully');
+            } else {
+                $request->session()->flash('error', 'Something went wrong');
+            }
+
+            $memberData = CommitteeMembers::where('id',$id)->select('committee_id')->get();
+            $committeeId = $memberData[0]->committee_id;
+            return redirect("/committee-members/manage/$committeeId");
+        }catch(\Exception $exception){
+            $data = [
+                'action' => 'Edit Committee Member',
+                'params' => $request->all(),
+                'exception' => $exception->getMessage()
+            ];
+            Log::critical(json_encode($data));
+            abort(500);
+        }
     }
 }

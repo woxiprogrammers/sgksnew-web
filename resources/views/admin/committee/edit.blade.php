@@ -35,7 +35,7 @@
                             <div class="container">
                                 <!-- BEGIN PAGE TITLE -->
                                 <div class="page-title">
-                                    <h1>Create Committee</h1>
+                                    <h1>Edit Committee</h1>
                                 </div>
                             </div>
                         </div>

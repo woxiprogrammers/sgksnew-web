@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: vaibhav
  * Date: 29/10/18
- * Time: 9:57 AM
+ * Time: 5:47 PM
  */
 ?>
 @extends('layout.master')
@@ -35,7 +35,7 @@
                             <div class="container">
                                 <!-- BEGIN PAGE TITLE -->
                                 <div class="page-title">
-                                    <h1>Create Members</h1>
+                                    <h1>Edit Member</h1>
                                 </div>
                             </div>
                         </div>
@@ -45,27 +45,28 @@
                                     <!-- BEGIN VALIDATION STATES-->
                                     <div class="portlet light ">
                                         <div class="portlet-body form">
-                                            <form role="form" id="create-members" class="form-horizontal" action="/committee-members/create/{{$id}}" method="post">
+                                            <form role="form" id="edit-member" class="form-horizontal" action="/committee-members/edit/{{$memberData['id']}}" method="post">
                                                 {!! csrf_field() !!}
                                                 <div class="tab-content">
                                                     <div class="tab-pane fade in active" id="tab_general">
                                                         <fieldset>
+
                                                             <div class="form-group">
                                                                 <label class="col-md-3 control-label">Full Name
                                                                     <span style="color: red">*</span>
                                                                 </label>
 
                                                                 <div class="col-md-4">
-                                                                    <input type="text" id="full_name" name="full_name" class="form-control " placeholder="Enter Full Name" required>
+                                                                    <input type="text" id="full_name" value="{{$memberData['full_name']}}" name="full_name" class="form-control " placeholder="Enter Full Name" required>
                                                                 </div>
                                                             </div>
+
                                                             <div class="form-group">
                                                                 <label class="col-md-3 control-label">Designation
                                                                     <span style="color: red">*</span>
                                                                 </label>
-
                                                                 <div class="col-md-4">
-                                                                    <input type="text" id="designation" name="designation" class="form-control " placeholder="Enter Designation" required>
+                                                                    <input type="text" id="designation"  value="{{$memberData['designation']}}" name="designation" class="form-control " placeholder="Enter Designation" required></input>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
@@ -73,13 +74,13 @@
                                                                     <span style="color: red">*</span>
                                                                 </label>
                                                                 <div class="col-md-4">
-                                                                    <input type="text" id="mobile_number" name="mobile_number" class="form-control" maxlength="10" placeholder="Enter Mobile Number" required>
+                                                                    <input type="text" id="mobile_number" name="mobile_number" value="{{$memberData['mobile_number']}}" class="form-control" maxlength="10" placeholder="Enter number" required>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label class="col-md-3 control-label">Email ID</label>
                                                                 <div class="col-md-4">
-                                                                    <input type="email" id="email_id" name="email_id" class="form-control " placeholder="Enter email">
+                                                                    <input type="email" id="email_id" name="email_id" value="{{$memberData['email_id']}}" class="form-control " placeholder="Enter email">
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
@@ -133,9 +134,8 @@
 
     <script>
         $(document).ready(function () {
-            CreateMembers.init();
+            Create.init();
         });
-
 
         $("#imageupload").on('change', function () {
             var countFiles = $(this)[0].files.length;
@@ -161,6 +161,7 @@
                 alert("Select Only images");
             }
         });
+
     </script>
 @endsection
 
