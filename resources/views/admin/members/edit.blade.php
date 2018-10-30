@@ -159,7 +159,7 @@
                                                                     </div>
                                                                 @else
                                                                     <div class="col-md-4 date date-picker">
-                                                                        <input type="text" class="form-control" id="dob" name="en[dob]" value="{{date('d-m-Y',strtotime($memberData['date_of_birth']))}}" required="required">
+                                                                        <input type="text" class="form-control" id="dob" name="en[dob]" value="{{date('m/d/Y',strtotime($memberData['date_of_birth']))}}" required="required">
                                                                         <button class="btn btn-sm default" type="button">
                                                                             <i class="fa fa-calendar"></i>
                                                                         </button>
