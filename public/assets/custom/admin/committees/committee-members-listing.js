@@ -5,12 +5,13 @@ var MembersListing = function () {
     var handleOrders = function () {
 
         var grid = new Datatable();
-
+        var id = document.getElementById('committee-id').value;
         grid.init({
             src: $("#memberTable"),
             onSuccess: function (grid) {
                 // execute some code after table records loaded
             },
+
             onError: function (grid) {
                 // execute some code on network or other general error
             },
@@ -26,8 +27,9 @@ var MembersListing = function () {
                     [50, 100, 150] // change per page values here
                 ],
                 "pageLength": 50, // default record count per page
+
                 "ajax": {
-                    "url": "/committee-members/listing" // ajax source
+                    "url": "/committee-members/listing/"+id // ajax source
                 },
                 "order": [
                     [1, "asc"]
