@@ -268,6 +268,7 @@ class MemberController extends Controller
             $membersData['longitude'] = $data['en']['latitude'];
             $membersData['latitude'] = $data['en']['longitude'];
             $member->update($membersData);
+            $memberTranslation = MemberTranslations::where('member_id',$member['id'])->first();
             if(array_key_exists('gj',$data)){
                 if(array_key_exists('first_name',$data['gj'])){
                     $gujaratiMembersData['first_name'] = $data['gj']['first_name'];
@@ -278,7 +279,14 @@ class MemberController extends Controller
                 }if (array_key_exists('address',$data['gj'])){
                     $gujaratiMembersData['address'] = $data['gj']['address'];
                 }
-                MemberTranslations::where('member_id',$member['id'])->update($gujaratiMembersData);
+                if(count($memberTranslation) > 0){
+
+                    MemberTranslations::where('member_id',$member['id'])->update($gujaratiMembersData);
+                }else{
+                   $gujaratiMembersData['language_id'] =  Languages::where('abbreviation','=','gj')->pluck('id')->first();
+                   $gujaratiMembersData['member_id'] = $member['id'];
+                   MemberTranslations:: create($gujaratiMembersData);
+                }
             }
             if($request->has('profile_images')){
                 $createMemberDirectoryName = sha1($member['id']);
