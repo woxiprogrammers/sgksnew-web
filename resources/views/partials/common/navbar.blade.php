@@ -73,13 +73,13 @@
                         </a>
                     </li>
                 </ul>
-                <ul class="nav navbar-nav">
+                {{--<ul class="nav navbar-nav">
                     <li aria-haspopup="true" class="menu-dropdown classic-menu-dropdown">
                         <a href="/committee/manage"> Manage Committee
                             <span class="arrow"></span>
                         </a>
                     </li>
-                </ul>
+                </ul>--}}
             </li>
         </div>
             <!-- END MEGA MENU -->
