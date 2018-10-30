@@ -129,6 +129,7 @@ class CommitteeController extends Controller
                 for ($iterator = 0, $pagination = $request->start; $iterator < $length && $pagination < count($finalCommitteesData); $iterator++, $pagination++) {
                     $committeeName = $finalCommitteesData[$pagination]->committee_name;
                     $description = $finalCommitteesData[$pagination]->description;
+                    $isActive = $finalCommitteesData[$pagination]->is_active;
                     $srNo = $finalCommitteesData[$pagination]->id;
                     $totalMembers = CommitteeMembers::where('committee_id',$srNo)->count();
                     $actionButton = '<div id="sample_editable_1_new" class="btn btn-small blue" >
@@ -142,7 +143,7 @@ class CommitteeController extends Controller
                         $committeeName,
                         $description,
                         $totalMembers,
-                        $mem,
+                        $isActive,
                         $actionButton
                     ];
                 }
