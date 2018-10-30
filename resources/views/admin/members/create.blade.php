@@ -50,6 +50,22 @@
                                                     <div class="tab-pane fade in active" id="tab_general">
                                                         <fieldset>
                                                             <div class="form-group">
+                                                                <div class="row">
+                                                                    <div class="col-md-8 pull-left">
+                                                                        <h4 style="margin-left: 500px">
+                                                                            English
+                                                                        </h4>
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <h4>
+                                                                            Gujarati
+                                                                        </h4>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </fieldset>
+                                                        <fieldset>
+                                                            <div class="form-group">
                                                                 <label class="col-md-3 control-label">First Name
                                                                     <span style="color: red">*</span>
                                                                 </label>
