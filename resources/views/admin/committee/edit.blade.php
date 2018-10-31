@@ -7,7 +7,7 @@
  */
 ?>
 @extends('layout.master')
-@section('title','Sgks')
+@section('title','Sgks|Committee')
 @include('partials.common.navbar')
 @section('css')
     <style>

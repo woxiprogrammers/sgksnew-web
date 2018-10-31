@@ -104,7 +104,6 @@ class CommitteeController extends Controller
         try{
             $records = array();
             $status = 200;
-            $mem=10;
             $records['data'] = array();
             $records["draw"] = intval($request->draw);
             $committeesData = Committees::orderBy('created_at','desc')->pluck('id')->toArray();
@@ -215,7 +214,6 @@ class CommitteeController extends Controller
 
     public function manageMembers(Request $request,$id){
         try{
-
             return view('admin.committee.members.manage')->with(compact('id'));
         }catch(\Exception $exception){
             $data = [
@@ -254,7 +252,7 @@ class CommitteeController extends Controller
             $createMember = CommitteeMembers::create($membersData);
             if($request->has('profile_images')){
                 $createMemberDirectoryName = sha1($createMember->id);
-                $imageUploadPath = public_path().env('MEMBER_IMAGES_UPLOAD').DIRECTORY_SEPARATOR.$createMemberDirectoryName;
+                $imageUploadPath = public_path().env('COMMITTEE_MEMBER_IMAGES_UPLOAD').DIRECTORY_SEPARATOR.$createMemberDirectoryName;
                 if (!file_exists($imageUploadPath)) {
                     File::makeDirectory($imageUploadPath, $mode = 0777, true, true);
                 }
