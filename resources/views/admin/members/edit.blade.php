@@ -142,12 +142,15 @@
                                                             <div class="form-group">
                                                                 <label class="col-md-3 control-label">Gender</label>
                                                                 <div class="col-md-4" style="margin-top: 5px">
-                                                                    @if($memberData['gender'] == "male")
-                                                                        <input type="radio" value="male" name="en[gender]" checked>Male
-                                                                        <input type="radio" value="female" name="en[gender]"> Female
+                                                                    @if($memberData['gender'] == "Male" )
+                                                                        <input type="radio" value="Male" name="en[gender]" checked>Male
+                                                                        <input type="radio" value="Female" name="en[gender]"> Female
+                                                                    @elseif($memberData['gender'] == "Female")
+                                                                        <input type="radio" value="Male" name="en[gender]" >Male
+                                                                        <input type="radio" value="Female" name="en[gender]" checked> Female
                                                                     @else
-                                                                        <input type="radio" value="male" name="en[gender]" >Male
-                                                                        <input type="radio" value="female" name="en[gender]" checked> Female
+                                                                        <input type="radio" value="Male" name="en[gender]" >Male
+                                                                        <input type="radio" value="Female" name="en[gender]"> Female
                                                                     @endif
                                                                 </div>
                                                             </div>
