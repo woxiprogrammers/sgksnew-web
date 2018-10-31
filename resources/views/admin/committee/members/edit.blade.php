@@ -85,9 +85,7 @@
                                                                         </div>
                                                                     </div>
                                                                     <div class="form-group">
-                                                                        <label class="col-md-3 control-label">Email ID
-                                                                            <span style="color: red">*</span>
-                                                                        </label>
+                                                                        <label class="col-md-3 control-label">Email ID</label>
                                                                         <div class="col-md-9">
                                                                             <input type="email" id="email_id" name="email_id" value="{{$memberData['email_id']}}" class="form-control " placeholder="Enter email">
                                                                         </div>
