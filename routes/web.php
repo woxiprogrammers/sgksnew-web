@@ -37,11 +37,12 @@ Route::group(['prefix' => 'committee'], function() {
     Route::post('/edit/{id}',array('uses' => 'Committee\CommitteeController@editCommittee'));
     Route::get('/get-all-states/{id}',array('uses' => 'Committee\CommitteeController@getAllStates'));
     Route::get('/get-all-cities/{id}',array('uses' => 'Committee\CommitteeController@getAllCities'));
+    Route::get('/change-status/{id}',array('uses' => 'Committee\CommitteeController@changeCommitteeStatus'));
 });
 
 Route::group(['prefix' => 'committee-members'], function() {
     Route::get('/manage/{id}',array('uses' => 'Committee\CommitteeController@manageMembers'));
-    Route::post('/listing/',array('uses' => 'Committee\CommitteeController@committeeMemberListing'));
+    Route::post('/listing/{id}',array('uses' => 'Committee\CommitteeController@committeeMemberListing'));
     Route::get('/create/{id}',array('uses' => 'Committee\CommitteeController@createMemberView'));
     Route::post('/create/{id}',array('uses' => 'Committee\CommitteeController@createMember'));
     Route::get('/edit/{id}',array('uses' => 'Committee\CommitteeController@editMemberView'));

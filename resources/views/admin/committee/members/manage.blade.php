@@ -59,7 +59,7 @@
                                                         <th> Actions </th>
                                                     </tr>
                                                     <tr class="filter">
-                                                        <th></th>
+                                                        <th><input type="hidden" id="committee-id" value="{{$id}}" /></th>
                                                         <th style="width: 20%"> <input type="text" class="form-control form-filter" name="search_name"> </th>
                                                         <th></th>
                                                         <th></th>
@@ -108,6 +108,7 @@
         $(document).ready(function() {
             $('#memberTable').DataTable();
         });
+
     </script>
 @endsection
 

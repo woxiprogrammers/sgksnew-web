@@ -129,11 +129,22 @@ class CommitteeController extends Controller
                 for ($iterator = 0, $pagination = $request->start; $iterator < $length && $pagination < count($finalCommitteesData); $iterator++, $pagination++) {
                     $committeeName = $finalCommitteesData[$pagination]->committee_name;
                     $description = $finalCommitteesData[$pagination]->description;
-                    $isActive = $finalCommitteesData[$pagination]->is_active;
+                    $isActiveStatus = $finalCommitteesData[$pagination]->is_active;
                     $srNo = $finalCommitteesData[$pagination]->id;
                     $totalMembers = CommitteeMembers::where('committee_id',$srNo)->count();
-                    $actionButton = '<div id="sample_editable_1_new" class="btn btn-small blue" >
-                        <a href="/committee/edit/' . $finalCommitteesData[$pagination]['id'] . '" style="color: white"> Edit
+                    if($isActiveStatus) {
+                        $isActive = '<div class="checkbox">
+                                       <input type="checkbox" checked>
+                                       <a href="/committee/change-status/' . $finalCommitteesData[$pagination]['id'] . '" style="color: red">Change
+                                 </div>';
+                    }else{
+                        $isActive = '<div class="checkbox">
+                                       <input type="checkbox" value="">
+                                       <a href="/committee/change-status/' . $finalCommitteesData[$pagination]['id'] . '" style="color: red">Change
+                                 </div>';
+                    }
+                    $actionButton = '<div id="sample_editable_1_new" class="btn btn-small blue">
+                        <a href="/committee/edit/' . $finalCommitteesData[$pagination]['id'] . '" style="color: white">Edit
                     </div>
                     <div id="sample_editable_1_new" class="btn btn-small blue" >
                         <a href="/committee-members/manage/' . $finalCommitteesData[$pagination]['id'] . '" style="color: white"> View Members
@@ -276,14 +287,13 @@ class CommitteeController extends Controller
         }
     }
 
-    public function committeeMemberListing(Request $request){
+    public function committeeMemberListing(Request $request,$id){
         try{
             $records = array();
             $status = 200;
-            $mem=10;
             $records['data'] = array();
             $records["draw"] = intval($request->draw);
-            $membersData = CommitteeMembers::orderBy('created_at','desc')->pluck('id')->toArray();
+            $membersData = CommitteeMembers::where('committee_id',$id)->orderBy('created_at','desc')->pluck('id')->toArray();
             $filterFlag = true;
             if($request->has('search_name') /*&& $request->search_name != ''*/){
                 $membersData = CommitteeMembers::where('full_name','like','%'.$request->search_name.'%')
@@ -368,6 +378,39 @@ class CommitteeController extends Controller
         }catch(\Exception $exception){
             $data = [
                 'action' => 'Edit Committee Member',
+                'params' => $request->all(),
+                'exception' => $exception->getMessage()
+            ];
+            Log::critical(json_encode($data));
+            abort(500);
+        }
+    }
+
+    public function changeCommitteeStatus(Request $request,$id){
+        try{
+            $committeeData  = Committees::where('id',$id)->first();
+            $status = $committeeData['is_active'];
+            if($status){
+                $committeeChangeStatus['is_active'] = false;
+                $createCommittee = Committees::where('id',$id)->update($committeeChangeStatus);
+                if ($createCommittee) {
+                    $request->session()->flash('success', 'Committee Created Successfully');
+                } else {
+                    $request->session()->flash('error', 'Something went wrong');
+                }
+            }else{
+                $committeeChangeStatus['is_active'] = true;
+                $createCommittee = Committees::where('id',$id)->update($committeeChangeStatus);
+                if ($createCommittee) {
+                    $request->session()->flash('success', 'Committee Created Successfully');
+                } else {
+                    $request->session()->flash('error', 'Something went wrong');
+                }
+            }
+            return redirect('/committee/manage');
+        }catch(\Exception $exception){
+            $data = [
+                'action' => 'Committee Edit View',
                 'params' => $request->all(),
                 'exception' => $exception->getMessage()
             ];

@@ -66,7 +66,7 @@
                                                                     <span style="color: red">*</span>
                                                                 </label>
                                                                 <div class="col-md-4">
-                                                                    <textarea id="description"  name="description" class="form-control " placeholder="Enter Committee description" required></textarea>
+                                                                    <textarea id="description"  name="description" class="form-control " placeholder="Enter Committee description" required>{{$committeeData['description']}}</textarea>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">

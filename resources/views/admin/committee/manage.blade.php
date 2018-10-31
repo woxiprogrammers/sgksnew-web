@@ -58,7 +58,7 @@
                                                         <th style="width: 20%"> Name </th>
                                                         <th> Description </th>
                                                         <th> Total Members </th>
-                                                        <th> Enable </th>
+                                                        <th> Status </th>
                                                         <th> Action </th>
                                                     </tr>
                                                     <tr class="filter">
