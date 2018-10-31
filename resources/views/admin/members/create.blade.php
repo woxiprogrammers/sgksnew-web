@@ -50,12 +50,30 @@
                                                     <div class="tab-pane fade in active" id="tab_general">
                                                         <fieldset>
                                                             <div class="form-group">
+                                                                <div class="row">
+                                                                    <div class="col-md-8 pull-left">
+                                                                        <h4 style="margin-left: 500px">
+                                                                            English
+                                                                        </h4>
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <h4>
+                                                                            Gujarati
+                                                                        </h4>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </fieldset>
+                                                        <fieldset>
+                                                            <div class="form-group">
                                                                 <label class="col-md-3 control-label">First Name
                                                                     <span style="color: red">*</span>
                                                                 </label>
-
                                                                 <div class="col-md-4">
-                                                                    <input type="text" id="first_name" name="first_name" class="form-control " placeholder="Enter First Name" required>
+                                                                    <input type="text" id="first_name" name="en[first_name]" class="form-control " placeholder="Enter First Name" required>
+                                                                </div>
+                                                                <div class="col-md-4" >
+                                                                    <input type="text" id="first_name_gj" name="gj[first_name]" class="form-control " placeholder="Enter First Name in gujarati" >
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
@@ -63,7 +81,10 @@
                                                                     <span style="color: red">*</span>
                                                                 </label>
                                                                 <div class="col-md-4">
-                                                                    <input type="text" id="middle_name" name="middle_name" class="form-control " placeholder="Enter Middle Name" required>
+                                                                    <input type="text" id="middle_name" name="en[middle_name]" class="form-control " placeholder="Enter Middle Name" required>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <input type="text" id="middle_name_gj" name="gj[middle_name]" class="form-control " placeholder="Enter Middle Name in gujarati" >
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
@@ -71,26 +92,40 @@
                                                                     <span style="color: red">*</span>
                                                                 </label>
                                                                 <div class="col-md-4">
-                                                                    <input type="text" id="last_name" name="last_name" class="form-control " placeholder="Enter Last Name" required>
+                                                                    <input type="text" id="last_name" name="en[last_name]" class="form-control " placeholder="Enter Last Name" required>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <input type="text" id="last_name_gj" name="gj[last_name]" class="form-control " placeholder="Enter Last Name in gujarati" >
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="col-md-3 control-label">Address
+                                                                    <span style="color: red">*</span>
+                                                                </label>
+                                                                <div class="col-md-4">
+                                                                    <textarea id="address" name="en[address]" class="form-control" placeholder="Enter Address" required> </textarea>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <textarea id="address_gj" name="gj[address]" class="form-control" placeholder="Enter Address in gujarati" > </textarea>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label class="col-md-3 control-label">Gender</label>
                                                                 <div class="col-md-4" style="margin-top: 5px">
-                                                                    <input type="radio" value="male" name="gender">Male
-                                                                    <input type="radio" value="female" name="gender"> Female
+                                                                    <input type="radio" value="male" name="en[gender]">Male
+                                                                    <input type="radio" value="female" name="en[gender]"> Female
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label class="col-md-3 control-label">Date of birth</label>
                                                                 <div class="col-md-4">
-                                                                    <input type="date" id="dob" name="dob" class="form-control">
+                                                                    <input type="date" id="dob" name="en[dob]" class="form-control">
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label class="col-md-3 control-label">Blood Group</label>
                                                                 <div class="col-md-4">
-                                                                    <select class="form-control " id="blood_group" name="blood_group">
+                                                                    <select class="form-control " id="blood_group" name="en[blood_group]">
                                                                         <option value="">-</option>
                                                                         @foreach($blood_group_types as $blood_group)
                                                                             <option value="{{$blood_group['id']}}">{{$blood_group['blood_group_type']}}</option>
@@ -103,19 +138,22 @@
                                                                     <span style="color: red">*</span>
                                                                 </label>
                                                                 <div class="col-md-4">
-                                                                    <input type="text" id="mobile_number" name="mobile_number" class="form-control" maxlength="10" placeholder="Enter number" required>
+                                                                    <input type="text" id="mobile_number" name="en[mobile_number]" class="form-control" placeholder="Enter number" required>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label class="col-md-3 control-label">Email ID</label>
                                                                 <div class="col-md-4">
-                                                                    <input type="email" id="email_id" name="email_id" class="form-control " placeholder="Enter email">
+                                                                    <input type="email" id="email_id" name="en[email_id]" class="form-control " placeholder="Enter email">
                                                                 </div>
                                                             </div>
+
                                                             <div class="form-group">
-                                                                <label class="col-md-3 control-label">Country</label>
+                                                                <label class="col-md-3 control-label">Country
+                                                                    <span style="color: red">*</span>
+                                                                </label>
                                                                 <div class="col-md-4">
-                                                                    <select class="form-control" id="country" name="country">
+                                                                    <select class="form-control" id="country" name="en[country]" required>
                                                                         <option value="">-</option>
                                                                         @foreach($countries as $country)
                                                                             <option value="{{$country['id']}}">{{$country['name']}}</option>
@@ -124,17 +162,21 @@
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
-                                                                <label class="col-md-3 control-label">State</label>
+                                                                <label class="col-md-3 control-label">State
+                                                                    <span style="color: red">*</span>
+                                                                </label>
                                                                 <div class="col-md-4">
-                                                                    <select class="form-control" id="state" name="state">
+                                                                    <select class="form-control" id="state" name="en[state]" required>
 
                                                                     </select>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
-                                                                <label class="col-md-3 control-label">City</label>
+                                                                <label class="col-md-3 control-label">City
+                                                                    <span style="color: red">*</span>
+                                                                </label>
                                                                 <div class="col-md-4">
-                                                                    <select class="form-control " id="city" name="city">
+                                                                    <select class="form-control " id="city" name="en[city]" required>
 
                                                                     </select>
                                                                 </div>
@@ -142,13 +184,13 @@
                                                             <div class="form-group">
                                                                 <label class="col-md-3 control-label">Latitude</label>
                                                                 <div class="col-md-4">
-                                                                    <input type="text" id="latitude" name="latitude" class="form-control " placeholder="Enter latitude">
+                                                                    <input type="text" id="latitude" name="en[latitude]" class="form-control " placeholder="Enter latitude">
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label class="col-md-3 control-label">Longitude</label>
                                                                 <div class="col-md-4">
-                                                                    <input type="text" id="longitude" name="longitude" class="form-control " placeholder="Enter longitude">
+                                                                    <input type="text" id="longitude" name="en[longitude]" class="form-control " placeholder="Enter longitude">
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
@@ -263,6 +305,35 @@
             } else {
                 alert("Select Only images");
             }
+        });
+    </script>
+    <script>
+        $('form').submit(function(){
+            var address = $.trim($("#address_gj").val());
+            if(address == ''){
+                $('#address_gj').hide();
+                $("#address_gj").prop("disabled", true);
+                $('#address_gj').removeAttr('name');
+            }
+            var firstName = $('#first_name_gj').val();
+            if(firstName == ''){
+                $('#first_name_gj').hide();
+                $("#first_name_gj").prop("disabled", true);
+                $('#first_name_gj').removeAttr('name');
+            }
+            var middleName = $('#middle_name_gj').val();
+            if(middleName == ''){
+                $('#middle_name_gj').hide();
+                $("#middle_name_gj").prop("disabled", true);
+                $('#middle_name_gj').removeAttr('name');
+            }
+            var lastName = $('#last_name_gj').val();
+            if(lastName == ''){
+                $('#last_name_gj').hide();
+                $("#last_name_gj").prop("disabled", true);
+                $('#last_name_gj').removeAttr('name');
+            }
+
         });
     </script>
 @endsection
