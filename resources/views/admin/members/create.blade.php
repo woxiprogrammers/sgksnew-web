@@ -112,8 +112,8 @@
                                                             <div class="form-group">
                                                                 <label class="col-md-3 control-label">Gender</label>
                                                                 <div class="col-md-4" style="margin-top: 5px">
-                                                                    <input type="radio" value="male" name="en[gender]">Male
-                                                                    <input type="radio" value="female" name="en[gender]"> Female
+                                                                    <input type="radio" value="Male" name="en[gender]">Male
+                                                                    <input type="radio" value="Female" name="en[gender]"> Female
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
