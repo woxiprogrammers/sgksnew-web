@@ -13,8 +13,8 @@
     <style>
         .thumbimage {
             float:left;
-            width:100%;
-            height: 200px;
+            width: 150px;
+            height: 150px;
             position:relative;
             padding:5px;
             margin-left: 50%;
@@ -50,56 +50,64 @@
                                                 <div class="tab-content">
                                                     <div class="tab-pane fade in active" id="tab_general">
                                                         <fieldset>
-
-                                                            <div class="form-group">
-                                                                <label class="col-md-3 control-label">Full Name
-                                                                    <span style="color: red">*</span>
-                                                                </label>
-
-                                                                <div class="col-md-4">
-                                                                    <input type="text" id="full_name" value="{{$memberData['full_name']}}" name="full_name" class="form-control " placeholder="Enter Full Name" required>
+                                                            <div class="row">
+                                                                <div class="col-md-2" style="text-align: center">
+                                                                    <div class="col-md-12">
+                                                                        <img src="{{$memberImg}}">
+                                                                        <h4 style="font-weight: 400">{{$memberData['full_name']}}</h4>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
+                                                                <div class="col-md-10">
+                                                                    <div class="form-group">
+                                                                        <label class="col-md-3 control-label">Full Name
+                                                                            <span style="color: red">*</span>
+                                                                        </label>
 
-                                                            <div class="form-group">
-                                                                <label class="col-md-3 control-label">Designation
-                                                                    <span style="color: red">*</span>
-                                                                </label>
-                                                                <div class="col-md-4">
-                                                                    <input type="text" id="designation"  value="{{$memberData['designation']}}" name="designation" class="form-control " placeholder="Enter Designation" required></input>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label class="col-md-3 control-label">Mobile
-                                                                    <span style="color: red">*</span>
-                                                                </label>
-                                                                <div class="col-md-4">
-                                                                    <input type="text" id="mobile_number" name="mobile_number" value="{{$memberData['mobile_number']}}" class="form-control" maxlength="10" placeholder="Enter number" required>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label class="col-md-3 control-label">Email ID</label>
-                                                                <div class="col-md-4">
-                                                                    <input type="email" id="email_id" name="email_id" value="{{$memberData['email_id']}}" class="form-control " placeholder="Enter email">
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label class="control-label col-md-3">Select Images :</label>
-                                                                <input id="imageupload" type="file" class="btn blue"/>
-                                                                <br />
-                                                                <div class="row" >
-                                                                    <div id="preview-image" class="row">
+                                                                        <div class="col-md-9">
+                                                                            <input type="text" id="full_name" value="{{$memberData['full_name']}}" name="full_name" class="form-control " placeholder="Enter Full Name" required>
+                                                                        </div>
+                                                                    </div>
 
+                                                                    <div class="form-group">
+                                                                        <label class="col-md-3 control-label">Designation
+                                                                            <span style="color: red">*</span>
+                                                                        </label>
+                                                                        <div class="col-md-9">
+                                                                            <input type="text" id="designation"  value="{{$memberData['designation']}}" name="designation" class="form-control " placeholder="Enter Designation" required></input>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label class="col-md-3 control-label">Mobile
+                                                                            <span style="color: red">*</span>
+                                                                        </label>
+                                                                        <div class="col-md-9">
+                                                                            <input type="text" id="mobile_number" name="mobile_number" value="{{$memberData['mobile_number']}}" class="form-control" maxlength="10" placeholder="Enter number" required>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label class="col-md-3 control-label">Email ID</label>
+                                                                        <div class="col-md-9">
+                                                                            <input type="email" id="email_id" name="email_id" value="{{$memberData['email_id']}}" class="form-control " placeholder="Enter email">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-3">Select Images</label>
+                                                                        <div class="col-md-9">
+                                                                            <input id="imageupload" type="file" class="btn blue"/>
+                                                                            <div id="preview-image">
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-3"></label>
+                                                                        <div class="col-md-9" >
+                                                                            <button type="submit" class="btn btn-circle"><i class="fa fa-check"></i> Submit </button>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </fieldset>
-                                                        <fieldset>
-                                                            <div class="form-group">
-                                                                <div class="col-md-3 col-md-offset-7" >
-                                                                    <button type="submit" class="btn btn-circle"><i class="fa fa-check"></i> Submit </button>
-                                                                </div>
-                                                            </div>
+
                                                         </fieldset>
                                                     </div>
                                                 </div>

@@ -176,7 +176,16 @@ class CommitteeController extends Controller
         try{
             $countries = Countries::get();
             $committeeData  = Committees::where('id',$id)->first();
-            return view('admin.committee.edit')->with(compact('committeeData','countries'));
+            $cityId = $committeeData['city_id'];
+            $city = Cities::where('id',$cityId)->first();
+            $cityName = $city['name'];
+            $stateId = $city['state_id'];
+            $state = States::where('id',$stateId)->first();
+            $stateName = $state['name'];
+            $countryId = $state['country_id'];
+            $country = Countries::where('id',$countryId)->first();
+            $countryName = $country['name'];
+            return view('admin.committee.edit')->with(compact('committeeData','countries','countryName','stateName','cityName','cityId'));
         }catch(\Exception $exception){
             $data = [
                 'action' => 'Committee Edit View',
@@ -344,7 +353,9 @@ class CommitteeController extends Controller
     public function editMemberView(Request $request,$id){
         try{
             $memberData  = CommitteeMembers::where('id',$id)->first();
-            return view('admin.committee.members.edit')->with(compact('memberData'));
+            $createMemberDirectoryName = sha1($memberData->id);
+            $memberImg = env('COMMITTEE_MEMBER_IMAGES_UPLOAD').DIRECTORY_SEPARATOR.$createMemberDirectoryName.DIRECTORY_SEPARATOR.$memberData['profile_image'];
+            return view('admin.committee.members.edit')->with(compact('memberData','memberImg'));
         }catch(\Exception $exception){
             $data = [
                 'action' => 'Member Edit View',
@@ -363,13 +374,35 @@ class CommitteeController extends Controller
             $memberData['designation'] = $data['designation'];
             $memberData['mobile_number'] = $data['mobile_number'];
             $memberData['email_id'] = $data['email_id'];
-            $createMember = CommitteeMembers::where('id',$id)->update($memberData);
-            if ($createMember) {
+            $editCommitteeMember = CommitteeMembers::where('id',$id)->update($memberData);
+            $committeeMemberData = CommitteeMembers::where('id',$id)->first();
+            if ($editCommitteeMember) {
                 $request->session()->flash('success', 'Member Edited Successfully');
             } else {
                 $request->session()->flash('error', 'Something went wrong');
             }
+            if($request->has('profile_images')){
+                $createMemberDirectoryName = sha1($committeeMemberData['id']);
+                $imageUploadPath = public_path().env('COMMITTEE_MEMBER_IMAGES_UPLOAD').DIRECTORY_SEPARATOR.$createMemberDirectoryName;
+                if($editCommitteeMember['profile_image'] != null){
+                    unlink($imageUploadPath.DIRECTORY_SEPARATOR.$editCommitteeMember['profile_image']);
+                }
+                if (!file_exists($imageUploadPath)) {
+                    File::makeDirectory($imageUploadPath, $mode = 0777, true, true);
+                }
+                $imageArray = explode(';',$data['profile_images']);
+                $image = explode(',',$imageArray[1])[1];
+                $pos  = strpos($data['profile_images'], ';');
+                $type = explode(':', substr($data['profile_images'], 0, $pos))[1];
+                $extension = explode('/',$type)[1];
+                $filename = mt_rand(1,10000000000).sha1(time()).".{$extension}";
+                $fileFullPath = $imageUploadPath.DIRECTORY_SEPARATOR.$filename;
+                file_put_contents($fileFullPath,base64_decode($image));
+                $committeeMemberData->update([
+                    'profile_image' => $filename,
+                ]);
 
+            }
             $memberData = CommitteeMembers::where('id',$id)->select('committee_id')->get();
             $committeeId = $memberData[0]->committee_id;
             return redirect("/committee-members/manage/$committeeId");
@@ -383,6 +416,7 @@ class CommitteeController extends Controller
             abort(500);
         }
     }
+
 
     public function changeCommitteeStatus(Request $request,$id){
         try{
