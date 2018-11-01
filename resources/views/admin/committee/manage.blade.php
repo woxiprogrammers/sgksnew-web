@@ -58,7 +58,9 @@
                                                         <th style="width: 20%"> Name </th>
                                                         <th> Description </th>
                                                         <th> Total Members </th>
-                                                        <th> Status </th>
+                                                        <th> Status
+                                                            <input type="checkbox" checked>Active
+                                                        </th>
                                                         <th> Action </th>
                                                     </tr>
                                                     <tr class="filter">
