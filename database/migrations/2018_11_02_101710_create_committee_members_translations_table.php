@@ -13,7 +13,7 @@ class CreateCommitteeMembersTranslationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('committeeMembersTranslations', function (Blueprint $table) {
+        Schema::create('committee_members_translations', function (Blueprint $table) {
             $table->increments('id');
             $table->string('full_name')->nullable();
             $table->unsignedInteger('language_id')->nullable();
