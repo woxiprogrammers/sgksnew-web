@@ -50,14 +50,31 @@
                                                 <div class="tab-content">
                                                     <div class="tab-pane fade in active" id="tab_general">
                                                         <fieldset>
-
+                                                            <div class="form-group">
+                                                                <div class="row">
+                                                                    <div class="col-md-8 pull-left">
+                                                                        <h4 style="margin-left: 500px">
+                                                                            English
+                                                                        </h4>
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <h4>
+                                                                            Gujarati
+                                                                        </h4>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </fieldset>
+                                                        <fieldset>
                                                             <div class="form-group">
                                                                 <label class="col-md-3 control-label">Committee Name
                                                                     <span style="color: red">*</span>
                                                                 </label>
-
                                                                 <div class="col-md-4">
-                                                                    <input type="text" id="committee_name" name="committee_name" class="form-control " placeholder="Enter Committee Name" required>
+                                                                    <input type="text" id="committee_name" name="en[committee_name]" class="form-control " placeholder="Enter Committee Name" required>
+                                                                </div>
+                                                                <div class="col-md-4" >
+                                                                    <input type="text" id="committee_name_gj" name="gj[committee_name]" class="form-control " placeholder="Enter Committee Name in gujarati" required>
                                                                 </div>
                                                             </div>
 
@@ -66,13 +83,18 @@
                                                                     <span style="color: red">*</span>
                                                                 </label>
                                                                 <div class="col-md-4">
-                                                                    <textarea id="description" name="description" class="form-control " placeholder="Enter Committee description" required></textarea>
+                                                                    <textarea id="description" name="en[description]" class="form-control " placeholder="Enter Committee description" required></textarea>
+                                                                </div>
+                                                                <div class="col-md-4" >
+                                                                    <textarea id="description_gj" name="gj[description]" class="form-control " placeholder="Enter Committee description in gujarati" required></textarea>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
-                                                                <label class="col-md-3 control-label">Country</label>
+                                                                <label class="col-md-3 control-label">Country
+                                                                    <span style="color: red">*</span>
+                                                                </label>
                                                                 <div class="col-md-4">
-                                                                    <select class="form-control" id="country" name="country">
+                                                                    <select class="form-control" id="country" name="en[country]" required>
                                                                         <option value="">-</option>
                                                                         @foreach($countries as $country)
                                                                             <option value="{{$country['id']}}">{{$country['name']}}</option>
@@ -82,20 +104,24 @@
                                                             </div>
 
                                                             <div class="form-group">
-                                                                <label class="col-md-3 control-label">State</label>
-                                                                <div class="col-md-4">
-                                                                    <select class="form-control" id="state" name="state">
+                                                                <label class="col-md-3 control-label">State
+                                                                    <span style="color: red">*</span>
+                                                                </label>
+                                                                    <div class="col-md-4">
+                                                                    <select class="form-control" id="state" name="en[state]" required>
 
                                                                     </select>
-                                                                </div>
+                                                                    </div>
                                                             </div>
                                                             <div class="form-group">
-                                                                <label class="col-md-3 control-label">City</label>
-                                                                <div class="col-md-4">
-                                                                    <select class="form-control " id="city" name="city">
+                                                                <label class="col-md-3 control-label">City
+                                                                    <span style="color: red">*</span>
+                                                                </label>
+                                                                    <div class="col-md-4">
+                                                                    <select class="form-control " id="city" name="en[city]" required>
 
                                                                     </select>
-                                                                </div>
+                                                                    </div>
                                                             </div>
 
                                                         </fieldset>
@@ -135,7 +161,7 @@
     <script  src="/assets/global/plugins/datatables/datatables.min.js"></script>
     <script src="/assets/global/scripts/datatable.js" type="text/javascript"></script>
     <script src="/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js" type="text/javascript"></script>
-    <script src="/assets/custom/admin/members/create-members-validation.js" type="text/javascript"></script>
+    <script src="/assets/custom/admin/committees/create-committee-validation.js" type="text/javascript"></script>
 
     <script>
         $(document).ready(function () {
@@ -177,7 +203,23 @@
                 }
             });
         });
+    </script>
+    <script>
+        $('form').submit(function(){
+            var committee_name = $.trim($("#committee_name_gj").val());
+            if(committee_name == ''){
+                $('#committee_name_gj').hide();
+                $("#committee_name_gj").prop("disabled", true);
+                $('#committee_name_gj').removeAttr('name');
+            }
+            var description = $('#description_gj').val();
+            if(description == ''){
+                $('#description_gj').hide();
+                $("#description_gj").prop("disabled", true);
+                $('#description_gj').removeAttr('name');
+            }
 
+        });
     </script>
 @endsection
 

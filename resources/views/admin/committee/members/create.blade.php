@@ -51,12 +51,31 @@
                                                     <div class="tab-pane fade in active" id="tab_general">
                                                         <fieldset>
                                                             <div class="form-group">
+                                                                <div class="row">
+                                                                    <div class="col-md-8 pull-left">
+                                                                        <h4 style="margin-left: 500px">
+                                                                            English
+                                                                        </h4>
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <h4>
+                                                                            Gujarati
+                                                                        </h4>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </fieldset>
+                                                        <fieldset>
+                                                            <div class="form-group">
                                                                 <label class="col-md-3 control-label">Full Name
                                                                     <span style="color: red">*</span>
                                                                 </label>
 
                                                                 <div class="col-md-4">
-                                                                    <input type="text" id="full_name" name="full_name" class="form-control " placeholder="Enter Full Name" required>
+                                                                    <input type="text" id="full_name" name="en[full_name]" class="form-control " placeholder="Enter Full Name" required>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <input type="text" id="full_name" name="gj[full_name]" class="form-control " placeholder="Enter Full Name" required>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
@@ -65,7 +84,7 @@
                                                                 </label>
 
                                                                 <div class="col-md-4">
-                                                                    <input type="text" id="designation" name="designation" class="form-control " placeholder="Enter Designation" required>
+                                                                    <input type="text" id="designation" name="en[designation]" class="form-control " placeholder="Enter Designation" required>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
@@ -73,13 +92,13 @@
                                                                     <span style="color: red">*</span>
                                                                 </label>
                                                                 <div class="col-md-4">
-                                                                    <input type="text" id="mobile_number" name="mobile_number" class="form-control" maxlength="10" placeholder="Enter Mobile Number" required>
+                                                                    <input type="text" id="mobile_number" name="en[mobile_number]" class="form-control" maxlength="10" placeholder="Enter Mobile Number" required>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label class="col-md-3 control-label">Email ID</label>
                                                                 <div class="col-md-4">
-                                                                    <input type="email" id="email_id" name="email_id" class="form-control " placeholder="Enter email">
+                                                                    <input type="email" id="email_id" name="en[email_id]" class="form-control " placeholder="Enter email">
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">

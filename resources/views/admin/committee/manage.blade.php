@@ -56,16 +56,20 @@
                                                     <tr>
                                                         <th> Sr.No </th>
                                                         <th style="width: 20%"> Name </th>
+                                                        <th> Gujarati Name </th>
                                                         <th> Description </th>
+                                                        <th> Gujarati Description </th>
                                                         <th> Total Members </th>
                                                         <th> Status
-                                                            <input type="checkbox" checked>Active
+                                                            <i class="fa fa-check-square"> Enable</i>
                                                         </th>
                                                         <th> Action </th>
                                                     </tr>
                                                     <tr class="filter">
                                                         <th></th>
                                                         <th style="width: 20%"> <input type="text" class="form-control form-filter" name="search_committee"> </th>
+                                                        <th></th>
+                                                        <th></th>
                                                         <th></th>
                                                         <th></th>
                                                         <th></th>
@@ -111,6 +115,15 @@
         $(document).ready(function() {
            $('#committeeTable').DataTable();
         });
+        function statusFolder(status,id){
+            if(confirm("are you sure ?")){
+                var route='/committee/change-status/'+id;
+                $.get(route,function(){
+                        var route= "/committee/manage";
+                        window.location.replace(route);
+                });
+            }
+        }
     </script>
 @endsection
 
