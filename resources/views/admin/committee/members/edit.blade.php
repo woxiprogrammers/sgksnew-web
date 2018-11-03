@@ -50,10 +50,26 @@
                                                 <div class="tab-content">
                                                     <div class="tab-pane fade in active" id="tab_general">
                                                         <fieldset>
+                                                            <div class="form-group">
+                                                                <div class="row">
+                                                                    <div class="col-md-8 pull-left">
+                                                                        <h4 style="margin-left: 500px">
+                                                                            English
+                                                                        </h4>
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <h4>
+                                                                            Gujarati
+                                                                        </h4>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </fieldset>
+                                                        <fieldset>
                                                             <div class="row">
                                                                 <div class="col-md-2" style="text-align: center">
                                                                     <div class="col-md-12">
-                                                                        <img src="{{$memberImg}}">
+                                                                        <img src="{{$memberImg}}" style="height: 150px; width: 150px">
                                                                         <h4 style="font-weight: 400">{{$memberData['full_name']}}</h4>
                                                                     </div>
                                                                 </div>
@@ -63,8 +79,11 @@
                                                                             <span style="color: red">*</span>
                                                                         </label>
 
-                                                                        <div class="col-md-9">
-                                                                            <input type="text" id="full_name" value="{{$memberData['full_name']}}" name="full_name" class="form-control " placeholder="Enter Full Name" required>
+                                                                        <div class="col-md-4">
+                                                                            <input type="text" id="full_name" value="{{$memberData['full_name']}}" name="en[full_name]" class="form-control " placeholder="Enter Full Name" required>
+                                                                        </div>
+                                                                        <div class="col-md-4">
+                                                                            <input type="text" id="full_name" value="{{$memberDataGujarati['full_name']}}" name="gj[full_name]" class="form-control " placeholder="Enter Full Name" required>
                                                                         </div>
                                                                     </div>
 
@@ -72,22 +91,22 @@
                                                                         <label class="col-md-3 control-label">Designation
                                                                             <span style="color: red">*</span>
                                                                         </label>
-                                                                        <div class="col-md-9">
-                                                                            <input type="text" id="designation"  value="{{$memberData['designation']}}" name="designation" class="form-control " placeholder="Enter Designation" required></input>
+                                                                        <div class="col-md-4">
+                                                                            <input type="text" id="designation"  value="{{$memberData['designation']}}" name="en[designation]" class="form-control " placeholder="Enter Designation" required></input>
                                                                         </div>
                                                                     </div>
                                                                     <div class="form-group">
                                                                         <label class="col-md-3 control-label">Mobile
                                                                             <span style="color: red">*</span>
                                                                         </label>
-                                                                        <div class="col-md-9">
-                                                                            <input type="text" id="mobile_number" name="mobile_number" value="{{$memberData['mobile_number']}}" class="form-control" maxlength="10" placeholder="Enter number" required>
+                                                                        <div class="col-md-4">
+                                                                            <input type="text" id="mobile_number" name="en[mobile_number]" value="{{$memberData['mobile_number']}}" class="form-control" maxlength="10" placeholder="Enter number" required>
                                                                         </div>
                                                                     </div>
                                                                     <div class="form-group">
                                                                         <label class="col-md-3 control-label">Email ID</label>
-                                                                        <div class="col-md-9">
-                                                                            <input type="email" id="email_id" name="email_id" value="{{$memberData['email_id']}}" class="form-control " placeholder="Enter email">
+                                                                        <div class="col-md-4">
+                                                                            <input type="email" id="email_id" name="en[email_id]" value="{{$memberData['email_id']}}" class="form-control " placeholder="Enter email">
                                                                         </div>
                                                                     </div>
                                                                     <div class="form-group">

@@ -50,14 +50,31 @@
                                                 <div class="tab-content">
                                                     <div class="tab-pane fade in active" id="tab_general">
                                                         <fieldset>
-
+                                                            <div class="form-group">
+                                                                <div class="row">
+                                                                    <div class="col-md-8 pull-left">
+                                                                        <h4 style="margin-left: 500px">
+                                                                            English
+                                                                        </h4>
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <h4>
+                                                                            Gujarati
+                                                                        </h4>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </fieldset>
+                                                        <fieldset>
                                                             <div class="form-group">
                                                                 <label class="col-md-3 control-label">Committee Name
                                                                     <span style="color: red">*</span>
                                                                 </label>
-
                                                                 <div class="col-md-4">
-                                                                    <input type="text" id="committee_name" value="{{$committeeData['committee_name']}}" name="committee_name" class="form-control " placeholder="Enter Committee Name" required>
+                                                                    <input type="text" id="committee_name" value="{{$committeeData['committee_name']}}" name="en[committee_name]" class="form-control " placeholder="Enter Committee Name" required>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <input type="text" id="committee_name" value="{{$committeeDataGujarati['committee_name']}}" name="gj[committee_name]" class="form-control " placeholder="Enter Committee Name" required>
                                                                 </div>
                                                             </div>
 
@@ -66,13 +83,16 @@
                                                                     <span style="color: red">*</span>
                                                                 </label>
                                                                 <div class="col-md-4">
-                                                                    <textarea id="description"  name="description" class="form-control " placeholder="Enter Committee description" required>{{$committeeData['description']}}</textarea>
+                                                                    <textarea id="description"  name="en[description]" class="form-control " placeholder="Enter Committee description" required>{{$committeeData['description']}}</textarea>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <textarea id="description"  name="gj[description]" class="form-control " placeholder="Enter Committee description" required>{{$committeeDataGujarati['description']}}</textarea>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label class="col-md-3 control-label">Country</label>
                                                                 <div class="col-md-4">
-                                                                    <select class="form-control" id="country" name="country">
+                                                                    <select class="form-control" id="country" name="en[country]">
                                                                         <option>{{$countryName}}</option>
                                                                         @foreach($countries as $country)
                                                                             <option value="{{$country['id']}}">{{$country['name']}}</option>
@@ -84,7 +104,7 @@
                                                             <div class="form-group">
                                                                 <label class="col-md-3 control-label">State</label>
                                                                 <div class="col-md-4">
-                                                                    <select class="form-control" id="state" name="state">
+                                                                    <select class="form-control" id="state" name="en[state]">
                                                                         <option>{{$stateName}}</option>
                                                                     </select>
                                                                 </div>
@@ -92,7 +112,7 @@
                                                             <div class="form-group">
                                                                 <label class="col-md-3 control-label">City</label>
                                                                 <div class="col-md-4">
-                                                                    <select class="form-control " id="city" name="city">
+                                                                    <select class="form-control " id="city" name="en[city]">
                                                                         <option value="{{$cityId}}">{{$cityName}}</option>
                                                                     </select>
                                                                 </div>

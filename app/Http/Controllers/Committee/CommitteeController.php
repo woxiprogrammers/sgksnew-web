@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Committee;
 
 use App\CommitteeMembers;
 use App\Committees;
+use App\Languages;
+use App\CommitteeMembersTranslations;
+use App\CommitteesTranslations;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Log;
@@ -49,14 +52,24 @@ class CommitteeController extends Controller
     public function createCommittee(Request $request){
         try{
             $data = $request->all();
-            $committeeData['committee_name'] = $data['committee_name'];
-            $committeeData['description'] = $data['description'];
-            $committeeData['city_id'] = $data['city'];
+            $committeeData['committee_name'] = $data['en']['committee_name'];
+            $committeeData['description'] = $data['en']['description'];
+            $committeeData['city_id'] = $data['en']['city'];
             $createCommittee = Committees::create($committeeData);
             if($createCommittee){
                 $request->session()->flash('success','Committee Created Successfully');
             }else{
                 $request->session()->flash('error','Something went wrong');
+            }
+            if(array_key_exists('gj',$data)){
+                if(array_key_exists('committee_name',$data['gj'])){
+                    $gujaratiCommitteeData['committee_name'] = $data['gj']['committee_name'];
+                }if (array_key_exists('description',$data['gj'])){
+                    $gujaratiCommitteeData['description'] = $data['gj']['description'];
+                }
+                $gujaratiCommitteeData['language_id'] = Languages::where('abbreviation','=','gj')->pluck('id')->first();
+                $gujaratiCommitteeData['committee_id'] = $createCommittee->id;
+                CommitteesTranslations::create($gujaratiCommitteeData);
             }
             return redirect('/committee/manage');
         }catch(\Exception $exception){
@@ -131,16 +144,11 @@ class CommitteeController extends Controller
                     $isActiveStatus = $finalCommitteesData[$pagination]->is_active;
                     $srNo = $finalCommitteesData[$pagination]->id;
                     $totalMembers = CommitteeMembers::where('committee_id',$srNo)->count();
-                    if($isActiveStatus) {
-                        $isActive = '<div class="checkbox">
-                                       <input type="checkbox" checked>
-                                       <a href="/committee/change-status/' . $finalCommitteesData[$pagination]['id'] . '" style="color: red">Change
-                                 </div>';
+                    $gujaratiDetails = CommitteesTranslations::where('committee_id',$finalCommitteesData[$pagination]->id)->first();
+                    if($isActiveStatus){
+                        $isActive = "<input type='checkbox' class='js-switch' onchange='return statusFolder(this.checked,$srNo)' id='status$srNo' value='$srNo' checked/>";
                     }else{
-                        $isActive = '<div class="checkbox">
-                                       <input type="checkbox" value="">
-                                       <a href="/committee/change-status/' . $finalCommitteesData[$pagination]['id'] . '" style="color: red">Change
-                                 </div>';
+                        $isActive = "<input type='checkbox' class='js-switch' onchange='return statusFolder(this.checked,$srNo)' id='status$srNo' value='$srNo'/>";
                     }
                     $actionButton = '<div id="sample_editable_1_new" class="btn btn-small blue">
                         <a href="/committee/edit/' . $finalCommitteesData[$pagination]['id'] . '" style="color: white">Edit
@@ -151,7 +159,9 @@ class CommitteeController extends Controller
                     $records['data'][$iterator] = [
                         $srNo,
                         $committeeName,
+                        $gujaratiDetails['committee_name'],
                         $description,
+                        $gujaratiDetails['description'],
                         $totalMembers,
                         $isActive,
                         $actionButton
@@ -176,6 +186,7 @@ class CommitteeController extends Controller
         try{
             $countries = Countries::get();
             $committeeData  = Committees::where('id',$id)->first();
+
             $cityId = $committeeData['city_id'];
             $city = Cities::where('id',$cityId)->first();
             $cityName = $city['name'];
@@ -185,7 +196,10 @@ class CommitteeController extends Controller
             $countryId = $state['country_id'];
             $country = Countries::where('id',$countryId)->first();
             $countryName = $country['name'];
-            return view('admin.committee.edit')->with(compact('committeeData','countries','countryName','stateName','cityName','cityId'));
+
+            $committeeDataGujarati = CommitteesTranslations::where('committee_id',$id)->first();
+
+            return view('admin.committee.edit')->with(compact('committeeData','countries','countryName','stateName','cityName','cityId','committeeDataGujarati'));
         }catch(\Exception $exception){
             $data = [
                 'action' => 'Committee Edit View',
@@ -200,10 +214,22 @@ class CommitteeController extends Controller
     public function editCommittee(Request $request,$id){
         try{
             $data = $request->all();
-            $committeeData['committee_name'] = $data['committee_name'];
-            $committeeData['description'] = $data['description'];
-            $committeeData['city_id'] = $data['city'];
+            $committeeData['committee_name'] = $data['en']['committee_name'];
+            $committeeData['description'] = $data['en']['description'];
+            $committeeData['city_id'] = $data['en']['city'];
             $createCommittee = Committees::where('id',$id)->update($committeeData);
+
+            if(array_key_exists('gj',$data)){
+                if(array_key_exists('full_name',$data['gj'])){
+                    $committeeDataGujarati['committee_name'] = $data['gj']['committee_name'];
+                }if (array_key_exists('description',$data['gj'])){
+                    $committeeDataGujarati['description'] = $data['gj']['description'];
+                }
+                $committeeDataGujarati['language_id'] = Languages::where('abbreviation','=','gj')->pluck('id')->first();
+                $committeeDataGujarati['committee_id'] = $id;
+                CommitteesTranslations::where('committee_id',$id)->update($committeeDataGujarati);
+            }
+
             if ($createCommittee) {
                     $request->session()->flash('success', 'Committee Created Successfully');
             } else {
@@ -253,17 +279,27 @@ class CommitteeController extends Controller
     public function createMember(Request $request,$id){
         try{
             $data = $request->all();
-            $membersData['committee_id'] = $id;
-            $membersData['full_name'] = $data['full_name'];
-            $membersData['designation'] = $data['designation'];
-            $membersData['mobile_number'] = $data['mobile_number'];
-            $membersData['email_id'] = $data['email_id'];
-            $createMember = CommitteeMembers::create($membersData);
+            $committeeMemberData['committee_id'] = $id;
+            $committeeMemberData['full_name'] = $data['en']['full_name'];
+            $committeeMemberData['designation'] = $data['en']['designation'];
+            $committeeMemberData['mobile_number'] = $data['en']['mobile_number'];
+            $committeeMemberData['email_id'] = $data['en']['email_id'];
+            $createMember = CommitteeMembers::create($committeeMemberData);
+            if(array_key_exists('gj',$data)){
+                if(array_key_exists('full_name',$data['gj'])){
+                    $gujaratiMemberData['full_name'] = $data['gj']['full_name'];
+                }if (array_key_exists('designation',$data['gj'])){
+                    $gujaratiMemberData['designation'] = $data['gj']['designation'];
+                }
+                $gujaratiMemberData['language_id'] = Languages::where('abbreviation','=','gj')->pluck('id')->first();
+                $gujaratiMemberData['member_id'] = $createMember->id;
+                CommitteeMembersTranslations::create($gujaratiMemberData);
+            }
             if($request->has('profile_images')){
                 $createMemberDirectoryName = sha1($createMember->id);
-                $imageUploadPath = public_path().env('COMMITTEE_MEMBER_IMAGES_UPLOAD').DIRECTORY_SEPARATOR.$createMemberDirectoryName;
-                if (!file_exists($imageUploadPath)) {
-                    File::makeDirectory($imageUploadPath, $mode = 0777, true, true);
+                $committeeMembersImages = public_path().env('COMMITTEE_MEMBER_IMAGES_UPLOAD').DIRECTORY_SEPARATOR.$createMemberDirectoryName;
+                if (!file_exists($committeeMembersImages)) {
+                    File::makeDirectory($committeeMembersImages, $mode = 0777, true, true);
                 }
                 $imageArray = explode(';',$data['profile_images']);
                 $image = explode(',',$imageArray[1])[1];
@@ -271,7 +307,7 @@ class CommitteeController extends Controller
                 $type = explode(':', substr($data['profile_images'], 0, $pos))[1];
                 $extension = explode('/',$type)[1];
                 $filename = mt_rand(1,10000000000).sha1(time()).".{$extension}";
-                $fileFullPath = $imageUploadPath.DIRECTORY_SEPARATOR.$filename;
+                $fileFullPath = $committeeMembersImages.DIRECTORY_SEPARATOR.$filename;
                 file_put_contents($fileFullPath,base64_decode($image));
                 $createMember->update([
                     'profile_image' => $filename,
@@ -324,12 +360,14 @@ class CommitteeController extends Controller
                     $mobileNumber = $finalMembersData[$pagination]->mobile_number;
                     $emailId = $finalMembersData[$pagination]->email_id;
                     $srNo = $finalMembersData[$pagination]->id;
+                    $gujaratiDetails = CommitteeMembersTranslations::where('member_id',$finalMembersData[$pagination]->id)->first();
                     $actionButton = '<div id="sample_editable_1_new" class="btn btn-small blue" >
                         <a href="/committee-members/edit/' . $finalMembersData[$pagination]['id'] . '" style="color: white"> Edit
                     </div>';
                     $records['data'][$iterator] = [
                         $srNo,
                         $memberName,
+                        $gujaratiDetails['full_name'],
                         $mobileNumber,
                         $emailId,
                         $actionButton
@@ -353,9 +391,10 @@ class CommitteeController extends Controller
     public function editMemberView(Request $request,$id){
         try{
             $memberData  = CommitteeMembers::where('id',$id)->first();
+            $memberDataGujarati = CommitteeMembersTranslations::where('member_id',$id)->first();
             $createMemberDirectoryName = sha1($memberData->id);
             $memberImg = env('COMMITTEE_MEMBER_IMAGES_UPLOAD').DIRECTORY_SEPARATOR.$createMemberDirectoryName.DIRECTORY_SEPARATOR.$memberData['profile_image'];
-            return view('admin.committee.members.edit')->with(compact('memberData','memberImg'));
+            return view('admin.committee.members.edit')->with(compact('memberData','memberImg','memberDataGujarati'));
         }catch(\Exception $exception){
             $data = [
                 'action' => 'Member Edit View',
@@ -370,25 +409,39 @@ class CommitteeController extends Controller
     public function editMember(Request $request,$id){
         try{
             $data = $request->all();
-            $memberData['full_name'] = $data['full_name'];
-            $memberData['designation'] = $data['designation'];
-            $memberData['mobile_number'] = $data['mobile_number'];
-            $memberData['email_id'] = $data['email_id'];
+            $memberData['full_name'] = $data['en']['full_name'];
+            $memberData['designation'] = $data['en']['designation'];
+            $memberData['mobile_number'] = $data['en']['mobile_number'];
+            $memberData['email_id'] = $data['en']['email_id'];
             $editCommitteeMember = CommitteeMembers::where('id',$id)->update($memberData);
+
             $committeeMemberData = CommitteeMembers::where('id',$id)->first();
+
+            if(array_key_exists('gj',$data)){
+                if(array_key_exists('full_name',$data['gj'])){
+                    $gujaratiMemberData['full_name'] = $data['gj']['full_name'];
+                }if (array_key_exists('designation',$data['gj'])){
+                    $gujaratiMemberData['designation'] = $data['gj']['designation'];
+                }
+                $gujaratiMemberData['language_id'] = Languages::where('abbreviation','=','gj')->pluck('id')->first();
+                $gujaratiMemberData['member_id'] = $id;
+                CommitteeMembersTranslations::where('member_id',$id)->update($gujaratiMemberData);
+            }
+
             if ($editCommitteeMember) {
                 $request->session()->flash('success', 'Member Edited Successfully');
             } else {
                 $request->session()->flash('error', 'Something went wrong');
             }
+
             if($request->has('profile_images')){
                 $createMemberDirectoryName = sha1($committeeMemberData['id']);
-                $imageUploadPath = public_path().env('COMMITTEE_MEMBER_IMAGES_UPLOAD').DIRECTORY_SEPARATOR.$createMemberDirectoryName;
+                $committeeMembersImages = public_path().env('COMMITTEE_MEMBER_IMAGES_UPLOAD').DIRECTORY_SEPARATOR.$createMemberDirectoryName;
                 if($editCommitteeMember['profile_image'] != null){
-                    unlink($imageUploadPath.DIRECTORY_SEPARATOR.$editCommitteeMember['profile_image']);
+                    unlink($committeeMembersImages.DIRECTORY_SEPARATOR.$editCommitteeMember['profile_image']);
                 }
-                if (!file_exists($imageUploadPath)) {
-                    File::makeDirectory($imageUploadPath, $mode = 0777, true, true);
+                if (!file_exists($committeeMembersImages)) {
+                    File::makeDirectory($committeeMembersImages, $mode = 0777, true, true);
                 }
                 $imageArray = explode(';',$data['profile_images']);
                 $image = explode(',',$imageArray[1])[1];
@@ -396,7 +449,7 @@ class CommitteeController extends Controller
                 $type = explode(':', substr($data['profile_images'], 0, $pos))[1];
                 $extension = explode('/',$type)[1];
                 $filename = mt_rand(1,10000000000).sha1(time()).".{$extension}";
-                $fileFullPath = $imageUploadPath.DIRECTORY_SEPARATOR.$filename;
+                $fileFullPath = $committeeMembersImages.DIRECTORY_SEPARATOR.$filename;
                 file_put_contents($fileFullPath,base64_decode($image));
                 $committeeMemberData->update([
                     'profile_image' => $filename,
