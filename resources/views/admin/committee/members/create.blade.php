@@ -75,7 +75,7 @@
                                                                     <input type="text" id="full_name" name="en[full_name]" class="form-control " placeholder="Enter Full Name" required>
                                                                 </div>
                                                                 <div class="col-md-4">
-                                                                    <input type="text" id="full_name" name="gj[full_name]" class="form-control " placeholder="Enter Full Name" required>
+                                                                    <input type="text" id="full_name" name="gj[full_name]" class="form-control " placeholder="Enter Full Name">
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">

@@ -74,7 +74,7 @@
                                                                     <input type="text" id="committee_name" value="{{$committeeData['committee_name']}}" name="en[committee_name]" class="form-control " placeholder="Enter Committee Name" required>
                                                                 </div>
                                                                 <div class="col-md-4">
-                                                                    <input type="text" id="committee_name" value="{{$committeeDataGujarati['committee_name']}}" name="gj[committee_name]" class="form-control " placeholder="Enter Committee Name" required>
+                                                                    <input type="text" id="committee_name" value="{{$committeeDataGujarati['committee_name']}}" name="gj[committee_name]" class="form-control " placeholder="Enter Committee Name">
                                                                 </div>
                                                             </div>
 
@@ -86,7 +86,7 @@
                                                                     <textarea id="description"  name="en[description]" class="form-control " placeholder="Enter Committee description" required>{{$committeeData['description']}}</textarea>
                                                                 </div>
                                                                 <div class="col-md-4">
-                                                                    <textarea id="description"  name="gj[description]" class="form-control " placeholder="Enter Committee description" required>{{$committeeDataGujarati['description']}}</textarea>
+                                                                    <textarea id="description"  name="gj[description]" class="form-control " placeholder="Enter Committee description">{{$committeeDataGujarati['description']}}</textarea>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
