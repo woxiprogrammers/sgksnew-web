@@ -83,7 +83,7 @@
                                                                             <input type="text" id="full_name" value="{{$memberData['full_name']}}" name="en[full_name]" class="form-control " placeholder="Enter Full Name" required>
                                                                         </div>
                                                                         <div class="col-md-4">
-                                                                            <input type="text" id="full_name" value="{{$memberDataGujarati['full_name']}}" name="gj[full_name]" class="form-control " placeholder="Enter Full Name" required>
+                                                                            <input type="text" id="full_name" value="{{$memberDataGujarati['full_name']}}" name="gj[full_name]" class="form-control " placeholder="Enter Full Name">
                                                                         </div>
                                                                     </div>
 
@@ -100,7 +100,7 @@
                                                                             <span style="color: red">*</span>
                                                                         </label>
                                                                         <div class="col-md-4">
-                                                                            <input type="text" id="mobile_number" name="en[mobile_number]" value="{{$memberData['mobile_number']}}" class="form-control" maxlength="10" placeholder="Enter number" required>
+                                                                            <input type="text" id="mobile_number" name="en[mobile_number]" value="{{$memberData['mobile_number']}}" class="form-control" maxlength="10" placeholder="Enter number">
                                                                         </div>
                                                                     </div>
                                                                     <div class="form-group">

@@ -218,16 +218,22 @@ class CommitteeController extends Controller
             $committeeData['description'] = $data['en']['description'];
             $committeeData['city_id'] = $data['en']['city'];
             $createCommittee = Committees::where('id',$id)->update($committeeData);
+            $committeeId = CommitteesTranslations::where('committee_id',$id)->first();
 
             if(array_key_exists('gj',$data)){
-                if(array_key_exists('full_name',$data['gj'])){
+                if(array_key_exists('committee_name',$data['gj'])){
                     $committeeDataGujarati['committee_name'] = $data['gj']['committee_name'];
                 }if (array_key_exists('description',$data['gj'])){
                     $committeeDataGujarati['description'] = $data['gj']['description'];
                 }
                 $committeeDataGujarati['language_id'] = Languages::where('abbreviation','=','gj')->pluck('id')->first();
                 $committeeDataGujarati['committee_id'] = $id;
-                CommitteesTranslations::where('committee_id',$id)->update($committeeDataGujarati);
+                if($committeeId['committee_id']==$id) {
+                    CommitteesTranslations::where('committee_id', $id)->update($committeeDataGujarati);
+                }else{
+                    CommitteesTranslations::create($committeeDataGujarati);
+                }
+
             }
 
             if ($createCommittee) {

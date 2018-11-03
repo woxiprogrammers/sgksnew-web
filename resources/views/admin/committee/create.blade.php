@@ -74,7 +74,7 @@
                                                                     <input type="text" id="committee_name" name="en[committee_name]" class="form-control " placeholder="Enter Committee Name" required>
                                                                 </div>
                                                                 <div class="col-md-4" >
-                                                                    <input type="text" id="committee_name_gj" name="gj[committee_name]" class="form-control " placeholder="Enter Committee Name in gujarati" required>
+                                                                    <input type="text" id="committee_name_gj" name="gj[committee_name]" class="form-control " placeholder="Enter Committee Name in gujarati">
                                                                 </div>
                                                             </div>
 
@@ -86,7 +86,7 @@
                                                                     <textarea id="description" name="en[description]" class="form-control " placeholder="Enter Committee description" required></textarea>
                                                                 </div>
                                                                 <div class="col-md-4" >
-                                                                    <textarea id="description_gj" name="gj[description]" class="form-control " placeholder="Enter Committee description in gujarati" required></textarea>
+                                                                    <textarea id="description_gj" name="gj[description]" class="form-control " placeholder="Enter Committee description in gujarati"></textarea>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
