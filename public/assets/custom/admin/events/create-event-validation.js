@@ -1,9 +1,12 @@
 /**
+ * Created by vaibhav on 5/11/18.
+ */
+/**
  * Created by vaibhav on 2/11/18.
  */
-var  CreateCommittees = function () {
+var  CreateEvents = function () {
     var handleCreate = function() {
-        var form = $('#create-committee');
+        var form = $('#create-events');
         var error = $('.alert-danger', form);
         var success = $('.alert-success', form);
         form.validate({
@@ -11,7 +14,7 @@ var  CreateCommittees = function () {
             errorClass: 'help-block', // default input error message class
             focusInvalid: false, // do not focus the last invalid input
             rules: {
-                "en[committee_name]": {
+                "en[event_name]": {
                     required: true
                 },
                 "en[description]": {
@@ -25,11 +28,14 @@ var  CreateCommittees = function () {
                 },
                 "en[city]":{
                     required : true
+                },
+                "en[venue]":{
+                    required : true
                 }
             },
             messages: {
-                "en[committee_name]": {
-                    required: "Committee name is required."
+                "en[event_name]": {
+                    required: "Event name is required."
                 },
                 "en[description]": {
                     required: "Description is required."
@@ -42,6 +48,9 @@ var  CreateCommittees = function () {
                 },
                 "en[city]":{
                     required : "please select the city"
+                },
+                "en[venue]":{
+                    required : "Event venue is required"
                 }
             },
             invalidHandler: function (event, validator) { //display error alert on form submit

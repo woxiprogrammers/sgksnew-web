@@ -49,3 +49,15 @@ Route::group(['prefix' => 'committee-members'], function() {
     Route::get('/edit/{id}',array('uses' => 'Committee\CommitteeController@editMemberView'));
     Route::post('/edit/{id}',array('uses' => 'Committee\CommitteeController@editMember'));
 });
+
+Route::group(['prefix' => 'event'], function (){
+    Route::get('/manage', array('uses' => 'Event\EventController@manageEvents'));
+    Route::get('/create', array('uses' => 'Event\EventController@createView'));
+    Route::post('/create', array('uses' => 'Event\EventController@create'));
+    Route::post('/listing', array('uses' => 'Event\EventController@listing'));
+    Route::get('/edit/{id}', array('uses' => 'Event\EventController@editView'));
+    Route::post('/edit/{id}', array('uses' => 'Event\EventController@edit'));
+    Route::get('/get-all-states/{id}', array('uses' => 'Event\EventController@getAllStates'));
+    Route::get('/get-all-cities/{id}', array('uses' => 'Event\EventController@getAllCities'));
+    Route::get('/change-status/{id}',array('uses' => 'Event\EventController@changeStatus'));
+});
