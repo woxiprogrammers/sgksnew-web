@@ -253,7 +253,6 @@ class MemberController extends Controller
     }
     public function edit(Request $request,$member){
         try{
-            dd($member);
             $data = $request->all();
             $membersData['first_name'] = $data['en']['first_name'];
             $membersData['middle_name'] = $data['en']['middle_name'];
