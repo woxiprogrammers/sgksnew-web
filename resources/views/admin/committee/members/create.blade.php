@@ -167,7 +167,7 @@
                     for (var i = 0; i < countFiles; i++) {
                         var reader = new FileReader()
                         reader.onload = function (e) {
-                            var imagePreview = '<div class="col-md-2"><input type="hidden" name="profile_images" value="'+e.target.result+'"><img src="'+e.target.result+'" class="thumbimage" /></div>';
+                            var imagePreview = '<div class="col-md-2"><input type="hidden" name="event_images" value="'+e.target.result+'"><img src="'+e.target.result+'" class="thumbimage" /></div>';
                             image_holder.append(imagePreview);
                         };
                         image_holder.show();

@@ -146,11 +146,10 @@
                                                             </div>
                                                             <div class="form-group">
                                                                 <label class="control-label col-md-3">Select Images :</label>
-                                                                <input id="imageupload" type="file" class="btn blue"/>
+                                                                <input id="imageupload" name="imageupload[]" type="file" class="btn blue" multiple/>
                                                                 <br />
                                                                 <div class="row" >
                                                                     <div id="preview-image" class="row">
-
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -242,9 +241,9 @@
             if (extn == "gif" || extn == "png" || extn == "jpg" || extn == "jpeg") {
                 if (typeof (FileReader) != "undefined") {
                     for (var i = 0; i < countFiles; i++) {
-                        var reader = new FileReader()
+                        var reader = new FileReader();
                         reader.onload = function (e) {
-                            var imagePreview = '<div class="col-md-2"><input type="hidden" name="profile_images" value="'+e.target.result+'"><img src="'+e.target.result+'" class="thumbimage" /></div>';
+                            var imagePreview = '<div class="col-md-2"><input type="hidden" name="event_images[]" value="'+e.target.result+'"><img src="'+e.target.result+'" class="thumbimage" />' + '</div>';
                             image_holder.append(imagePreview);
                         };
                         image_holder.show();

@@ -17,6 +17,8 @@ use App\Events;
 use App\EventImages;
 use App\EventsTranslations;
 use App\Languages;
+use Illuminate\Support\Facades\File;
+
 
 class EventController extends Controller
 {
@@ -77,6 +79,29 @@ class EventController extends Controller
                 $gujaratiEventData['event_id'] = $createEvent->id;
                 EventsTranslations::create($gujaratiEventData);
             }
+            if($request->has('event_images')){
+                $createEventDirectoryName = sha1($createEvent->id);
+                $eventImages = public_path().env('EVENT_IMAGES_UPLOAD').DIRECTORY_SEPARATOR.$createEventDirectoryName;
+                if (!file_exists($eventImages)) {
+                    File::makeDirectory($eventImages, $mode = 0777, true, true);
+                }
+                $images = $request->event_images;
+                foreach ($images as $eventImage) {
+                    $imageArray = explode(';', $eventImage);
+                    $image = explode(',', $imageArray[1])[1];
+                    $pos = strpos($eventImage, ';');
+                    $type = explode(':', substr($eventImage, 0, $pos))[1];
+                    $extension = explode('/', $type)[1];
+                    $filename = mt_rand(1, 10000000000) . sha1(time()) . ".{$extension}";
+                    $fileFullPath = $eventImages . DIRECTORY_SEPARATOR . $filename;
+                    file_put_contents($fileFullPath, base64_decode($image));
+                    $imagesData['event_id'] = $createEvent->id;
+                    $imagesData['url'] = $filename;
+                    EventImages::create($imagesData);
+                }
+
+            }
+
             return redirect('/event/manage');
         }catch(\Exception $exception){
             $data = [
@@ -138,6 +163,7 @@ class EventController extends Controller
                         $description,
                         $gujaratiDetails['description'],
                         $venue,
+                        $gujaratiDetails['venue'],
                         $startDate,
                         $endDate,
                         $isActive,
@@ -175,11 +201,88 @@ class EventController extends Controller
             $country = Countries::where('id',$countryId)->first();
             $countryName = $country['name'];
 
-            return view('admin.events.edit')->with(compact('countries','eventData','eventDataGujarati','cityName','stateName','countryName','cityId'));
+            $createEventDirectoryName = sha1($eventData->id);
+            $images = EventImages::where('event_id',$id)->select('id','url')->get();
+            if (count($images)>0) {
+                $indexForImage = 0;
+                $indexForId = 0;
+                foreach ($images as $image) {
+                    $eventImages[$indexForImage++] = env('EVENT_IMAGES_UPLOAD') . DIRECTORY_SEPARATOR . $createEventDirectoryName . DIRECTORY_SEPARATOR . $image['url'];
+                    $eventImagesId[$indexForId++] = $image['id'];
+                }
+            }else{
+                $eventImages[] = null;
+                $eventImagesId[] = null;
+            }
+            return view('admin.events.edit')->with(compact('countries','eventData','eventDataGujarati','cityName','stateName','countryName','cityId','eventImages','eventImagesId','eventImagesId'));
         }catch(\Exception $exception){
             $data = [
                 'params' => $request->all(),
                 'action' => 'Create members View',
+                'exception' => $exception->getMessage()
+            ];
+            Log::critical(json_encode($data));
+            abort(500);
+        }
+    }
+
+    public function edit(Request $request,$id){
+        try{
+            $data = $request->all();
+            $eventData['event_name'] = $data['en']['event_name'];
+            $eventData['description'] = $data['en']['description'];
+            $eventData['venue'] = $data['en']['venue'];
+            $eventData['start_date'] = $data['en']['start_date'];
+            $eventData['end_date'] = $data['en']['end_date'];
+            $eventData['city_id'] = $data['en']['city'];
+            $editEvent = Events::where('id',$id)->update($eventData);
+            if ($editEvent) {
+                $request->session()->flash('success', 'Member Edited Successfully');
+            } else {
+                $request->session()->flash('error', 'Something went wrong');
+            }
+
+            if(array_key_exists('gj',$data)){
+                if(array_key_exists('event_name',$data['gj'])){
+                    $gujaratiEventData['event_name'] = $data['gj']['event_name'];
+                }if (array_key_exists('description',$data['gj'])){
+                    $gujaratiEventData['description'] = $data['gj']['description'];
+                }if (array_key_exists('venue',$data['gj'])){
+                    $gujaratiEventData['venue'] = $data['gj']['venue'];
+                }
+                $gujaratiEventData['language_id'] = Languages::where('abbreviation','=','gj')->pluck('id')->first();
+                $gujaratiEventData['event_id'] = $id;
+                EventsTranslations::where('event_id',$id)->update($gujaratiEventData);
+            }
+
+            if($request->has('event_images')){
+                $createEventDirectoryName = sha1($id);
+                $eventImages = public_path().env('EVENT_IMAGES_UPLOAD').DIRECTORY_SEPARATOR.$createEventDirectoryName;
+                if (!file_exists($eventImages)) {
+                    File::makeDirectory($eventImages, $mode = 0777, true, true);
+                }
+                $images = $request->event_images;
+                foreach ($images as $eventImage) {
+                    $imageArray = explode(';', $eventImage);
+                    $image = explode(',', $imageArray[1])[1];
+                    $pos = strpos($eventImage, ';');
+                    $type = explode(':', substr($eventImage, 0, $pos))[1];
+                    $extension = explode('/', $type)[1];
+                    $filename = mt_rand(1, 10000000000) . sha1(time()) . ".{$extension}";
+                    $fileFullPath = $eventImages . DIRECTORY_SEPARATOR . $filename;
+                    file_put_contents($fileFullPath, base64_decode($image));
+                    $imagesData['event_id'] = $id;
+                    $imagesData['url'] = $filename;
+                    EventImages::create($imagesData);
+                }
+
+            }
+
+            return redirect("/event/manage");
+        }catch(\Exception $exception){
+            $data = [
+                'action' => 'Edit Event',
+                'params' => $request->all(),
                 'exception' => $exception->getMessage()
             ];
             Log::critical(json_encode($data));
@@ -201,6 +304,7 @@ class EventController extends Controller
             abort(500);
         }
     }
+
 
     public function getAllCities(Request $request,$id){
         try{
@@ -242,6 +346,32 @@ class EventController extends Controller
         }catch(\Exception $exception){
             $data = [
                 'action' => 'Event Change Status',
+                'params' => $request->all(),
+                'exception' => $exception->getMessage()
+            ];
+            Log::critical(json_encode($data));
+            abort(500);
+        }
+    }
+
+    public function deleteEventImage(Request $request,$id){
+        try{
+            $folderId = EventImages::where('id', $id)->select('event_id','url')->first();
+            $ds = DIRECTORY_SEPARATOR;
+            $eventId = $folderId['event_id'];
+            $folderEncName = sha1($eventId);
+            $webUploadPath = env('EVENT_IMAGES_UPLOAD');
+            $file_to_be_deleted = public_path().$ds . $webUploadPath . $ds . $folderEncName . $ds . $folderId['url'];
+            if (!file_exists($file_to_be_deleted)) {
+                return redirect("/event/edit/$eventId");
+            } else {
+                unlink($file_to_be_deleted);
+                EventImages::where('id',$id)->delete();
+                return redirect("/event/edit/$eventId");
+            }
+        }catch(\Exception $exception){
+            $data = [
+                'action' => 'delete image',
                 'params' => $request->all(),
                 'exception' => $exception->getMessage()
             ];

@@ -45,8 +45,8 @@
                                     <!-- BEGIN VALIDATION STATES-->
                                     <div class="portlet light ">
                                         <div class="portlet-body form">
-                                            <form role="form" id="edit-events" class="form-horizontal" action="/event/create/" method="post">
-
+                                            <form role="form" id="edit-events" class="form-horizontal" action="/event/edit/{{$eventData['id']}}" method="post">
+                                                {!! csrf_field() !!}
                                                 <div class="tab-content">
                                                     <div class="tab-pane fade in active" id="tab_general">
                                                         <fieldset>
@@ -146,12 +146,17 @@
                                                             </div>
                                                             <div class="form-group">
                                                                 <label class="control-label col-md-3">Select Images :</label>
-                                                                <input id="imageupload" type="file" class="btn blue"/>
+                                                                <input id="imageupload" name="imageupload[]" type="file" class="btn blue" multiple/>
                                                                 <br />
                                                                 <div class="row" >
                                                                     <div id="preview-image" class="row">
-
                                                                     </div>
+                                                                </div>
+                                                                <div class="col-md-12">
+                                                                    @for($index = 0;$index < count($eventImages); $index++)
+                                                                    <img src="{{$eventImages[$index]}}" style="height: 150px; width: 150px" />
+                                                                        <input type='checkbox' class='js-switch' name="images[]" onchange='return deleteImage(this.checked,"{{$eventImagesId[$index]}}","{{$eventData['id']}}")' id='' value='{{$eventImages[$index]}}'/>
+                                                                    @endfor
                                                                 </div>
                                                             </div>
                                                         </fieldset>
@@ -244,7 +249,7 @@
                     for (var i = 0; i < countFiles; i++) {
                         var reader = new FileReader()
                         reader.onload = function (e) {
-                            var imagePreview = '<div class="col-md-2"><input type="hidden" name="profile_images" value="'+e.target.result+'"><img src="'+e.target.result+'" class="thumbimage" /></div>';
+                            var imagePreview = '<div class="col-md-2"><input type="hidden" name="event_images[]" value="'+e.target.result+'"><img src="'+e.target.result+'" class="thumbimage" /></div>';
                             image_holder.append(imagePreview);
                         };
                         image_holder.show();
@@ -257,6 +262,15 @@
                 alert("Select Only images");
             }
         });
+        function deleteImage(status,imageId,eventId){
+            if (confirm("are you sure ?")) {
+                var route = '/event/delete-image/' + imageId;
+                $.get(route, function () {
+                    var route = '/event/edit/' + eventId;
+                    window.location.replace(route);
+                });
+            }
+        }
     </script>
 @endsection
 

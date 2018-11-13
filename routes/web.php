@@ -60,4 +60,5 @@ Route::group(['prefix' => 'event'], function (){
     Route::get('/get-all-states/{id}', array('uses' => 'Event\EventController@getAllStates'));
     Route::get('/get-all-cities/{id}', array('uses' => 'Event\EventController@getAllCities'));
     Route::get('/change-status/{id}',array('uses' => 'Event\EventController@changeStatus'));
+    Route::get('/delete-image/{id}',array('uses' => 'Event\EventController@deleteEventImage'));
 });

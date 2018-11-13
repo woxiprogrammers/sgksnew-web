@@ -66,6 +66,7 @@
                                                         <th> Description </th>
                                                         <th> Gujarati Description </th>
                                                         <th> Venue </th>
+                                                        <th> Gujarati Venue </th>
                                                         <th> Start date </th>
                                                         <th> End date </th>
                                                         <th> Status <i class="fa fa-check-square"> Enable</i></th>
@@ -74,6 +75,7 @@
                                                     <tr class="filter">
                                                         <th></th>
                                                         <th> <input type="text" class="form-control form-filter" name="search_event"> </th>
+                                                        <th></th>
                                                         <th></th>
                                                         <th></th>
                                                         <th></th>
