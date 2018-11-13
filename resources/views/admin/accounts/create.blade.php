@@ -2,12 +2,12 @@
 /**
  * Created by PhpStorm.
  * User: vaibhav
- * Date: 5/11/18
- * Time: 3:13 PM
+ * Date: 13/11/18
+ * Time: 4:11 PM
  */
 ?>
 @extends('layout.master')
-@section('title','Sgks|Events')
+@section('title','Sgks|Account')
 @include('partials.common.navbar')
 @section('css')
     <style>
@@ -35,7 +35,7 @@
                             <div class="container">
                                 <!-- BEGIN PAGE TITLE -->
                                 <div class="page-title">
-                                    <h1>Edit Event</h1>
+                                    <h1>Create Account</h1>
                                 </div>
                             </div>
                         </div>
@@ -45,7 +45,7 @@
                                     <!-- BEGIN VALIDATION STATES-->
                                     <div class="portlet light ">
                                         <div class="portlet-body form">
-                                            <form role="form" id="edit-events" class="form-horizontal" action="/event/edit/{{$eventData['id']}}" method="post">
+                                            <form role="form" id="create-accounts" class="form-horizontal" action="/account/create/" method="post">
                                                 {!! csrf_field() !!}
                                                 <div class="tab-content">
                                                     <div class="tab-pane fade in active" id="tab_general">
@@ -67,14 +67,15 @@
                                                         </fieldset>
                                                         <fieldset>
                                                             <div class="form-group">
-                                                                <label class="col-md-3 control-label">Event Name
+                                                                <label class="col-md-3 control-label">Account Name
                                                                     <span style="color: red">*</span>
                                                                 </label>
+
                                                                 <div class="col-md-4">
-                                                                    <input type="text" id="event_name" value="{{$eventData['event_name']}}" name="en[event_name]" class="form-control " placeholder="Enter Event Name" required>
+                                                                    <input type="text" id="account_name" name="en[account_name]" class="form-control " placeholder="Enter Account Name" required>
                                                                 </div>
                                                                 <div class="col-md-4">
-                                                                    <input type="text" id="event_name" value="{{$eventDataGujarati['event_name']}}" name="gj[event_name]" class="form-control " placeholder="Enter Event Name in Gujarati">
+                                                                    <input type="text" id="account_name" name="gj[account_name]" class="form-control " placeholder="Enter Account Name in Gujarati">
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
@@ -82,21 +83,10 @@
                                                                     <span style="color: red">*</span>
                                                                 </label>
                                                                 <div class="col-md-4">
-                                                                    <textarea id="description" name="en[description]"  class="form-control " placeholder="Enter Event Description" required>{{$eventData['description']}}</textarea>
+                                                                    <input type="text" id="description" name="en[description]" class="form-control " placeholder="Enter Description" required>
                                                                 </div>
                                                                 <div class="col-md-4">
-                                                                    <textarea id="description" name="gj[description]" class="form-control " placeholder="Enter Event Description in Gujarati">{{$eventDataGujarati['description']}}</textarea>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label class="col-md-3 control-label">Venue
-                                                                    <span style="color: red">*</span>
-                                                                </label>
-                                                                <div class="col-md-4">
-                                                                    <input type="text" id="venue" value="{{$eventData['venue']}}" name="en[venue]" class="form-control " placeholder="Enter Event Venue" required>
-                                                                </div>
-                                                                <div class="col-md-4">
-                                                                    <input type="text" id="venue" value="{{$eventDataGujarati['venue']}}" name="gj[venue]" class="form-control " placeholder="Enter Event Venue in Gujarati">
+                                                                    <input type="text" id="description" name="gj[description]" class="form-control " placeholder="Enter Description in Gujarati">
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
@@ -105,20 +95,21 @@
                                                                 </label>
                                                                 <div class="col-md-4">
                                                                     <select class="form-control" id="country" name="en[country]" required>
-                                                                        <option>{{$countryName}}</option>
+                                                                        <option value="">-</option>
                                                                         @foreach($countries as $country)
                                                                             <option value="{{$country['id']}}">{{$country['name']}}</option>
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
                                                             </div>
+
                                                             <div class="form-group">
                                                                 <label class="col-md-3 control-label">State
                                                                     <span style="color: red">*</span>
                                                                 </label>
                                                                 <div class="col-md-4">
                                                                     <select class="form-control" id="state" name="en[state]" required>
-                                                                        <option>{{$stateName}}</option>
+
                                                                     </select>
                                                                 </div>
                                                             </div>
@@ -127,38 +118,19 @@
                                                                     <span style="color: red">*</span>
                                                                 </label>
                                                                 <div class="col-md-4">
-                                                                    <select class="form-control " id="city" value="" name="en[city]" required>
-                                                                        <option value="{{$cityId}}">{{$cityName}}</option>
+                                                                    <select class="form-control " id="city" name="en[city]" required>
+
                                                                     </select>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
-                                                                <label class="col-md-3 control-label">Start Date</label>
-                                                                <div class="col-md-4">
-                                                                    <input type="date" id="start_date" value="{{$eventData['start_date']}}" name="en[start_date]" class="form-control " placeholder="" required>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label class="col-md-3 control-label">End Date</label>
-                                                                <div class="col-md-4">
-                                                                    <input type="date" id="end_date" value="{{$eventData['end_date']}}" name="en[end_date]" class="form-control " placeholder="" required>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group">
                                                                 <label class="control-label col-md-3">Select Images :</label>
-                                                                <input id="imageupload" name="imageupload[]" type="file" class="btn blue" multiple/>
+                                                                <input id="imageupload" type="file" class="btn blue"/>
                                                                 <br />
                                                                 <div class="row" >
                                                                     <div id="preview-image" class="row">
+
                                                                     </div>
-                                                                </div>
-                                                                <div class="col-md-12">
-                                                                    @if($eventImages[0] != null)
-                                                                    @for($index = 0;$index < count($eventImages); $index++)
-                                                                    <img src="{{$eventImages[$index]}}" style="height: 150px; width: 150px" />
-                                                                        <input type='checkbox' class='js-switch' name="images[]" onchange='return deleteImage(this.checked,"{{$eventImagesId[$index]}}","{{$eventData['id']}}")' id='' value='{{$eventImages[$index]}}'/>
-                                                                    @endfor
-                                                                    @endif
                                                                 </div>
                                                             </div>
                                                         </fieldset>
@@ -198,17 +170,16 @@
     <script  src="/assets/global/plugins/datatables/datatables.min.js"></script>
     <script src="/assets/global/scripts/datatable.js" type="text/javascript"></script>
     <script src="/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js" type="text/javascript"></script>
-    <script src="/assets/custom/admin/events/create-event-validation.js" type="text/javascript"></script>
+    <script src="/assets/custom/admin/accounts/create-account-validation.js" type="text/javascript"></script>
 
     <script>
         $(document).ready(function () {
-            CreateEvents.init();
+            CreateAccount.init();
         });
-
 
         $('#country').change(function(){
             var id=this.value;
-            var route='/event/get-all-states/'+id;
+            var route='/committee/get-all-states/'+id;
             $.get(route,function(res){
                 if (res.length == 0)
                 {
@@ -225,7 +196,7 @@
         });
         $('#state').change(function(){
             var id=this.value;
-            var route='/event/get-all-cities/'+id;
+            var route='/committee/get-all-cities/'+id;
             $.get(route,function(res){
                 if (res.length == 0)
                 {
@@ -240,6 +211,7 @@
                 }
             });
         });
+
         $("#imageupload").on('change', function () {
             var countFiles = $(this)[0].files.length;
             var imgPath = $(this)[0].value;
@@ -251,7 +223,7 @@
                     for (var i = 0; i < countFiles; i++) {
                         var reader = new FileReader()
                         reader.onload = function (e) {
-                            var imagePreview = '<div class="col-md-2"><input type="hidden" name="event_images[]" value="'+e.target.result+'"><img src="'+e.target.result+'" class="thumbimage" /></div>';
+                            var imagePreview = '<div class="col-md-2"><input type="hidden" name="account_images" value="'+e.target.result+'"><img src="'+e.target.result+'" class="thumbimage" /></div>';
                             image_holder.append(imagePreview);
                         };
                         image_holder.show();
@@ -264,15 +236,5 @@
                 alert("Select Only images");
             }
         });
-        function deleteImage(status,imageId,eventId){
-            if (confirm("are you sure ?")) {
-                var route = '/event/delete-image/' + imageId;
-                $.get(route, function () {
-                    var route = '/event/edit/' + eventId;
-                    window.location.replace(route);
-                });
-            }
-        }
     </script>
 @endsection
-
