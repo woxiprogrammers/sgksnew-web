@@ -2,12 +2,12 @@
 /**
  * Created by PhpStorm.
  * User: vaibhav
- * Date: 29/10/18
- * Time: 9:57 AM
+ * Date: 5/11/18
+ * Time: 11:30 AM
  */
 ?>
 @extends('layout.master')
-@section('title','Sgks|Committee-member')
+@section('title','Sgks|Events')
 @include('partials.common.navbar')
 @section('css')
     <style>
@@ -35,7 +35,7 @@
                             <div class="container">
                                 <!-- BEGIN PAGE TITLE -->
                                 <div class="page-title">
-                                    <h1>Create Members</h1>
+                                    <h1>Create Event</h1>
                                 </div>
                             </div>
                         </div>
@@ -45,7 +45,7 @@
                                     <!-- BEGIN VALIDATION STATES-->
                                     <div class="portlet light ">
                                         <div class="portlet-body form">
-                                            <form role="form" id="create-members" class="form-horizontal" action="/committee-members/create/{{$id}}" method="post">
+                                            <form role="form" id="create-events" class="form-horizontal" action="/event/create" method="post">
                                                 {!! csrf_field() !!}
                                                 <div class="tab-content">
                                                     <div class="tab-pane fade in active" id="tab_general">
@@ -67,47 +67,89 @@
                                                         </fieldset>
                                                         <fieldset>
                                                             <div class="form-group">
-                                                                <label class="col-md-3 control-label">Full Name
+                                                                <label class="col-md-3 control-label">Event Name
                                                                     <span style="color: red">*</span>
                                                                 </label>
+                                                                <div class="col-md-4">
+                                                                    <input type="text" id="event_name" name="en[event_name]" class="form-control " placeholder="Enter Event Name" required>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <input type="text" id="event_name" name="gj[event_name]" class="form-control " placeholder="Enter Event Name in Gujarati">
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="col-md-3 control-label">Description
+                                                                    <span style="color: red">*</span>
+                                                                </label>
+                                                                <div class="col-md-4">
+                                                                    <textarea id="description" name="en[description]" class="form-control " placeholder="Enter Event Description" required></textarea>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <textarea id="description" name="gj[description]" class="form-control " placeholder="Enter Event Description in Gujarati"></textarea>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="col-md-3 control-label">Venue
+                                                                    <span style="color: red">*</span>
+                                                                </label>
+                                                                <div class="col-md-4">
+                                                                    <input type="text" id="venue" name="en[venue]" class="form-control " placeholder="Enter Event Venue" required>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <input type="text" id="venue" name="gj[venue]" class="form-control " placeholder="Enter Event Venue in Gujarati">
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="col-md-3 control-label">Country
+                                                                    <span style="color: red">*</span>
+                                                                </label>
+                                                                <div class="col-md-4">
+                                                                    <select class="form-control" id="country" name="en[country]" required>
+                                                                        <option value="">-</option>
+                                                                        @foreach($countries as $country)
+                                                                            <option value="{{$country['id']}}">{{$country['name']}}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="col-md-3 control-label">State
+                                                                    <span style="color: red">*</span>
+                                                                </label>
+                                                                <div class="col-md-4">
+                                                                    <select class="form-control" id="state" name="en[state]" required>
 
-                                                                <div class="col-md-4">
-                                                                    <input type="text" id="full_name" name="en[full_name]" class="form-control " placeholder="Enter Full Name" required>
-                                                                </div>
-                                                                <div class="col-md-4">
-                                                                    <input type="text" id="full_name" name="gj[full_name]" class="form-control " placeholder="Enter Full Name">
+                                                                    </select>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
-                                                                <label class="col-md-3 control-label">Designation
+                                                                <label class="col-md-3 control-label">City
                                                                     <span style="color: red">*</span>
                                                                 </label>
+                                                                <div class="col-md-4">
+                                                                    <select class="form-control " id="city" name="en[city]" required>
 
-                                                                <div class="col-md-4">
-                                                                    <input type="text" id="designation" name="en[designation]" class="form-control " placeholder="Enter Designation" required>
+                                                                    </select>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
-                                                                <label class="col-md-3 control-label">Mobile
-                                                                    <span style="color: red">*</span>
-                                                                </label>
+                                                                <label class="col-md-3 control-label">Start Date</label>
                                                                 <div class="col-md-4">
-                                                                    <input type="text" id="mobile_number" name="en[mobile_number]" class="form-control" maxlength="10" placeholder="Enter Mobile Number" required>
+                                                                    <input type="date" id="start_date" name="en[start_date]" class="form-control " placeholder="" required>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
-                                                                <label class="col-md-3 control-label">Email ID</label>
+                                                                <label class="col-md-3 control-label">End Date</label>
                                                                 <div class="col-md-4">
-                                                                    <input type="email" id="email_id" name="en[email_id]" class="form-control " placeholder="Enter email">
+                                                                    <input type="date" id="end_date" name="en[end_date]" class="form-control " placeholder="" required>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label class="control-label col-md-3">Select Images :</label>
-                                                                <input id="imageupload" type="file" class="btn blue"/>
+                                                                <input id="imageupload" name="imageupload[]" type="file" class="btn blue" multiple/>
                                                                 <br />
                                                                 <div class="row" >
                                                                     <div id="preview-image" class="row">
-
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -148,14 +190,48 @@
     <script  src="/assets/global/plugins/datatables/datatables.min.js"></script>
     <script src="/assets/global/scripts/datatable.js" type="text/javascript"></script>
     <script src="/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js" type="text/javascript"></script>
-    <script src="/assets/custom/admin/members/create-members-validation.js" type="text/javascript"></script>
+    <script src="/assets/custom/admin/events/create-event-validation.js" type="text/javascript"></script>
 
     <script>
         $(document).ready(function () {
-            CreateMembers.init();
+            CreateEvents.init();
         });
 
 
+        $('#country').change(function(){
+            var id=this.value;
+            var route='/event/get-all-states/'+id;
+            $.get(route,function(res){
+                if (res.length == 0)
+                {
+                    $('#state').html("no record found");
+                } else {
+                    var str='<option value="">Please select state</option>';
+                    for(var i=0; i<res.length; i++)
+                    {
+                        str+='<option value="'+res[i]['id']+'">'+res[i]['name']+'</option>';
+                    }
+                    $('#state').html(str);
+                }
+            });
+        });
+        $('#state').change(function(){
+            var id=this.value;
+            var route='/event/get-all-cities/'+id;
+            $.get(route,function(res){
+                if (res.length == 0)
+                {
+                    $('#city').html("no record found");
+                } else {
+                    var str='<option value="">Please select city</option>';
+                    for(var i=0; i<res.length; i++)
+                    {
+                        str+='<option value="'+res[i]['id']+'">'+res[i]['name']+'</option>';
+                    }
+                    $('#city').html(str);
+                }
+            });
+        });
         $("#imageupload").on('change', function () {
             var countFiles = $(this)[0].files.length;
             var imgPath = $(this)[0].value;
@@ -165,9 +241,9 @@
             if (extn == "gif" || extn == "png" || extn == "jpg" || extn == "jpeg") {
                 if (typeof (FileReader) != "undefined") {
                     for (var i = 0; i < countFiles; i++) {
-                        var reader = new FileReader()
+                        var reader = new FileReader();
                         reader.onload = function (e) {
-                            var imagePreview = '<div class="col-md-2"><input type="hidden" name="event_images" value="'+e.target.result+'"><img src="'+e.target.result+'" class="thumbimage" /></div>';
+                            var imagePreview = '<div class="col-md-2"><input type="hidden" name="event_images[]" value="'+e.target.result+'"><img src="'+e.target.result+'" class="thumbimage" />' + '</div>';
                             image_holder.append(imagePreview);
                         };
                         image_holder.show();

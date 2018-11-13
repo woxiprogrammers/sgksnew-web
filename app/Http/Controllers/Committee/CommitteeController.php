@@ -476,7 +476,6 @@ class CommitteeController extends Controller
         }
     }
 
-
     public function changeCommitteeStatus(Request $request,$id){
         try{
             $committeeData  = Committees::where('id',$id)->first();
@@ -485,7 +484,7 @@ class CommitteeController extends Controller
                 $committeeChangeStatus['is_active'] = false;
                 $createCommittee = Committees::where('id',$id)->update($committeeChangeStatus);
                 if ($createCommittee) {
-                    $request->session()->flash('success', 'Committee Created Successfully');
+                    $request->session()->flash('success', 'Committee Status Changed Successfully');
                 } else {
                     $request->session()->flash('error', 'Something went wrong');
                 }
@@ -493,7 +492,7 @@ class CommitteeController extends Controller
                 $committeeChangeStatus['is_active'] = true;
                 $createCommittee = Committees::where('id',$id)->update($committeeChangeStatus);
                 if ($createCommittee) {
-                    $request->session()->flash('success', 'Committee Created Successfully');
+                    $request->session()->flash('success', 'Committee Status Changed Successfully');
                 } else {
                     $request->session()->flash('error', 'Something went wrong');
                 }
