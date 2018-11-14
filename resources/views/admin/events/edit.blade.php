@@ -133,13 +133,17 @@
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
-                                                                <label class="col-md-3 control-label">Start Date</label>
+                                                                <label class="col-md-3 control-label">Start Date
+                                                                    <span style="color: red">*</span>
+                                                                </label>
                                                                 <div class="col-md-4">
                                                                     <input type="date" id="start_date" value="{{$eventData['start_date']}}" name="en[start_date]" class="form-control " placeholder="" required>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
-                                                                <label class="col-md-3 control-label">End Date</label>
+                                                                <label class="col-md-3 control-label">End Date
+                                                                    <span style="color: red">*</span>
+                                                                </label>
                                                                 <div class="col-md-4">
                                                                     <input type="date" id="end_date" value="{{$eventData['end_date']}}" name="en[end_date]" class="form-control " placeholder="" required>
                                                                 </div>

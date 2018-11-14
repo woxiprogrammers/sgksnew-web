@@ -139,9 +139,9 @@ class EventController extends Controller
                     $length = $request->length;
                 }
                 for ($iterator = 0, $pagination = $request->start; $iterator < $length && $pagination < count($finalEventsData); $iterator++, $pagination++) {
-                    $eventName = $finalEventsData[$pagination]->event_name;
-                    $description = $finalEventsData[$pagination]->description;
-                    $venue = $finalEventsData[$pagination]->venue;
+                    $eventName = str_limit($finalEventsData[$pagination]->event_name,15);
+                    $description = str_limit($finalEventsData[$pagination]->description,15);
+                    $venue = str_limit($finalEventsData[$pagination]->venue,15);
                     $startDate = $finalEventsData[$pagination]->start_date;
                     $endDate = $finalEventsData[$pagination]->end_date;
                     $isActiveStatus = $finalEventsData[$pagination]->is_active;
@@ -158,11 +158,11 @@ class EventController extends Controller
                     $records['data'][$iterator] = [
                         $srNo,
                         $eventName,
-                        $gujaratiDetails['event_name'],
+                        str_limit($gujaratiDetails['event_name'],15),
                         $description,
-                        $gujaratiDetails['description'],
+                        str_limit($gujaratiDetails['description'],15),
                         $venue,
-                        $gujaratiDetails['venue'],
+                        str_limit($gujaratiDetails['venue'],15),
                         $startDate,
                         $endDate,
                         $isActive,
