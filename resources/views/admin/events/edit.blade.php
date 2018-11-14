@@ -153,10 +153,12 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-12">
+                                                                    @if($eventImages[0] != null)
                                                                     @for($index = 0;$index < count($eventImages); $index++)
                                                                     <img src="{{$eventImages[$index]}}" style="height: 150px; width: 150px" />
                                                                         <input type='checkbox' class='js-switch' name="images[]" onchange='return deleteImage(this.checked,"{{$eventImagesId[$index]}}","{{$eventData['id']}}")' id='' value='{{$eventImages[$index]}}'/>
                                                                     @endfor
+                                                                    @endif
                                                                 </div>
                                                             </div>
                                                         </fieldset>
