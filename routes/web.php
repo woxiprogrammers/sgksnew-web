@@ -62,3 +62,8 @@ Route::group(['prefix' => 'event'], function (){
     Route::get('/change-status/{id}',array('uses' => 'Event\EventController@changeStatus'));
     Route::get('/delete-image/{id}',array('uses' => 'Event\EventController@deleteEventImage'));
 });
+
+Route::group(['prefix' => 'account'], function() {
+    Route::get('/manage', array('uses' => 'Account\AccountController@manage'));
+    Route::get('/create', array('uses' => 'Account\AccountController@createView'));
+});

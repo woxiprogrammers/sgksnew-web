@@ -2,12 +2,12 @@
 /**
  * Created by PhpStorm.
  * User: vaibhav
- * Date: 5/11/18
- * Time: 10:41 AM
+ * Date: 13/11/18
+ * Time: 3:29 PM
  */
 ?>
 @extends('layout.master')
-@section('title','Sgks|Events')
+@section('title','Sgks|Accounts')
 @include('partials.common.navbar')
 @section('css')
     <link href="/assets/global/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" type="text/css" />
@@ -25,10 +25,10 @@
                             <div class="container">
                                 <!-- BEGIN PAGE TITLE -->
                                 <div class="page-title">
-                                    <h1>Event Listing</h1>
+                                    <h1>Account Listing</h1>
                                 </div>
-                                <div id="events_add" class="btn red-flamingo" style="margin-top: 1%; margin-left: 77%"><a href="/event/create" style="color: white">
-                                        Add Event
+                                <div id="accounts_add" class="btn red-flamingo" style="margin-top: 1%; margin-left: 77%"><a href="/account/create" style="color: white">
+                                        Add Account
                                     </a>
                                 </div>
                             </div>
@@ -50,29 +50,19 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <table class="table table-striped table-bordered table-hover table-checkable order-column" id="eventTable">
+                                                <table class="table table-striped table-bordered table-hover table-checkable order-column" id="accountTable">
                                                     <thead>
                                                     <tr>
-                                                        <th>Event Id</th>
+                                                        <th>Account Id</th>
                                                         <th width="10%"> Name </th>
                                                         <th> Gujarati Name </th>
                                                         <th> Description </th>
                                                         <th> Gujarati Description </th>
-                                                        <th> Venue </th>
-                                                        <th> Gujarati Venue </th>
-                                                        <th> Start date </th>
-                                                        <th> End date </th>
-                                                        <th> Status <i class="fa fa-check-square"> Enable</i></th>
                                                         <th> Actions </th>
                                                     </tr>
                                                     <tr class="filter">
                                                         <th></th>
-                                                        <th> <input type="text" class="form-control form-filter" name="search_event"> </th>
-                                                        <th></th>
-                                                        <th></th>
-                                                        <th></th>
-                                                        <th></th>
-                                                        <th></th>
+                                                        <th> <input type="text" class="form-control form-filter" name="search_account"> </th>
                                                         <th></th>
                                                         <th></th>
                                                         <th></th>
@@ -120,22 +110,12 @@
     <script src="/assets/custom/inventory/component-reading-manage-datatable.js" type="text/javascript"></script>
     <script src="/assets/global/plugins/bootstrap-select/js/bootstrap-select.min.js" type="text/javascript"></script>
 
-    <script src="/assets/custom/admin/events/event-listing.js" type="text/javascript"></script>
+    <script src="/assets/custom/admin/accounts/account-listing.js" type="text/javascript"></script>
 
     <script>
         $(document).ready(function() {
-            $('#eventTable').DataTable();
+            $('#accountTable').DataTable();
         });
-
-        function statusFolder(status,id){
-            if(confirm("are you sure ?")){
-                var route='/event/change-status/'+id;
-                $.get(route,function(res){
-                        var route= "/event/manage";
-                        window.location.replace(route);
-                });
-            }
-        }
     </script>
 @endsection
 
