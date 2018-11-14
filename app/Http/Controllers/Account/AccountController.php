@@ -74,10 +74,10 @@ class AccountController extends Controller
                 AccountsTranslations::create($gujaratiAccountData);
             }
             if($request->has('account_images')){
-                $createEventDirectoryName = sha1($createAccount->id);
-                $eventImages = public_path().env('ACCOUNT_IMAGES_UPLOAD').DIRECTORY_SEPARATOR.$createEventDirectoryName;
-                if (!file_exists($eventImages)) {
-                    File::makeDirectory($eventImages, $mode = 0777, true, true);
+                $createAccountDirectoryName = sha1($createAccount->id);
+                $accountImages = public_path().env('ACCOUNT_IMAGES_UPLOAD').DIRECTORY_SEPARATOR.$createAccountDirectoryName;
+                if (!file_exists($accountImages)) {
+                    File::makeDirectory($accountImages, $mode = 0777, true, true);
                 }
                 $images = $request->account_images;
                 foreach ($images as $accountImage) {
@@ -87,7 +87,7 @@ class AccountController extends Controller
                     $type = explode(':', substr($accountImage, 0, $pos))[1];
                     $extension = explode('/', $type)[1];
                     $filename = mt_rand(1, 10000000000) . sha1(time()) . ".{$extension}";
-                    $fileFullPath = $eventImages . DIRECTORY_SEPARATOR . $filename;
+                    $fileFullPath = $accountImages . DIRECTORY_SEPARATOR . $filename;
                     file_put_contents($fileFullPath, base64_decode($image));
                     $imagesData['account_id'] = $createAccount->id;
                     $imagesData['url'] = $filename;
