@@ -2,8 +2,8 @@
 /**
  * Created by PhpStorm.
  * User: vaibhav
- * Date: 13/11/18
- * Time: 4:11 PM
+ * Date: 14/11/18
+ * Time: 4:34 PM
  */
 ?>
 @extends('layout.master')
@@ -35,7 +35,7 @@
                             <div class="container">
                                 <!-- BEGIN PAGE TITLE -->
                                 <div class="page-title">
-                                    <h1>Create Account</h1>
+                                    <h1>Edit Account</h1>
                                 </div>
                             </div>
                         </div>
@@ -45,7 +45,7 @@
                                     <!-- BEGIN VALIDATION STATES-->
                                     <div class="portlet light ">
                                         <div class="portlet-body form">
-                                            <form role="form" id="create-accounts" class="form-horizontal" action="/account/create" method="post">
+                                            <form role="form" id="edit-accounts" class="form-horizontal" action="/account/edit/{{$accountData['id']}}" method="post">
                                                 {!! csrf_field() !!}
                                                 <div class="tab-content">
                                                     <div class="tab-pane fade in active" id="tab_general">
@@ -70,12 +70,11 @@
                                                                 <label class="col-md-3 control-label">Account Name
                                                                     <span style="color: red">*</span>
                                                                 </label>
-
                                                                 <div class="col-md-4">
-                                                                    <input type="text" id="account_name" name="en[account_name]" class="form-control " placeholder="Enter Account Name" required>
+                                                                    <input type="text" id="account_name" name="en[account_name]" value="{{$accountData['name']}}" class="form-control " placeholder="Enter Account Name" required>
                                                                 </div>
                                                                 <div class="col-md-4">
-                                                                    <input type="text" id="account_name" name="gj[account_name]" class="form-control " placeholder="Enter Account Name in Gujarati">
+                                                                    <input type="text" id="account_name" name="gj[account_name]" value="{{$accountDataGujarati['name']}}" class="form-control " placeholder="Enter Account Name in Gujarati">
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
@@ -83,10 +82,10 @@
                                                                     <span style="color: red">*</span>
                                                                 </label>
                                                                 <div class="col-md-4">
-                                                                    <textarea id="description" name="en[description]" class="form-control " placeholder="Enter Description" required></textarea>
+                                                                    <textarea id="description" name="en[description]" class="form-control " placeholder="Enter Description" required>{{$accountData['description']}}</textarea>
                                                                 </div>
                                                                 <div class="col-md-4">
-                                                                    <textarea id="description" name="gj[description]" class="form-control " placeholder="Enter Description in Gujarati"></textarea>
+                                                                    <textarea id="description" name="gj[description]" class="form-control " placeholder="Enter Description in Gujarati">{{$accountDataGujarati['description']}}</textarea>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
@@ -95,7 +94,7 @@
                                                                 </label>
                                                                 <div class="col-md-4">
                                                                     <select class="form-control" id="country" name="en[country]" required>
-                                                                        <option value="">-</option>
+                                                                        <option>{{$countryName}}</option>
                                                                         @foreach($countries as $country)
                                                                             <option value="{{$country['id']}}">{{$country['name']}}</option>
                                                                         @endforeach
@@ -109,7 +108,7 @@
                                                                 </label>
                                                                 <div class="col-md-4">
                                                                     <select class="form-control" id="state" name="en[state]" required>
-
+                                                                        <option>{{$stateName}}</option>
                                                                     </select>
                                                                 </div>
                                                             </div>
@@ -119,7 +118,7 @@
                                                                 </label>
                                                                 <div class="col-md-4">
                                                                     <select class="form-control " id="city" name="en[city]" required>
-
+                                                                        <option value="{{$cityId}}">{{$cityName}}</option>
                                                                     </select>
                                                                 </div>
                                                             </div>
@@ -131,6 +130,14 @@
                                                                     <div id="preview-image" class="row">
 
                                                                     </div>
+                                                                </div>
+                                                                <div class="col-md-12">
+                                                                    @if($accountImages[0] != null)
+                                                                        @for($index = 0;$index < count($accountImages); $index++)
+                                                                            <img src="{{$accountImages[$index]}}" style="height: 150px; width: 150px" />
+                                                                            <input type='checkbox' class='js-switch' name="images[]" onchange='return deleteImage(this.checked,"{{$accountImagesId[$index]}}","{{$accountData['id']}}")' id='' value='{{$accountImages[$index]}}'/>
+                                                                        @endfor
+                                                                    @endif
                                                                 </div>
                                                             </div>
                                                         </fieldset>
@@ -236,5 +243,14 @@
                 alert("Select Only images");
             }
         });
+        function deleteImage(status,imageId,accountId){
+            if (confirm("are you sure ?")) {
+                var route = '/account/delete-image/' + imageId;
+                $.get(route, function () {
+                    var route = '/account/edit/' + accountId;
+                    window.location.replace(route);
+                });
+            }
+        }
     </script>
 @endsection

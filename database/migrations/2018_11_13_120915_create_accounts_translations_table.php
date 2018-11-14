@@ -15,10 +15,12 @@ class CreateAccountsTranslationsTable extends Migration
     {
         Schema::create('accounts_translations', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('account_id')->nullable();
-            $table->foreign('account_id')->references('id')->on('accounts')->onUpdate('cascade')->onDelete('cascade');
             $table->string('name',255)->nullable();
             $table->text('description')->nullable();
+            $table->unsignedInteger('account_id')->nullable();
+            $table->foreign('account_id')->references('id')->on('accounts')->onUpdate('cascade')->onDelete('cascade');
+            $table->unsignedInteger('language_id')->nullable();
+            $table->foreign('language_id')->references('id')->on('languages')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }

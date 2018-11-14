@@ -28,7 +28,7 @@ var AccountsListing = function () {
                 "pageLength": 50, // default record count per page
 
                 "ajax": {
-                    "url": "/event/listing" // ajax source
+                    "url": "/account/listing" // ajax source
                 },
                 "order": [
                     [1, "asc"]
