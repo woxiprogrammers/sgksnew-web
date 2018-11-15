@@ -101,7 +101,6 @@ class EventController extends Controller
                 }
 
             }
-
             return redirect('/event/manage');
         }catch(\Exception $exception){
             $data = [
@@ -214,7 +213,7 @@ class EventController extends Controller
                 $eventImages[] = null;
                 $eventImagesId[] = null;
             }
-            return view('admin.events.edit')->with(compact('countries','eventData','eventDataGujarati','cityName','stateName','countryName','cityId','eventImages','eventImagesId','eventImagesId'));
+            return view('admin.events.edit')->with(compact('countries','eventData','eventDataGujarati','cityName','stateName','countryName','cityId','eventImages','eventImagesId'));
         }catch(\Exception $exception){
             $data = [
                 'params' => $request->all(),
