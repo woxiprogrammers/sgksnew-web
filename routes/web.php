@@ -74,3 +74,10 @@ Route::group(['prefix' => 'account'], function() {
     Route::get('/get-all-cities/{id}', array('uses' => 'Account\AccountController@getAllCities'));
     Route::get('/delete-image/{id}',array('uses' => 'Account\AccountController@deleteAccountImage'));
 });
+
+Route::group(['prefix' => 'message'], function() {
+    Route::get('/manage', array('uses' => 'Message\MessageController@manage'));
+    Route::get('/create', array('uses' => 'Message\MessageController@createView'));
+    Route::get('/get-all-states/{id}', array('uses' => 'Message\MessageController@getAllStates'));
+    Route::get('/get-all-cities/{id}', array('uses' => 'Message\MessageController@getAllCities'));
+});
