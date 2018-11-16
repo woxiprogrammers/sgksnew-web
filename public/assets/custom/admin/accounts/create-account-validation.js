@@ -1,9 +1,10 @@
 /**
- * Created by vaibhav on 2/11/18.
+ * Created by vaibhav on 13/11/18.
  */
-var  CreateCommittees = function () {
+
+var  CreateAccount = function () {
     var handleCreate = function() {
-        var form = $('#create-committee');
+        var form = $('#create-accounts');
         var error = $('.alert-danger', form);
         var success = $('.alert-success', form);
         form.validate({
@@ -11,7 +12,7 @@ var  CreateCommittees = function () {
             errorClass: 'help-block', // default input error message class
             focusInvalid: false, // do not focus the last invalid input
             rules: {
-                "en[committee_name]": {
+                "en[account_name]": {
                     required: true
                 },
                 "en[description]": {
@@ -28,8 +29,8 @@ var  CreateCommittees = function () {
                 }
             },
             messages: {
-                "en[committee_name]": {
-                    required: "Committee name is required."
+                "en[account_name]": {
+                    required: "Account name is required."
                 },
                 "en[description]": {
                     required: "Description is required."
