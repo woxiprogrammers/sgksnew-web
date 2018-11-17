@@ -140,8 +140,8 @@ class CommitteeController extends Controller
                 }
                 for ($iterator = 0, $pagination = $request->start; $iterator < $length && $pagination < count($finalCommitteesData); $iterator++, $pagination++) {
                     $srNo = $iterator + 1;
-                    $committeeName = $finalCommitteesData[$pagination]->committee_name;
-                    $description = $finalCommitteesData[$pagination]->description;
+                    $committeeName = str_limit($finalCommitteesData[$pagination]->committee_name,15);
+                    $description = str_limit($finalCommitteesData[$pagination]->description,20);
                     $isActiveStatus = $finalCommitteesData[$pagination]->is_active;
                     $id = $finalCommitteesData[$pagination]->id;
                     $totalMembers = CommitteeMembers::where('committee_id',$id)->count();
@@ -160,9 +160,9 @@ class CommitteeController extends Controller
                     $records['data'][$iterator] = [
                         $srNo,
                         $committeeName,
-                        $gujaratiDetails['committee_name'],
+                        str_limit($gujaratiDetails['committee_name'],15),
                         $description,
-                        $gujaratiDetails['description'],
+                        str_limit($gujaratiDetails['description'],20),
                         $totalMembers,
                         $isActive,
                         $actionButton

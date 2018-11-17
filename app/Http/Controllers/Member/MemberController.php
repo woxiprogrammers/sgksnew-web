@@ -197,7 +197,7 @@ class MemberController extends Controller
                     if($finalMembersData[$pagination]->address == null){
                         $address = "-";
                     }else{
-                        $address = $finalMembersData[$pagination]->address;
+                        $address = str_limit($finalMembersData[$pagination]->address,20);
                     }
                     if($finalMembersData[$pagination]->is_active == true ){
                         $memberStatus = "<input type='checkbox' class='js-switch' onchange='return statusFolder(this.checked,$memberId)' id='status$memberId' value='$memberId' checked/>";
@@ -213,7 +213,7 @@ class MemberController extends Controller
                         $firstName ." ".$middleName ." ".$lastName,
                         $gujaratiDetails['first_name']." ".$gujaratiDetails['middle_name']." ".$gujaratiDetails['last_name'],
                         $address,
-                        $gujaratiDetails['address'],
+                        str_limit($gujaratiDetails['address'],20),
                         $mobile,
                         $city,
                         $memberStatus,
