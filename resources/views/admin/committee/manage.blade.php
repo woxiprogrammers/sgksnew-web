@@ -25,10 +25,10 @@
                             <div class="container">
                                 <!-- BEGIN PAGE TITLE -->
 
-                                <div class="page-title">
+                                <div class="page-title col-md-2">
                                     <h1>Committee Listing</h1>
                                 </div>
-                                <div id="committee_add" class="btn red-flamingo" style="margin-top: 1%; margin-left: 77%"><a href="/committee/create/" style="color: white">
+                                <div id="committee_add" class="btn red-flamingo col-md-2 pull-right" style="margin-top: 1%"><a href="/committee/create/" style="color: white">
                                     Add Committee
                                     </a>
                                 </div>

@@ -78,6 +78,12 @@ Route::group(['prefix' => 'account'], function() {
 Route::group(['prefix' => 'message'], function() {
     Route::get('/manage', array('uses' => 'Message\MessageController@manage'));
     Route::get('/create', array('uses' => 'Message\MessageController@createView'));
+    Route::post('/create', array('uses' => 'Message\MessageController@create'));
+    Route::post('/listing', array('uses' => 'Message\MessageController@listing'));
+    Route::get('/edit/{id}', array('uses' => 'Message\MessageController@editView'));
+    Route::post('/edit/{id}', array('uses' => 'Message\MessageController@edit'));
+    Route::get('/delete-image/{id}', array('uses' => 'Message\MessageController@deleteImage'));
     Route::get('/get-all-states/{id}', array('uses' => 'Message\MessageController@getAllStates'));
     Route::get('/get-all-cities/{id}', array('uses' => 'Message\MessageController@getAllCities'));
+    Route::get('/change-status/{id}', array('uses' => 'Message\MessageController@changeStatus'));
 });

@@ -35,3 +35,4 @@ class CreateMessagesTranslationsTable extends Migration
         Schema::dropIfExists('messages_translations');
     }
 }
+

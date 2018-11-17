@@ -21,6 +21,7 @@ class CreateMessagesTable extends Migration
             $table->foreign('message_type_id')->references('id')->on('message_types')->onUpdate('cascade')->onDelete('cascade');
             $table->unsignedInteger('city_id')->nullable();
             $table->foreign('city_id')->references('id')->on('cities')->onUpdate('cascade')->onDelete('cascade');
+            $table->boolean('is_active')->nullable()->default(true);
             $table->string('image_url')->nullable();
             $table->timestamps();
         });

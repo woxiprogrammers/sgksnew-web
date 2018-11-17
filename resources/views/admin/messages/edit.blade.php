@@ -2,8 +2,8 @@
 /**
  * Created by PhpStorm.
  * User: vaibhav
- * Date: 15/11/18
- * Time: 1:31 PM
+ * Date: 16/11/18
+ * Time: 5:02 PM
  */
 ?>
 @extends('layout.master')
@@ -35,7 +35,7 @@
                             <div class="container">
                                 <!-- BEGIN PAGE TITLE -->
                                 <div class="page-title">
-                                    <h1>Create Message</h1>
+                                    <h1>Edit Message</h1>
                                 </div>
                             </div>
                         </div>
@@ -45,7 +45,7 @@
                                     <!-- BEGIN VALIDATION STATES-->
                                     <div class="portlet light ">
                                         <div class="portlet-body form">
-                                                <form role="form" id="create-messages" class="form-horizontal" action="/message/create" method="post">
+                                            <form role="form" id="create-messages" class="form-horizontal" action="/message/edit/{{$messageData['id']}}" method="post">
                                                 {!! csrf_field() !!}
                                                 <div class="tab-content">
                                                     <div class="tab-pane fade in active" id="tab_general">
@@ -72,10 +72,17 @@
                                                                 </label>
                                                                 <div class="col-md-4">
                                                                     @foreach($message_Types as $message_Type)
-                                                                        <div class="form-check form-check-inline">
-                                                                            <input class="form-check-input" type="radio" name="en[message_type]" id="message_type" value="{{$message_Type['id']}}">
-                                                                            <label class="form-check-label" for="message_type">{{$message_Type['name']}}</label>
-                                                                        </div>
+                                                                        @if($message_Type['id'] == $messageData['message_type_id'])
+                                                                            <div class="form-check form-check-inline">
+                                                                              <input class="form-check-input" type="radio" name="en[message_type]" id="message_type" value="{{$message_Type['id']}}" checked>
+                                                                               <label class="form-check-label" for="message_type">{{$message_Type['name']}}</label>
+                                                                            </div>
+                                                                        @else
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input" type="radio" name="en[message_type]" id="message_type" value="{{$message_Type['id']}}">
+                                                                                <label class="form-check-label" for="message_type">{{$message_Type['name']}}</label>
+                                                                            </div>
+                                                                        @endif
                                                                     @endforeach
                                                                 </div>
                                                             </div>
@@ -84,10 +91,10 @@
                                                                     <span style="color: red">*</span>
                                                                 </label>
                                                                 <div class="col-md-4">
-                                                                    <input type="text" id="title" name="en[title]" class="form-control " placeholder="Enter Title" required>
+                                                                    <input type="text" id="title" name="en[title]" class="form-control" value="{{$messageData['title']}}" placeholder="Enter Title" required>
                                                                 </div>
                                                                 <div class="col-md-4" >
-                                                                    <input type="text" id="title_gj" name="gj[title]" class="form-control " placeholder="Enter Title in gujarati" >
+                                                                    <input type="text" id="title_gj" name="gj[title]" class="form-control " value="{{$messageDataGujarati['title']}}" placeholder="Enter Title in gujarati" >
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
@@ -95,10 +102,10 @@
                                                                     <span style="color: red">*</span>
                                                                 </label>
                                                                 <div class="col-md-4">
-                                                                    <textarea id="description" name="en[description]" class="form-control " placeholder="Enter Description" required></textarea>
+                                                                    <textarea id="description" name="en[description]" class="form-control " placeholder="Enter Description" required>{{$messageData['description']}}</textarea>
                                                                 </div>
                                                                 <div class="col-md-4">
-                                                                    <textarea id="description_gj" name="gj[description]" class="form-control " placeholder="Enter Description in gujarati" ></textarea>
+                                                                    <textarea id="description_gj" name="gj[description]" class="form-control "  placeholder="Enter Description in gujarati" >{{$messageDataGujarati['description']}}</textarea>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
@@ -107,7 +114,7 @@
                                                                 </label>
                                                                 <div class="col-md-4">
                                                                     <select class="form-control" id="country" name="en[country]" required>
-                                                                        <option value="">-</option>
+                                                                        <option>{{$countryName}}</option>
                                                                         @foreach($countries as $country)
                                                                             <option value="{{$country['id']}}">{{$country['name']}}</option>
                                                                         @endforeach
@@ -120,7 +127,7 @@
                                                                 </label>
                                                                 <div class="col-md-4">
                                                                     <select class="form-control" id="state" name="en[state]" required>
-
+                                                                        <option>{{$stateName}}</option>
                                                                     </select>
                                                                 </div>
                                                             </div>
@@ -129,8 +136,8 @@
                                                                     <span style="color: red">*</span>
                                                                 </label>
                                                                 <div class="col-md-4">
-                                                                    <select class="form-control " id="city" name="en[city]" required>
-
+                                                                    <select class="form-control " id="city" value="" name="en[city]" required>
+                                                                        <option value="{{$cityId}}">{{$cityName}}</option>
                                                                     </select>
                                                                 </div>
                                                             </div>
@@ -142,6 +149,12 @@
                                                                     <div id="preview-image" class="row">
 
                                                                     </div>
+                                                                </div>
+                                                                <div class="col-md-12">
+                                                                    @if($messageImage != null)
+                                                                            <img src="{{$messageImage}}" style="height: 150px; width: 150px" />
+                                                                            <input type='checkbox' class='js-switch' name="images" onchange='return deleteImage(this.checked,"{{$messageData['id']}}")' value='{{$messageImage}}'/>
+                                                                    @endif
                                                                 </div>
                                                             </div>
                                                         </fieldset>
@@ -247,6 +260,17 @@
                 alert("Select Only images");
             }
         });
+
+        function deleteImage(status,messageId){
+            if (confirm("are you sure ?")) {
+                var route = '/message/delete-image/'+messageId ;
+                $.get(route, function () {
+                    var route = '/message/edit/' + messageId;
+                    window.location.replace(route);
+                });
+            }
+        }
+
     </script>
 
 @endsection

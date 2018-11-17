@@ -24,10 +24,10 @@
                         <div class="page-head">
                             <div class="container">
                                 <!-- BEGIN PAGE TITLE -->
-                                <div class="page-title">
+                                <div class="page-title col-md-2">
                                     <h1>Event Listing</h1>
                                 </div>
-                                <div id="events_add" class="btn red-flamingo" style="margin-top: 1%; margin-left: 77%"><a href="/event/create" style="color: white">
+                                <div id="events_add" class="btn red-flamingo col-md-2 pull-right" style="margin-top: 1%"><a href="/event/create" style="color: white">
                                         Add Event
                                     </a>
                                 </div>

@@ -24,10 +24,10 @@
                         <div class="page-head">
                             <div class="container">
                                 <!-- BEGIN PAGE TITLE -->
-                                <div class="page-title">
+                                <div class="page-title col-md-2">
                                     <h1>Members Listing</h1>
                                 </div>
-                                <div id="members_add" class="btn red-flamingo" style="margin-top: 1%; margin-left: 77%"><a href="/committee-members/create/{{$id}}" style="color: white">
+                                <div id="members_add" class="btn red-flamingo col-md-2 pull-right" style="margin-top: 1%"><a href="/committee-members/create/{{$id}}" style="color: white">
                                         Add Members
                                     </a>
                                 </div>

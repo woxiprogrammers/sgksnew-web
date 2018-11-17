@@ -24,10 +24,10 @@
                         <div class="page-head">
                             <div class="container">
                                 <!-- BEGIN PAGE TITLE -->
-                                <div class="page-title">
+                                <div class="page-title col-md-2">
                                     <h1>Message Listing</h1>
                                 </div>
-                                <div id="messages_add" class="btn red-flamingo" style="margin-top: 1%; margin-left: 77%"><a href="/message/create" style="color: white">
+                                <div id="messages_add" class="btn red-flamingo col-md-2 pull-right" style="margin-top: 1%"><a href="/message/create" style="color: white">
                                         Add Message
                                     </a>
                                 </div>
@@ -50,7 +50,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <table class="table table-striped table-bordered table-hover table-checkable order-column" id="eventTable">
+                                                <table class="table table-striped table-bordered table-hover table-checkable order-column" id="messageTable">
                                                     <thead>
                                                     <tr>
                                                         <th> Sr.No </th>
@@ -59,7 +59,7 @@
                                                         <th> Description </th>
                                                         <th> Gujarati Description </th>
                                                         <th> Date </th>
-                                                        <th> Status <i class="fa fa-check-square"> Enable</i></th>
+                                                        <th> Status <i class="fa fa-check-square"> Enable </i></th>
                                                         <th> Actions </th>
                                                     </tr>
                                                     <tr class="filter">
@@ -114,18 +114,18 @@
     <script src="/assets/custom/inventory/component-reading-manage-datatable.js" type="text/javascript"></script>
     <script src="/assets/global/plugins/bootstrap-select/js/bootstrap-select.min.js" type="text/javascript"></script>
 
-    <script src="/assets/custom/admin/events/event-listing.js" type="text/javascript"></script>
+    <script src="/assets/custom/admin/messages/message-listing.js" type="text/javascript"></script>
 
     <script>
         $(document).ready(function() {
-            $('#eventTable').DataTable();
+            $('#messageTable').DataTable();
         });
 
         function statusFolder(status,id){
             if(confirm("are you sure ?")){
-                var route='/event/change-status/'+id;
+                var route='/message/change-status/'+id;
                 $.get(route,function(res){
-                    var route= "/event/manage";
+                    var route= "/message/manage";
                     window.location.replace(route);
                 });
             }

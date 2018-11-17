@@ -217,7 +217,7 @@ class EventController extends Controller
         }catch(\Exception $exception){
             $data = [
                 'params' => $request->all(),
-                'action' => 'Create members View',
+                'action' => 'Create event View',
                 'exception' => $exception->getMessage()
             ];
             Log::critical(json_encode($data));
