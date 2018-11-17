@@ -262,7 +262,7 @@
         });
 
         function deleteImage(status,messageId){
-            if (confirm("are you sure ?")) {
+            if (confirm("Delete Image! are you sure ?")) {
                 var route = '/message/delete-image/'+messageId ;
                 $.get(route, function () {
                     var route = '/message/edit/' + messageId;

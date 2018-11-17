@@ -244,7 +244,7 @@
             }
         });
         function deleteImage(status,imageId,accountId){
-            if (confirm("are you sure ?")) {
+            if (confirm("Delete Image! are you sure ?")) {
                 var route = '/account/delete-image/' + imageId;
                 $.get(route, function () {
                     var route = '/account/edit/' + accountId;

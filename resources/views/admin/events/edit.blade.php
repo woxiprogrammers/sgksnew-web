@@ -269,7 +269,7 @@
             }
         });
         function deleteImage(status,imageId,eventId){
-            if (confirm("are you sure ?")) {
+            if (confirm("Delete Image! are you sure ?")) {
                 var route = '/event/delete-image/' + imageId;
                 $.get(route, function () {
                     var route = '/event/edit/' + eventId;
