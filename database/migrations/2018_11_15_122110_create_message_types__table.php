@@ -16,6 +16,7 @@ class CreateMessageTypesTable extends Migration
         Schema::create('message_types', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name',255)->nullable();
+            $table->string('slug',255)->nullable();
             $table->timestamps();
         });
     }

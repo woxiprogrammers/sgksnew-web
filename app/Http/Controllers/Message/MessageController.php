@@ -143,8 +143,8 @@ class MessageController extends Controller
                 }
                 for ($iterator = 0, $pagination = $request->start; $iterator < $length && $pagination < count($finalMessagesData); $iterator++, $pagination++) {
                     $srNo = $finalMessagesData[$pagination]->id;
-                    $title = $finalMessagesData[$pagination]->title;
-                    $description = $finalMessagesData[$pagination]->description;
+                    $title = str_limit($finalMessagesData[$pagination]->title,20);
+                    $description = str_limit($finalMessagesData[$pagination]->description,20);
                     $date = $finalMessagesData[$pagination]->created_at;
                     $isActiveStatus = $finalMessagesData[$pagination]->is_active;
                     $gujaratiDetails = MessageTranslations::where('message_id',$finalMessagesData[$pagination]->id)->first();
@@ -159,9 +159,9 @@ class MessageController extends Controller
                     $records['data'][$iterator] = [
                         $srNo,
                         $title,
-                        $gujaratiDetails['title'],
+                        str_limit($gujaratiDetails['title'],20),
                         $description,
-                        $gujaratiDetails['description'],
+                        str_limit($gujaratiDetails['description'],20),
                         $date->format('d/m/Y'),
                         $isActive,
                         $actionButton

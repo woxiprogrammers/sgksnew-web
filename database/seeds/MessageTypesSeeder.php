@@ -17,26 +17,31 @@ class MessageTypesSeeder extends Seeder
         DB::table('message_types')->insert([
             [
                 'name' => 'Buzz',
+                'slug' => 'buzz',
                 'created_at' => $now,
                 'updated_at' => $now
             ],
             [
                 'name' => 'Nidhan',
+                'slug' => 'nidhan',
                 'created_at' => $now,
                 'updated_at' => $now
             ],
             [
                 'name' => 'Birthday',
+                'slug' => 'birthday',
                 'created_at' => $now,
                 'updated_at' => $now
             ],
             [
                 'name' => 'Achievement',
+                'slug' => 'achievement',
                 'created_at' => $now,
                 'updated_at' => $now
             ],
             [
                 'name' => 'General',
+                'slug' => 'general',
                 'created_at' => $now,
                 'updated_at' => $now
             ]
