@@ -22,8 +22,8 @@ class MessageTypesSeeder extends Seeder
                 'updated_at' => $now
             ],
             [
-                'name' => 'Nidhan',
-                'slug' => 'nidhan',
+                'name' => 'Dukhad Nidhan',
+                'slug' => 'dukhad-nidhan',
                 'created_at' => $now,
                 'updated_at' => $now
             ],
