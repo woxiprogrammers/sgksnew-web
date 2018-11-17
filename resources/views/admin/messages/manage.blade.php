@@ -122,7 +122,7 @@
         });
 
         function statusFolder(status,id){
-            if(confirm("are you sure ?")){
+            if(confirm("Change Status! are you sure ?")){
                 var route='/message/change-status/'+id;
                 $.get(route,function(res){
                     var route= "/message/manage";

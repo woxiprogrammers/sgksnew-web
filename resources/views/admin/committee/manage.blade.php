@@ -116,7 +116,7 @@
            $('#committeeTable').DataTable();
         });
         function statusFolder(status,id){
-            if(confirm("are you sure ?")){
+            if(confirm("Change Status! are you sure ?")){
                 var route='/committee/change-status/'+id;
                 $.get(route,function(){
                         var route= "/committee/manage";
