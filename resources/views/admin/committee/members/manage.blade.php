@@ -57,11 +57,15 @@
                                                         <th> Gujarati Name </th>
                                                         <th> Mobile </th>
                                                         <th> Email </th>
+                                                        <th> Status
+                                                            <i class="fa fa-check-square"> Enable</i>
+                                                        </th>
                                                         <th> Actions </th>
                                                     </tr>
                                                     <tr class="filter">
                                                         <th><input type="hidden" id="committee-id" value="{{$id}}" /></th>
                                                         <th style="width: 20%"> <input type="text" class="form-control form-filter" name="search_name"> </th>
+                                                        <th></th>
                                                         <th></th>
                                                         <th></th>
                                                         <th></th>
@@ -111,6 +115,15 @@
             $('#memberTable').DataTable();
         });
 
+        function statusFolder(status,id){
+            if(confirm("Change Status! are you sure ?")){
+                var route='/committee-members/change-status/'+id;
+                $.get(route,function(){
+                    var route= "/committee-members/manage";
+                    window.location.replace(route);
+                });
+            }
+        }
     </script>
 @endsection
 

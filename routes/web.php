@@ -48,6 +48,7 @@ Route::group(['prefix' => 'committee-members'], function() {
     Route::post('/create/{id}',array('uses' => 'Committee\CommitteeController@createMember'));
     Route::get('/edit/{id}',array('uses' => 'Committee\CommitteeController@editMemberView'));
     Route::post('/edit/{id}',array('uses' => 'Committee\CommitteeController@editMember'));
+    Route::get('/change-status/{id}',array('uses' => 'Committee\CommitteeController@changeMemberStatus'));
 });
 
 Route::group(['prefix' => 'event'], function (){

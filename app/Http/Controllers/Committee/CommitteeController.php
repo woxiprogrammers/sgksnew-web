@@ -366,10 +366,17 @@ class CommitteeController extends Controller
                 }
                 for ($iterator = 0, $pagination = $request->start; $iterator < $length && $pagination < count($finalMembersData); $iterator++, $pagination++) {
                     $srNo = $iterator + 1;
+                    $committeeMemberId = $finalMembersData[$pagination]->id;
                     $memberName = $finalMembersData[$pagination]->full_name;
                     $mobileNumber = $finalMembersData[$pagination]->mobile_number;
                     $emailId = $finalMembersData[$pagination]->email_id;
+                    $isActiveStatus = $finalMembersData[$pagination]->is_active;
                     $gujaratiDetails = CommitteeMembersTranslations::where('member_id',$finalMembersData[$pagination]->id)->first();
+                    if($isActiveStatus){
+                        $isActive = "<input type='checkbox' class='js-switch' onchange='return statusFolder(this.checked,$committeeMemberId)' id='status$committeeMemberId' value='$committeeMemberId' checked/>";
+                    }else{
+                        $isActive = "<input type='checkbox' class='js-switch' onchange='return statusFolder(this.checked,$committeeMemberId)' id='status$committeeMemberId' value='$committeeMemberId'/>";
+                    }
                     $actionButton = '<div id="sample_editable_1_new" class="btn btn-small blue" >
                         <a href="/committee-members/edit/' . $finalMembersData[$pagination]['id'] . '" style="color: white"> Edit
                     </div>';
@@ -379,6 +386,7 @@ class CommitteeController extends Controller
                         $gujaratiDetails['full_name'],
                         $mobileNumber,
                         $emailId,
+                        $isActive,
                         $actionButton
                     ];
                 }
@@ -504,6 +512,39 @@ class CommitteeController extends Controller
         }catch(\Exception $exception){
             $data = [
                 'action' => 'Committee Edit View',
+                'params' => $request->all(),
+                'exception' => $exception->getMessage()
+            ];
+            Log::critical(json_encode($data));
+            abort(500);
+        }
+    }
+
+    public function changeMemberStatus(Request $request,$id){
+        try{
+            $memberData  = CommitteeMembers::where('id',$id)->first();
+            $status = $memberData['is_active'];
+            if($status){
+                $memberChangeStatus['is_active'] = false;
+                $createMember = CommitteeMembers::where('id',$id)->update($memberChangeStatus);
+                if ($createMember) {
+                    $request->session()->flash('success', 'Member Status Changed Successfully');
+                } else {
+                    $request->session()->flash('error', 'Something went wrong');
+                }
+            }else{
+                $memberChangeStatus['is_active'] = true;
+                $createMember = CommitteeMembers::where('id',$id)->update($memberChangeStatus);
+                if ($createMember) {
+                    $request->session()->flash('success', 'Member Status Changed Successfully');
+                } else {
+                    $request->session()->flash('error', 'Something went wrong');
+                }
+            }
+            return redirect('/committee-members/manage');
+        }catch(\Exception $exception){
+            $data = [
+                'action' => 'Member Edit View',
                 'params' => $request->all(),
                 'exception' => $exception->getMessage()
             ];
