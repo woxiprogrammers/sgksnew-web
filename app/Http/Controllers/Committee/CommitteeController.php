@@ -142,6 +142,7 @@ class CommitteeController extends Controller
                     $srNo = $iterator + 1;
                     $committeeName = str_limit($finalCommitteesData[$pagination]->committee_name,15);
                     $description = str_limit($finalCommitteesData[$pagination]->description,20);
+                    $date = $finalCommitteesData[$pagination]->created_at;
                     $isActiveStatus = $finalCommitteesData[$pagination]->is_active;
                     $id = $finalCommitteesData[$pagination]->id;
                     $totalMembers = CommitteeMembers::where('committee_id',$id)->count();
@@ -163,6 +164,7 @@ class CommitteeController extends Controller
                         str_limit($gujaratiDetails['committee_name'],15),
                         $description,
                         str_limit($gujaratiDetails['description'],20),
+                        $date->format('d/M/Y'),
                         $totalMembers,
                         $isActive,
                         $actionButton

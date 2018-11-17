@@ -163,7 +163,7 @@ class MessageController extends Controller
                         str_limit($gujaratiDetails['title'],20),
                         $description,
                         str_limit($gujaratiDetails['description'],20),
-                        $date->format('d/m/Y'),
+                        $date->format('d/M/Y'),
                         $isActive,
                         $actionButton
                     ];
