@@ -142,16 +142,17 @@ class MessageController extends Controller
                     $length = $request->length;
                 }
                 for ($iterator = 0, $pagination = $request->start; $iterator < $length && $pagination < count($finalMessagesData); $iterator++, $pagination++) {
-                    $srNo = $finalMessagesData[$pagination]->id;
+                    $srNo = $iterator+1;
                     $title = str_limit($finalMessagesData[$pagination]->title,20);
                     $description = str_limit($finalMessagesData[$pagination]->description,20);
                     $date = $finalMessagesData[$pagination]->created_at;
                     $isActiveStatus = $finalMessagesData[$pagination]->is_active;
+                    $id = $finalMessagesData[$pagination]->id;
                     $gujaratiDetails = MessageTranslations::where('message_id',$finalMessagesData[$pagination]->id)->first();
                     if ($isActiveStatus) {
-                        $isActive = "<input type='checkbox' class='js-switch' onchange='return statusFolder(this.checked,$srNo)' id='status$srNo' value='$srNo' checked/>";
+                        $isActive = "<input type='checkbox' class='js-switch' onchange='return statusFolder(this.checked,$id)' id='status$id' value='$id' checked/>";
                     } else {
-                        $isActive = "<input type='checkbox' class='js-switch' onchange='return statusFolder(this.checked,$srNo)' id='status$srNo' value='$srNo'/>";
+                        $isActive = "<input type='checkbox' class='js-switch' onchange='return statusFolder(this.checked,$id)' id='status$id' value='$id'/>";
                     }
                     $actionButton = '<div id="sample_editable_1_new" class="btn btn-small blue" >
                         <a href="/message/edit/' . $finalMessagesData[$pagination]['id'] . '" style="color: white"> Edit

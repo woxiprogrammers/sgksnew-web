@@ -186,6 +186,7 @@ class MemberController extends Controller
                     $length = $request->length;
                 }
                 for ($iterator = 0, $pagination = $request->start; $iterator < $length && $pagination < count($finalMembersData); $iterator++, $pagination++) {
+                    $srNo = $iterator + 1;
                     $firstName = $finalMembersData[$pagination]->first_name;
                     $memberId= $finalMembersData[$pagination]->id;
                     $middleName = $finalMembersData[$pagination]->middle_name;
@@ -208,7 +209,7 @@ class MemberController extends Controller
                     </div>';
 
                     $records['data'][$iterator] = [
-                        $memberId,
+                        $srNo,
                         $firstName ." ".$middleName ." ".$lastName,
                         $gujaratiDetails['first_name']." ".$gujaratiDetails['middle_name']." ".$gujaratiDetails['last_name'],
                         $address,

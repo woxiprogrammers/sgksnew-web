@@ -139,18 +139,19 @@ class EventController extends Controller
                     $length = $request->length;
                 }
                 for ($iterator = 0, $pagination = $request->start; $iterator < $length && $pagination < count($finalEventsData); $iterator++, $pagination++) {
+                    $srNo = $iterator+1;
                     $eventName = str_limit($finalEventsData[$pagination]->event_name,15);
                     $description = str_limit($finalEventsData[$pagination]->description,15);
                     $venue = str_limit($finalEventsData[$pagination]->venue,15);
                     $startDate = $finalEventsData[$pagination]->start_date;
                     $endDate = $finalEventsData[$pagination]->end_date;
                     $isActiveStatus = $finalEventsData[$pagination]->is_active;
-                    $srNo = $finalEventsData[$pagination]->id;
+                    $id = $finalEventsData[$pagination]->id;
                     $gujaratiDetails = EventsTranslations::where('event_id',$finalEventsData[$pagination]->id)->first();
                     if($isActiveStatus){
-                        $isActive = "<input type='checkbox' class='js-switch' onchange='return statusFolder(this.checked,$srNo)' id='status$srNo' value='$srNo' checked/>";
+                        $isActive = "<input type='checkbox' class='js-switch' onchange='return statusFolder(this.checked,$id)' id='status$id' value='$id' checked/>";
                     }else{
-                        $isActive = "<input type='checkbox' class='js-switch' onchange='return statusFolder(this.checked,$srNo)' id='status$srNo' value='$srNo'/>";
+                        $isActive = "<input type='checkbox' class='js-switch' onchange='return statusFolder(this.checked,$id)' id='status$id' value='$id'/>";
                     }
                     $actionButton = '<div id="sample_editable_1_new" class="btn btn-small blue">
                         <a href="/event/edit/' . $finalEventsData[$pagination]['id'] . '" style="color: white">Edit

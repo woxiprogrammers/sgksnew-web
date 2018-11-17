@@ -139,16 +139,17 @@ class CommitteeController extends Controller
                     $length = $request->length;
                 }
                 for ($iterator = 0, $pagination = $request->start; $iterator < $length && $pagination < count($finalCommitteesData); $iterator++, $pagination++) {
+                    $srNo = $iterator + 1;
                     $committeeName = $finalCommitteesData[$pagination]->committee_name;
                     $description = $finalCommitteesData[$pagination]->description;
                     $isActiveStatus = $finalCommitteesData[$pagination]->is_active;
-                    $srNo = $finalCommitteesData[$pagination]->id;
-                    $totalMembers = CommitteeMembers::where('committee_id',$srNo)->count();
+                    $id = $finalCommitteesData[$pagination]->id;
+                    $totalMembers = CommitteeMembers::where('committee_id',$id)->count();
                     $gujaratiDetails = CommitteesTranslations::where('committee_id',$finalCommitteesData[$pagination]->id)->first();
                     if($isActiveStatus){
-                        $isActive = "<input type='checkbox' class='js-switch' onchange='return statusFolder(this.checked,$srNo)' id='status$srNo' value='$srNo' checked/>";
+                        $isActive = "<input type='checkbox' class='js-switch' onchange='return statusFolder(this.checked,$id)' id='status$id' value='$id' checked/>";
                     }else{
-                        $isActive = "<input type='checkbox' class='js-switch' onchange='return statusFolder(this.checked,$srNo)' id='status$srNo' value='$srNo'/>";
+                        $isActive = "<input type='checkbox' class='js-switch' onchange='return statusFolder(this.checked,$id)' id='status$id' value='$id'/>";
                     }
                     $actionButton = '<div id="sample_editable_1_new" class="btn btn-small blue">
                         <a href="/committee/edit/' . $finalCommitteesData[$pagination]['id'] . '" style="color: white">Edit
@@ -362,10 +363,10 @@ class CommitteeController extends Controller
                     $length = $request->length;
                 }
                 for ($iterator = 0, $pagination = $request->start; $iterator < $length && $pagination < count($finalMembersData); $iterator++, $pagination++) {
+                    $srNo = $iterator + 1;
                     $memberName = $finalMembersData[$pagination]->full_name;
                     $mobileNumber = $finalMembersData[$pagination]->mobile_number;
                     $emailId = $finalMembersData[$pagination]->email_id;
-                    $srNo = $finalMembersData[$pagination]->id;
                     $gujaratiDetails = CommitteeMembersTranslations::where('member_id',$finalMembersData[$pagination]->id)->first();
                     $actionButton = '<div id="sample_editable_1_new" class="btn btn-small blue" >
                         <a href="/committee-members/edit/' . $finalMembersData[$pagination]['id'] . '" style="color: white"> Edit

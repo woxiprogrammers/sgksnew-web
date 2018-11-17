@@ -53,7 +53,7 @@
                                                 <table class="table table-striped table-bordered table-hover table-checkable order-column" id="accountTable">
                                                     <thead>
                                                     <tr>
-                                                        <th>Account Id</th>
+                                                        <th> Sr.No </th>
                                                         <th width="10%"> Name </th>
                                                         <th> Gujarati Name </th>
                                                         <th> Description </th>

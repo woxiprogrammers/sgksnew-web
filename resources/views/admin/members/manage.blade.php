@@ -52,7 +52,7 @@
                                                 <table class="table table-striped table-bordered table-hover table-checkable order-column" id="memberTable">
                                                     <thead>
                                                     <tr>
-                                                        <th>Member Id</th>
+                                                        <th> Sr.No </th>
                                                         <th width="10%"> Name </th>
                                                         <th> Gujarati Name </th>
                                                         <th> Address </th>
