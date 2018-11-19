@@ -128,7 +128,16 @@ class MessageController extends Controller
                 $messageData = Messages::where('title','like','%'.$request->search_message.'%')
                     ->whereIn('id',$messageData)
                     ->pluck('id')->toArray();
-                if(count($messageData) > 0){
+                if(count($messageData) < 0){
+                    $filterFlag = false;
+                }
+            }
+            if($filterFlag == true && $request->has('search_city') && $request->search_city != ''){
+                $messageData = Messages::join('cities','cities.id','=','messages.city_id')
+                    ->where('cities.name','ilike','%'.$request->search_city.'%')
+                    ->pluck('messages.id')
+                    ->toArray();
+                if(count($messageData) < 0){
                     $filterFlag = false;
                 }
             }
@@ -145,6 +154,7 @@ class MessageController extends Controller
                     $srNo = $iterator+1;
                     $title = str_limit($finalMessagesData[$pagination]->title,20);
                     $description = str_limit($finalMessagesData[$pagination]->description,20);
+                    $city = Cities::where('id',$finalMessagesData[$pagination]->city_id)->pluck('name')->first();
                     $date = $finalMessagesData[$pagination]->created_at;
                     $isActiveStatus = $finalMessagesData[$pagination]->is_active;
                     $id = $finalMessagesData[$pagination]->id;
@@ -163,6 +173,7 @@ class MessageController extends Controller
                         str_limit($gujaratiDetails['title'],20),
                         $description,
                         str_limit($gujaratiDetails['description'],20),
+                        $city,
                         $date->format('d/M/Y'),
                         $isActive,
                         $actionButton

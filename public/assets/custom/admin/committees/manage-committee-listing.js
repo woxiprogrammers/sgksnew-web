@@ -74,11 +74,11 @@ var CommitteeListing = function () {
 
 jQuery(document).ready(function() {
     CommitteeListing.init();
-    /*$("input[name='search_name']").on('keyup',function(){
+    $("input[name='search_committee']").on('keyup',function(){
         $(".filter-submit").trigger('click');
     });
-    $("input[name='search_email']").on('keyup',function(){
+    $("input[name='search_city']").on('keyup',function(){
         $(".filter-submit").trigger('click');
-    });*/
+    });
 
 });

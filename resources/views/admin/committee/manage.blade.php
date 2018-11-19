@@ -59,6 +59,7 @@
                                                         <th> Gujarati Name </th>
                                                         <th> Description </th>
                                                         <th> Gujarati Description </th>
+                                                        <th> City </th>
                                                         <th> Date </th>
                                                         <th> Total Members </th>
                                                         <th> Status
@@ -72,6 +73,7 @@
                                                         <th></th>
                                                         <th></th>
                                                         <th></th>
+                                                        <th style="width: 20%"> <input type="text" class="form-control form-filter" name="search_city"> </th>
                                                         <th></th>
                                                         <th></th>
                                                         <th></th>

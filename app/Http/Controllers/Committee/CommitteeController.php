@@ -125,7 +125,17 @@ class CommitteeController extends Controller
                 $committeesData = Committees::where('committee_name','like','%'.$request->search_committee.'%')
                     ->whereIn('id',$committeesData)
                     ->pluck('id')->toArray();
-                if(count($committeesData) > 0){
+                if(count($committeesData) < 0){
+                    $filterFlag = false;
+                }
+            }
+
+            if($filterFlag == true && $request->has('search_city') && $request->search_city != ''){
+                $committeesData = Committees::join('cities','cities.id','=','committees.city_id')
+                    ->where('cities.name','ilike','%'.$request->search_city.'%')
+                    ->pluck('committees.id')
+                    ->toArray();
+                if(count($committeesData) < 0){
                     $filterFlag = false;
                 }
             }
@@ -142,6 +152,7 @@ class CommitteeController extends Controller
                     $srNo = $iterator + 1;
                     $committeeName = str_limit($finalCommitteesData[$pagination]->committee_name,15);
                     $description = str_limit($finalCommitteesData[$pagination]->description,20);
+                    $city = Cities::where('id',$finalCommitteesData[$pagination]->city_id)->pluck('name')->first();
                     $date = $finalCommitteesData[$pagination]->created_at;
                     $isActiveStatus = $finalCommitteesData[$pagination]->is_active;
                     $id = $finalCommitteesData[$pagination]->id;
@@ -164,6 +175,7 @@ class CommitteeController extends Controller
                         str_limit($gujaratiDetails['committee_name'],15),
                         $description,
                         str_limit($gujaratiDetails['description'],20),
+                        $city,
                         $date->format('d/M/Y'),
                         $totalMembers,
                         $isActive,

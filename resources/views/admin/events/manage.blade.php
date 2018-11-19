@@ -55,15 +55,16 @@
                                                     <tr>
                                                         <th> Sr.No </th>
                                                         <th width="10%"> Name </th>
-                                                        <th> Gujarati Name </th>
-                                                        <th> Description </th>
-                                                        <th> Gujarati Description </th>
-                                                        <th> Venue </th>
-                                                        <th> Gujarati Venue </th>
-                                                        <th> Start date </th>
-                                                        <th> End date </th>
-                                                        <th> Status <i class="fa fa-check-square"> Enable</i></th>
-                                                        <th> Actions </th>
+                                                        <th>Gujarati Name</th>
+                                                        <th>Description</th>
+                                                        <th>Gujarati Description</th>
+                                                        <th>Venue</th>
+                                                        <th>Gujarati Venue</th>
+                                                        <th width="10%">  City  </th>
+                                                        <th>Start date</th>
+                                                        <th>End date</th>
+                                                        <th>Status<i class="fa fa-check-square"> Enable</i></th>
+                                                        <th>Actions</th>
                                                     </tr>
                                                     <tr class="filter">
                                                         <th></th>
@@ -73,6 +74,7 @@
                                                         <th></th>
                                                         <th></th>
                                                         <th></th>
+                                                        <th> <input type="text" class="form-control form-filter" name="search_city"> </th>
                                                         <th></th>
                                                         <th></th>
                                                         <th></th>

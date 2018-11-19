@@ -83,5 +83,8 @@ jQuery(document).ready(function() {
     $("input[name='search_message']").on('keyup',function(){
         $(".filter-submit").trigger('click');
     });
+    $("input[name='search_city']").on('keyup',function(){
+        $(".filter-submit").trigger('click');
+    });
 
 });

@@ -58,16 +58,18 @@
                                                         <th> Gujarati Title </th>
                                                         <th> Description </th>
                                                         <th> Gujarati Description </th>
+                                                        <th> City </th>
                                                         <th> Date </th>
                                                         <th> Status <i class="fa fa-check-square"> Enable </i></th>
                                                         <th> Actions </th>
                                                     </tr>
                                                     <tr class="filter">
                                                         <th></th>
-                                                        <th> <input type="text" class="form-control form-filter" name="search_event"> </th>
+                                                        <th> <input type="text" class="form-control form-filter" name="search_message"> </th>
                                                         <th></th>
                                                         <th></th>
                                                         <th></th>
+                                                        <th> <input type="text" class="form-control form-filter" name="search_city"> </th>
                                                         <th></th>
                                                         <th></th>
                                                         <th>
