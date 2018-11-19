@@ -143,8 +143,8 @@ class EventController extends Controller
                     $eventName = str_limit($finalEventsData[$pagination]->event_name,15);
                     $description = str_limit($finalEventsData[$pagination]->description,15);
                     $venue = str_limit($finalEventsData[$pagination]->venue,15);
-                    $startDate = $finalEventsData[$pagination]->start_date;
-                    $endDate = $finalEventsData[$pagination]->end_date;
+                    $startDate = strtotime($finalEventsData[$pagination]->start_date);
+                    $endDate = strtotime($finalEventsData[$pagination]->end_date);
                     $isActiveStatus = $finalEventsData[$pagination]->is_active;
                     $id = $finalEventsData[$pagination]->id;
                     $gujaratiDetails = EventsTranslations::where('event_id',$finalEventsData[$pagination]->id)->first();
@@ -164,8 +164,8 @@ class EventController extends Controller
                         str_limit($gujaratiDetails['description'],15),
                         $venue,
                         str_limit($gujaratiDetails['venue'],15),
-                        $startDate,
-                        $endDate,
+                        date('d/M/Y', $startDate ),
+                        date('d/M/Y', $endDate ),
                         $isActive,
                         $actionButton
                     ];
