@@ -157,10 +157,14 @@
                                                                 <div class="col-md-12">
                                                                     @if($messageImage != null)
                                                                         <div class="col-md-2">
-                                                                            <img src="{{$messageImage}}" style="height: 150px; width: 150px" />
-                                                                            <span>Delete Image
-                                                                            <input type='checkbox' class='js-switch' name="images" onchange='return deleteImage(this.checked,"{{$messageData['id']}}")' value='{{$messageImage}}'/>
-                                                                            </span>
+                                                                            <div class="content">
+                                                                                <img src="{{$messageImage}}" style="height: 150px; width: 150px" />
+                                                                            </div>
+                                                                            <div>
+                                                                                <span>Delete Image</span>
+                                                                                <input type='checkbox' class='js-switch' name="images" onchange='return deleteImage(this.checked,"{{$messageData['id']}}")' value='{{$messageImage}}'/>
+                                                                            </div>
+                                                                        </div>
                                                                         </div>
                                                                     @endif
                                                                 </div>

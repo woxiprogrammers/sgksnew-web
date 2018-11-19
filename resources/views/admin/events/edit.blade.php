@@ -164,10 +164,13 @@
                                                                     @if($eventImages[0] != null)
                                                                         @for($index = 0;$index < count($eventImages); $index++)
                                                                             <div class="col-md-2">
+                                                                                <div class="content">
                                                                                 <img src="{{$eventImages[$index]}}" style="height: 150px; width: 150px" />
-                                                                                <span>delete image
-                                                                                <input type='checkbox' class='js-switch' name="images[]" onchange='return deleteImage(this.checked,"{{$eventImagesId[$index]}}","{{$eventData['id']}}")' id='' value='{{$eventImages[$index]}}'/>
-                                                                                </span>
+                                                                                </div>
+                                                                                <div class="content">
+                                                                                    <span>delete image</span>
+                                                                                    <input type='checkbox' class='js-switch' name="images[]" onchange='return deleteImage(this.checked,"{{$eventImagesId[$index]}}","{{$eventData['id']}}")' id='' value='{{$eventImages[$index]}}'/>
+                                                                                </div>
                                                                             </div>
                                                                         @endfor
                                                                     @endif
