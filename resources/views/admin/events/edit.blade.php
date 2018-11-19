@@ -162,10 +162,14 @@
                                                                 </div>
                                                                 <div class="col-md-12">
                                                                     @if($eventImages[0] != null)
-                                                                    @for($index = 0;$index < count($eventImages); $index++)
-                                                                    <img src="{{$eventImages[$index]}}" style="height: 150px; width: 150px" />
-                                                                        <input type='checkbox' class='js-switch' name="images[]" onchange='return deleteImage(this.checked,"{{$eventImagesId[$index]}}","{{$eventData['id']}}")' id='' value='{{$eventImages[$index]}}'/>
-                                                                    @endfor
+                                                                        @for($index = 0;$index < count($eventImages); $index++)
+                                                                            <div class="col-md-2">
+                                                                                <img src="{{$eventImages[$index]}}" style="height: 150px; width: 150px" />
+                                                                                <span>delete image
+                                                                                <input type='checkbox' class='js-switch' name="images[]" onchange='return deleteImage(this.checked,"{{$eventImagesId[$index]}}","{{$eventData['id']}}")' id='' value='{{$eventImages[$index]}}'/>
+                                                                                </span>
+                                                                            </div>
+                                                                        @endfor
                                                                     @endif
                                                                 </div>
                                                             </div>
