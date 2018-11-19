@@ -421,8 +421,12 @@ class CommitteeController extends Controller
         try{
             $memberData  = CommitteeMembers::where('id',$id)->first();
             $memberDataGujarati = CommitteeMembersTranslations::where('member_id',$id)->first();
-            $createMemberDirectoryName = sha1($memberData->id);
-            $memberImg = env('COMMITTEE_MEMBER_IMAGES_UPLOAD').DIRECTORY_SEPARATOR.$createMemberDirectoryName.DIRECTORY_SEPARATOR.$memberData['profile_image'];
+            if($memberData['profile_image'] != null) {
+                $createMemberDirectoryName = sha1($memberData->id);
+                $memberImg = env('COMMITTEE_MEMBER_IMAGES_UPLOAD') . DIRECTORY_SEPARATOR . $createMemberDirectoryName . DIRECTORY_SEPARATOR . $memberData['profile_image'];
+            }else{
+                $memberImg = null;
+            }
             return view('admin.committee.members.edit')->with(compact('memberData','memberImg','memberDataGujarati'));
         }catch(\Exception $exception){
             $data = [

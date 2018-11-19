@@ -73,8 +73,10 @@
                                                             <div class="row">
                                                                 <div class="col-md-2" style="text-align: center">
                                                                     <div class="col-md-12">
-                                                                        <img src="{{$memberImg}}" style="height: 150px; width: 150px">
-                                                                        <h4 style="font-weight: 400">{{$memberData['full_name']}}</h4>
+                                                                        @if($memberImg != null)
+                                                                            <img src="{{$memberImg}}" style="height: 150px; width: 150px">
+                                                                            <h4 style="font-weight: 400">{{$memberData['full_name']}}</h4>
+                                                                        @endif
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-10">
