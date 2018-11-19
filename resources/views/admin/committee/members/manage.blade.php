@@ -27,6 +27,10 @@
                                 <div class="page-title col-md-2">
                                     <h1>Members Listing</h1>
                                 </div>
+                                <div class="btn red-flamingo col-md-1 pull-right" style="margin-top: 1%"><a href="/committee/manage" style="color: white">
+                                        Back
+                                    </a>
+                                </div>
                                 <div id="members_add" class="btn red-flamingo col-md-2 pull-right" style="margin-top: 1%"><a href="/committee-members/create/{{$id}}" style="color: white">
                                         Add Members
                                     </a>
