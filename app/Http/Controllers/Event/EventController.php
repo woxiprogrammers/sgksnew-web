@@ -29,7 +29,7 @@ class EventController extends Controller
         }catch(\Exception $exception){
             $data = [
                 'params' => $request->all(),
-                'action' => 'Members View page',
+                'action' => 'Event View page',
                 'exception' => $exception->getMessage()
             ];
             Log::critical(json_encode($data));
@@ -44,7 +44,7 @@ class EventController extends Controller
         }catch(\Exception $exception){
             $data = [
                 'params' => $request->all(),
-                'action' => 'Create members View',
+                'action' => 'Create Event View',
                 'exception' => $exception->getMessage()
             ];
             Log::critical(json_encode($data));
@@ -104,7 +104,7 @@ class EventController extends Controller
             return redirect('/event/manage');
         }catch(\Exception $exception){
             $data = [
-                'action' => 'Create committee',
+                'action' => 'Create Event',
                 'params' => $request->all(),
                 'exception' => $exception->getMessage()
             ];
@@ -229,7 +229,7 @@ class EventController extends Controller
         }catch(\Exception $exception){
             $data = [
                 'params' => $request->all(),
-                'action' => 'Create event View',
+                'action' => 'Edit event View',
                 'exception' => $exception->getMessage()
             ];
             Log::critical(json_encode($data));
@@ -323,7 +323,7 @@ class EventController extends Controller
             return $cities;
         }catch(\Exception $exception){
             $data = [
-                'action' => 'listing of states',
+                'action' => 'listing of cities',
                 'params' => $request->all(),
                 'exception' => $exception->getMessage()
             ];

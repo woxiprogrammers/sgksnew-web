@@ -224,7 +224,7 @@ class MessageController extends Controller
         }catch(\Exception $exception){
             $data = [
                 'params' => $request->all(),
-                'action' => 'Create Message View',
+                'action' => 'Edit Message View',
                 'exception' => $exception->getMessage()
             ];
             Log::critical(json_encode($data));
@@ -292,7 +292,7 @@ class MessageController extends Controller
         }catch(\Exception $e){
             $data = [
                 'params' => $request->all(),
-                'action' => 'Member Edit',
+                'action' => 'Message Edit',
                 'exception' => $e->getMessage()
             ];
             Log::critical(json_encode($data));
@@ -322,7 +322,7 @@ class MessageController extends Controller
             return $cities;
         }catch(\Exception $exception){
             $data = [
-                'action' => 'listing of states',
+                'action' => 'listing of cities',
                 'params' => $request->all(),
                 'exception' => $exception->getMessage()
             ];
@@ -367,7 +367,7 @@ class MessageController extends Controller
             return redirect('/message/manage');
         }catch(\Exception $exception){
             $data = [
-                'action' => 'Event Change Status',
+                'action' => 'Message Change Status',
                 'params' => $request->all(),
                 'exception' => $exception->getMessage()
             ];

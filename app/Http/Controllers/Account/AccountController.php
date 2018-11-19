@@ -28,7 +28,7 @@ class AccountController extends Controller
         }catch(\Exception $exception){
             $data = [
                 'params' => $request->all(),
-                'action' => 'Members View page',
+                'action' => 'Accounts View page',
                 'exception' => $exception->getMessage()
             ];
             Log::critical(json_encode($data));
@@ -43,7 +43,7 @@ class AccountController extends Controller
         }catch(\Exception $exception){
             $data = [
                 'params' => $request->all(),
-                'action' => 'Create members View',
+                'action' => 'Create Account View',
                 'exception' => $exception->getMessage()
             ];
             Log::critical(json_encode($data));
@@ -284,7 +284,7 @@ class AccountController extends Controller
             return $cities;
         }catch(\Exception $exception){
             $data = [
-                'action' => 'listing of states',
+                'action' => 'listing of cities',
                 'params' => $request->all(),
                 'exception' => $exception->getMessage()
             ];
@@ -310,7 +310,7 @@ class AccountController extends Controller
             }
         }catch(\Exception $exception){
             $data = [
-                'action' => 'delete image',
+                'action' => 'delete account image',
                 'params' => $request->all(),
                 'exception' => $exception->getMessage()
             ];

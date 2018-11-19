@@ -104,7 +104,7 @@ class CommitteeController extends Controller
             return $cities;
         }catch(\Exception $exception){
             $data = [
-                'action' => 'listing of states',
+                'action' => 'listing of Cities',
                 'params' => $request->all(),
                 'exception' => $exception->getMessage()
             ];
@@ -273,7 +273,7 @@ class CommitteeController extends Controller
             return view('admin.committee.members.manage')->with(compact('id'));
         }catch(\Exception $exception){
             $data = [
-                'action' => 'Member View page',
+                'action' => 'Committee Member View page',
                 'params' => $request->all(),
                 'exception' => $exception->getMessage()
             ];
@@ -342,7 +342,7 @@ class CommitteeController extends Controller
             return redirect("/committee-members/manage/$id");
         }catch(\Exception $exception){
             $data = [
-                'action' => 'Create members',
+                'action' => 'Create Committee members',
                 'params' => $request->all(),
                 'exception' => $exception->getMessage()
             ];
@@ -426,7 +426,7 @@ class CommitteeController extends Controller
             return view('admin.committee.members.edit')->with(compact('memberData','memberImg','memberDataGujarati'));
         }catch(\Exception $exception){
             $data = [
-                'action' => 'Member Edit View',
+                'action' => 'Committee Member Edit View',
                 'params' => $request->all(),
                 'exception' => $exception->getMessage()
             ];
@@ -523,7 +523,7 @@ class CommitteeController extends Controller
             return redirect('/committee/manage');
         }catch(\Exception $exception){
             $data = [
-                'action' => 'Committee Edit View',
+                'action' => 'Change Committee status View',
                 'params' => $request->all(),
                 'exception' => $exception->getMessage()
             ];
@@ -556,7 +556,7 @@ class CommitteeController extends Controller
             return redirect('/committee-members/manage');
         }catch(\Exception $exception){
             $data = [
-                'action' => 'Member Edit View',
+                'action' => 'Change committee member status',
                 'params' => $request->all(),
                 'exception' => $exception->getMessage()
             ];
