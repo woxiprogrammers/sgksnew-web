@@ -168,8 +168,7 @@
                                                                         </div>
                                                                     @endif
                                                                 </div>
-                                                            </div>
-                                                        </fieldset>
+                                                            </fieldset>
                                                         <fieldset>
                                                             <div class="form-group">
                                                                 <div class="col-md-3 col-md-offset-7" >
