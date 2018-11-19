@@ -235,10 +235,13 @@ class MessageController extends Controller
     public function edit(Request $request,$id){
         try{
             $data = $request->all();
+            $messageCity = Messages::where('id',$id)->pluck('city_id');
             //while creating new buzz deactivate all previous buzz
             if($data['en']['message_type'] == 1){
-                $buzzMessages = Messages::where('message_type_id',1)->
-                where('is_active',true)->get();
+                $buzzMessages = Messages::where('message_type_id',1)
+                                ->where('is_active',true)
+                                ->where('city_id',$messageCity)
+                                ->get();
                 foreach ($buzzMessages as $buzzMessage){
                     $buzzMessage->update([
                         'is_active' => false,
@@ -249,9 +252,7 @@ class MessageController extends Controller
             $messageData['description'] = $data['en']['description'];
             $messageData['message_type_id'] = $data['en']['message_type'];
             $messageData['city_id'] = $data['en']['city'];
-            if($data['en']['message_type'] == 1){
-                $messageData['is_active'] = true;
-            }
+            $messageData['is_active'] = true;
             $editMessage = Messages::where('id',$id)->update($messageData);
             if(array_key_exists('gj',$data)){
                 if(array_key_exists('title',$data['gj'])){
@@ -336,8 +337,10 @@ class MessageController extends Controller
             $status = $messageData['is_active'];
             //deactivate all buzz messages while activating this
             if($messageData['message_type_id'] == 1 && $messageData['is_active'] == false){
-                $buzzMessages = Messages::where('message_type_id',1)->
-                where('is_active',true)->get();
+                $buzzMessages = Messages::where('message_type_id',1)
+                                ->where('is_active',true)
+                                ->where('city_id',$messageData['city_id'])
+                                ->get();
                 foreach ($buzzMessages as $buzzMessage){
                     $buzzMessage->update([
                         'is_active' => false,
