@@ -23,10 +23,10 @@
                         <div class="page-head">
                             <div class="container">
                                 <!-- BEGIN PAGE TITLE -->
-                                <div class="page-title">
+                                <div class="page-title col-md-2">
                                     <h1>Members Listing</h1>
                                 </div>
-                                <div id="members_add" class="btn red-flamingo" style="margin-top: 1%; margin-left: 77%"><a href="/member/create" style="color: white">
+                                <div id="members_add" class="btn red-flamingo col-md-2 pull-right" style="margin-top: 1%"><a href="/member/create" style="color: white">
                                         Add Members
                                     </a>
                                 </div>
@@ -52,7 +52,7 @@
                                                 <table class="table table-striped table-bordered table-hover table-checkable order-column" id="memberTable">
                                                     <thead>
                                                     <tr>
-                                                        <th>Member Id</th>
+                                                        <th> Sr.No </th>
                                                         <th width="10%"> Name </th>
                                                         <th> Gujarati Name </th>
                                                         <th> Address </th>
@@ -123,7 +123,7 @@
         });
 
        function statusFolder(status,id){
-           if(confirm("are you sure ?")){
+           if(confirm("Change Status! are you sure ?")){
                    var route='/member/change-status/'+id;
                    $.get(route,function(res){
                        if(res == 200){

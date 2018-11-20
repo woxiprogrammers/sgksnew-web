@@ -34,8 +34,12 @@
                         <div class="page-head">
                             <div class="container">
                                 <!-- BEGIN PAGE TITLE -->
-                                <div class="page-title">
+                                <div class="page-title col-md-2">
                                     <h1>Edit Member</h1>
+                                </div>
+                                <div class="btn red-flamingo col-md-1 pull-right" style="margin-top: 1%"><a href="/committee-members/manage/{{$memberData['committee_id']}}" style="color: white">
+                                        Back
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -69,8 +73,10 @@
                                                             <div class="row">
                                                                 <div class="col-md-2" style="text-align: center">
                                                                     <div class="col-md-12">
-                                                                        <img src="{{$memberImg}}" style="height: 150px; width: 150px">
-                                                                        <h4 style="font-weight: 400">{{$memberData['full_name']}}</h4>
+                                                                        @if($memberImg != null)
+                                                                            <img src="{{$memberImg}}" style="height: 150px; width: 150px">
+                                                                            <h4 style="font-weight: 400">{{$memberData['full_name']}}</h4>
+                                                                        @endif
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-md-10">
@@ -157,11 +163,11 @@
     <script  src="/assets/global/plugins/datatables/datatables.min.js"></script>
     <script src="/assets/global/scripts/datatable.js" type="text/javascript"></script>
     <script src="/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js" type="text/javascript"></script>
-    <script src="/assets/custom/admin/members/create-members-validation.js" type="text/javascript"></script>
+    <script src="/assets/custom/admin/committees/committee-members-validation.js" type="text/javascript"></script>
 
     <script>
         $(document).ready(function () {
-            Create.init();
+            CreateMembers.init();
         });
 
         $("#imageupload").on('change', function () {

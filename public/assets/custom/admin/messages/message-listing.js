@@ -1,14 +1,19 @@
+/**
+ * Created by vaibhav on 16/11/18.
+ */
+/**
+ * Created by vaibhav on 5/11/18.
+ */
 
-var CommitteeListing = function () {
+var MessagesListing = function () {
     var handleOrders = function () {
-
         var grid = new Datatable();
-
         grid.init({
-            src: $("#committeeTable"),
+            src: $("#messageTable"),
             onSuccess: function (grid) {
                 // execute some code after table records loaded
             },
+
             onError: function (grid) {
                 // execute some code on network or other general error
             },
@@ -24,8 +29,9 @@ var CommitteeListing = function () {
                     [50, 100, 150] // change per page values here
                 ],
                 "pageLength": 50, // default record count per page
+
                 "ajax": {
-                    "url": "/committee/listing" // ajax source
+                    "url": "/message/listing" // ajax source
                 },
                 "order": [
                     [1, "asc"]
@@ -73,8 +79,8 @@ var CommitteeListing = function () {
 
 
 jQuery(document).ready(function() {
-    CommitteeListing.init();
-    $("input[name='search_committee']").on('keyup',function(){
+    MessagesListing.init();
+    $("input[name='search_message']").on('keyup',function(){
         $(".filter-submit").trigger('click');
     });
     $("input[name='search_city']").on('keyup',function(){

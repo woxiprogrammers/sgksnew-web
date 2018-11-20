@@ -34,8 +34,12 @@
                         <div class="page-head">
                             <div class="container">
                                 <!-- BEGIN PAGE TITLE -->
-                                <div class="page-title">
+                                <div class="page-title col-md-2">
                                     <h1>Edit Event</h1>
+                                </div>
+                                <div class="btn red-flamingo col-md-1 pull-right" style="margin-top: 1%"><a href="/event/manage" style="color: white">
+                                        Back
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -158,10 +162,17 @@
                                                                 </div>
                                                                 <div class="col-md-12">
                                                                     @if($eventImages[0] != null)
-                                                                    @for($index = 0;$index < count($eventImages); $index++)
-                                                                    <img src="{{$eventImages[$index]}}" style="height: 150px; width: 150px" />
-                                                                        <input type='checkbox' class='js-switch' name="images[]" onchange='return deleteImage(this.checked,"{{$eventImagesId[$index]}}","{{$eventData['id']}}")' id='' value='{{$eventImages[$index]}}'/>
-                                                                    @endfor
+                                                                        @for($index = 0;$index < count($eventImages); $index++)
+                                                                            <div class="col-md-2">
+                                                                                <div class="content">
+                                                                                <img src="{{$eventImages[$index]}}" style="height: 150px; width: 150px" />
+                                                                                </div>
+                                                                                <div class="content">
+                                                                                    <span>delete image</span>
+                                                                                    <input type='checkbox' class='js-switch' name="images[]" onchange='return deleteImage(this.checked,"{{$eventImagesId[$index]}}","{{$eventData['id']}}")' id='' value='{{$eventImages[$index]}}'/>
+                                                                                </div>
+                                                                            </div>
+                                                                        @endfor
                                                                     @endif
                                                                 </div>
                                                             </div>
@@ -269,7 +280,7 @@
             }
         });
         function deleteImage(status,imageId,eventId){
-            if (confirm("are you sure ?")) {
+            if (confirm("Delete Image! are you sure ?")) {
                 var route = '/event/delete-image/' + imageId;
                 $.get(route, function () {
                     var route = '/event/edit/' + eventId;

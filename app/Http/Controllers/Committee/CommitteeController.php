@@ -104,7 +104,7 @@ class CommitteeController extends Controller
             return $cities;
         }catch(\Exception $exception){
             $data = [
-                'action' => 'listing of states',
+                'action' => 'listing of Cities',
                 'params' => $request->all(),
                 'exception' => $exception->getMessage()
             ];
@@ -125,7 +125,17 @@ class CommitteeController extends Controller
                 $committeesData = Committees::where('committee_name','like','%'.$request->search_committee.'%')
                     ->whereIn('id',$committeesData)
                     ->pluck('id')->toArray();
-                if(count($committeesData) > 0){
+                if(count($committeesData) < 0){
+                    $filterFlag = false;
+                }
+            }
+
+            if($filterFlag == true && $request->has('search_city') && $request->search_city != ''){
+                $committeesData = Committees::join('cities','cities.id','=','committees.city_id')
+                    ->where('cities.name','ilike','%'.$request->search_city.'%')
+                    ->pluck('committees.id')
+                    ->toArray();
+                if(count($committeesData) < 0){
                     $filterFlag = false;
                 }
             }
@@ -139,16 +149,19 @@ class CommitteeController extends Controller
                     $length = $request->length;
                 }
                 for ($iterator = 0, $pagination = $request->start; $iterator < $length && $pagination < count($finalCommitteesData); $iterator++, $pagination++) {
-                    $committeeName = $finalCommitteesData[$pagination]->committee_name;
-                    $description = $finalCommitteesData[$pagination]->description;
+                    $srNo = $iterator + 1;
+                    $committeeName = str_limit($finalCommitteesData[$pagination]->committee_name,15);
+                    $description = str_limit($finalCommitteesData[$pagination]->description,20);
+                    $city = Cities::where('id',$finalCommitteesData[$pagination]->city_id)->pluck('name')->first();
+                    $date = $finalCommitteesData[$pagination]->created_at;
                     $isActiveStatus = $finalCommitteesData[$pagination]->is_active;
-                    $srNo = $finalCommitteesData[$pagination]->id;
-                    $totalMembers = CommitteeMembers::where('committee_id',$srNo)->count();
+                    $id = $finalCommitteesData[$pagination]->id;
+                    $totalMembers = CommitteeMembers::where('committee_id',$id)->count();
                     $gujaratiDetails = CommitteesTranslations::where('committee_id',$finalCommitteesData[$pagination]->id)->first();
                     if($isActiveStatus){
-                        $isActive = "<input type='checkbox' class='js-switch' onchange='return statusFolder(this.checked,$srNo)' id='status$srNo' value='$srNo' checked/>";
+                        $isActive = "<input type='checkbox' class='js-switch' onchange='return statusFolder(this.checked,$id)' id='status$id' value='$id' checked/>";
                     }else{
-                        $isActive = "<input type='checkbox' class='js-switch' onchange='return statusFolder(this.checked,$srNo)' id='status$srNo' value='$srNo'/>";
+                        $isActive = "<input type='checkbox' class='js-switch' onchange='return statusFolder(this.checked,$id)' id='status$id' value='$id'/>";
                     }
                     $actionButton = '<div id="sample_editable_1_new" class="btn btn-small blue">
                         <a href="/committee/edit/' . $finalCommitteesData[$pagination]['id'] . '" style="color: white">Edit
@@ -159,9 +172,11 @@ class CommitteeController extends Controller
                     $records['data'][$iterator] = [
                         $srNo,
                         $committeeName,
-                        $gujaratiDetails['committee_name'],
+                        str_limit($gujaratiDetails['committee_name'],15),
                         $description,
-                        $gujaratiDetails['description'],
+                        str_limit($gujaratiDetails['description'],20),
+                        $city,
+                        $date->format('d/M/Y'),
                         $totalMembers,
                         $isActive,
                         $actionButton
@@ -258,7 +273,7 @@ class CommitteeController extends Controller
             return view('admin.committee.members.manage')->with(compact('id'));
         }catch(\Exception $exception){
             $data = [
-                'action' => 'Member View page',
+                'action' => 'Committee Member View page',
                 'params' => $request->all(),
                 'exception' => $exception->getMessage()
             ];
@@ -327,7 +342,7 @@ class CommitteeController extends Controller
             return redirect("/committee-members/manage/$id");
         }catch(\Exception $exception){
             $data = [
-                'action' => 'Create members',
+                'action' => 'Create Committee members',
                 'params' => $request->all(),
                 'exception' => $exception->getMessage()
             ];
@@ -362,11 +377,18 @@ class CommitteeController extends Controller
                     $length = $request->length;
                 }
                 for ($iterator = 0, $pagination = $request->start; $iterator < $length && $pagination < count($finalMembersData); $iterator++, $pagination++) {
+                    $srNo = $iterator + 1;
+                    $committeeMemberId = $finalMembersData[$pagination]->id;
                     $memberName = $finalMembersData[$pagination]->full_name;
                     $mobileNumber = $finalMembersData[$pagination]->mobile_number;
                     $emailId = $finalMembersData[$pagination]->email_id;
-                    $srNo = $finalMembersData[$pagination]->id;
+                    $isActiveStatus = $finalMembersData[$pagination]->is_active;
                     $gujaratiDetails = CommitteeMembersTranslations::where('member_id',$finalMembersData[$pagination]->id)->first();
+                    if($isActiveStatus){
+                        $isActive = "<input type='checkbox' class='js-switch' onchange='return statusFolder(this.checked,$committeeMemberId)' id='status$committeeMemberId' value='$committeeMemberId' checked/>";
+                    }else{
+                        $isActive = "<input type='checkbox' class='js-switch' onchange='return statusFolder(this.checked,$committeeMemberId)' id='status$committeeMemberId' value='$committeeMemberId'/>";
+                    }
                     $actionButton = '<div id="sample_editable_1_new" class="btn btn-small blue" >
                         <a href="/committee-members/edit/' . $finalMembersData[$pagination]['id'] . '" style="color: white"> Edit
                     </div>';
@@ -376,6 +398,7 @@ class CommitteeController extends Controller
                         $gujaratiDetails['full_name'],
                         $mobileNumber,
                         $emailId,
+                        $isActive,
                         $actionButton
                     ];
                 }
@@ -398,12 +421,16 @@ class CommitteeController extends Controller
         try{
             $memberData  = CommitteeMembers::where('id',$id)->first();
             $memberDataGujarati = CommitteeMembersTranslations::where('member_id',$id)->first();
-            $createMemberDirectoryName = sha1($memberData->id);
-            $memberImg = env('COMMITTEE_MEMBER_IMAGES_UPLOAD').DIRECTORY_SEPARATOR.$createMemberDirectoryName.DIRECTORY_SEPARATOR.$memberData['profile_image'];
+            if($memberData['profile_image'] != null) {
+                $createMemberDirectoryName = sha1($memberData->id);
+                $memberImg = env('COMMITTEE_MEMBER_IMAGES_UPLOAD') . DIRECTORY_SEPARATOR . $createMemberDirectoryName . DIRECTORY_SEPARATOR . $memberData['profile_image'];
+            }else{
+                $memberImg = null;
+            }
             return view('admin.committee.members.edit')->with(compact('memberData','memberImg','memberDataGujarati'));
         }catch(\Exception $exception){
             $data = [
-                'action' => 'Member Edit View',
+                'action' => 'Committee Member Edit View',
                 'params' => $request->all(),
                 'exception' => $exception->getMessage()
             ];
@@ -500,7 +527,40 @@ class CommitteeController extends Controller
             return redirect('/committee/manage');
         }catch(\Exception $exception){
             $data = [
-                'action' => 'Committee Edit View',
+                'action' => 'Change Committee status View',
+                'params' => $request->all(),
+                'exception' => $exception->getMessage()
+            ];
+            Log::critical(json_encode($data));
+            abort(500);
+        }
+    }
+
+    public function changeMemberStatus(Request $request,$id){
+        try{
+            $memberData  = CommitteeMembers::where('id',$id)->first();
+            $status = $memberData['is_active'];
+            if($status){
+                $memberChangeStatus['is_active'] = false;
+                $createMember = CommitteeMembers::where('id',$id)->update($memberChangeStatus);
+                if ($createMember) {
+                    $request->session()->flash('success', 'Member Status Changed Successfully');
+                } else {
+                    $request->session()->flash('error', 'Something went wrong');
+                }
+            }else{
+                $memberChangeStatus['is_active'] = true;
+                $createMember = CommitteeMembers::where('id',$id)->update($memberChangeStatus);
+                if ($createMember) {
+                    $request->session()->flash('success', 'Member Status Changed Successfully');
+                } else {
+                    $request->session()->flash('error', 'Something went wrong');
+                }
+            }
+            return redirect('/committee-members/manage');
+        }catch(\Exception $exception){
+            $data = [
+                'action' => 'Change committee member status',
                 'params' => $request->all(),
                 'exception' => $exception->getMessage()
             ];

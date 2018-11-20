@@ -2,12 +2,12 @@
 /**
  * Created by PhpStorm.
  * User: vaibhav
- * Date: 24/10/18
- * Time: 2:38 PM
+ * Date: 15/11/18
+ * Time: 1:31 PM
  */
 ?>
 @extends('layout.master')
-@section('title','Sgks|committee')
+@section('title','Sgks|Messages')
 @include('partials.common.navbar')
 @section('css')
     <style>
@@ -35,9 +35,9 @@
                             <div class="container">
                                 <!-- BEGIN PAGE TITLE -->
                                 <div class="page-title col-md-2">
-                                    <h1>Create Committee</h1>
+                                    <h1>Create Message</h1>
                                 </div>
-                                <div class="btn red-flamingo col-md-1 pull-right" style="margin-top: 1%"><a href="/committee/manage" style="color: white">
+                                <div class="btn red-flamingo col-md-1 pull-right" style="margin-top: 1%"><a href="/message/manage" style="color: white">
                                         Back
                                     </a>
                                 </div>
@@ -49,7 +49,7 @@
                                     <!-- BEGIN VALIDATION STATES-->
                                     <div class="portlet light ">
                                         <div class="portlet-body form">
-                                            <form role="form" id="create-committee" class="form-horizontal" action="/committee/create" method="post">
+                                                <form role="form" id="create-messages" class="form-horizontal" action="/message/create" method="post">
                                                 {!! csrf_field() !!}
                                                 <div class="tab-content">
                                                     <div class="tab-pane fade in active" id="tab_general">
@@ -71,26 +71,38 @@
                                                         </fieldset>
                                                         <fieldset>
                                                             <div class="form-group">
-                                                                <label class="col-md-3 control-label">Committee Name
+                                                                <label class="col-md-3 control-label">Select Message Type
                                                                     <span style="color: red">*</span>
                                                                 </label>
                                                                 <div class="col-md-4">
-                                                                    <input type="text" id="committee_name" name="en[committee_name]" class="form-control " placeholder="Enter Committee Name" required>
-                                                                </div>
-                                                                <div class="col-md-4" >
-                                                                    <input type="text" id="committee_name_gj" name="gj[committee_name]" class="form-control " placeholder="Enter Committee Name in gujarati">
+                                                                    @foreach($message_Types as $message_Type)
+                                                                        <div class="form-check form-check-inline">
+                                                                            <input class="form-check-input" type="radio" name="en[message_type]" id="message_type" value="{{$message_Type['id']}}">
+                                                                            <label class="form-check-label" for="message_type">{{$message_Type['name']}}</label>
+                                                                        </div>
+                                                                    @endforeach
                                                                 </div>
                                                             </div>
-
+                                                            <div class="form-group">
+                                                                <label class="col-md-3 control-label">Title
+                                                                    <span style="color: red">*</span>
+                                                                </label>
+                                                                <div class="col-md-4">
+                                                                    <input type="text" id="title" name="en[title]" class="form-control " placeholder="Enter Title" required>
+                                                                </div>
+                                                                <div class="col-md-4" >
+                                                                    <input type="text" id="title_gj" name="gj[title]" class="form-control " placeholder="Enter Title in gujarati" >
+                                                                </div>
+                                                            </div>
                                                             <div class="form-group">
                                                                 <label class="col-md-3 control-label">Description
                                                                     <span style="color: red">*</span>
                                                                 </label>
                                                                 <div class="col-md-4">
-                                                                    <textarea id="description" name="en[description]" class="form-control " placeholder="Enter Committee description" required></textarea>
+                                                                    <textarea id="description" name="en[description]" class="form-control " placeholder="Enter Description" required></textarea>
                                                                 </div>
-                                                                <div class="col-md-4" >
-                                                                    <textarea id="description_gj" name="gj[description]" class="form-control " placeholder="Enter Committee description in gujarati"></textarea>
+                                                                <div class="col-md-4">
+                                                                    <textarea id="description_gj" name="gj[description]" class="form-control " placeholder="Enter Description in gujarati" ></textarea>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
@@ -106,28 +118,36 @@
                                                                     </select>
                                                                 </div>
                                                             </div>
-
                                                             <div class="form-group">
                                                                 <label class="col-md-3 control-label">State
                                                                     <span style="color: red">*</span>
                                                                 </label>
-                                                                    <div class="col-md-4">
+                                                                <div class="col-md-4">
                                                                     <select class="form-control" id="state" name="en[state]" required>
 
                                                                     </select>
-                                                                    </div>
+                                                                </div>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label class="col-md-3 control-label">City
                                                                     <span style="color: red">*</span>
                                                                 </label>
-                                                                    <div class="col-md-4">
+                                                                <div class="col-md-4">
                                                                     <select class="form-control " id="city" name="en[city]" required>
 
                                                                     </select>
-                                                                    </div>
+                                                                </div>
                                                             </div>
+                                                            <div class="form-group">
+                                                                <label class="control-label col-md-3">Select Images :</label>
+                                                                <input id="imageupload" type="file" class="btn blue"/>
+                                                                <br />
+                                                                <div class="row" >
+                                                                    <div id="preview-image" class="row">
 
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                         </fieldset>
                                                         <fieldset>
                                                             <div class="form-group">
@@ -165,17 +185,17 @@
     <script  src="/assets/global/plugins/datatables/datatables.min.js"></script>
     <script src="/assets/global/scripts/datatable.js" type="text/javascript"></script>
     <script src="/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js" type="text/javascript"></script>
-    <script src="/assets/custom/admin/committees/create-committee-validation.js" type="text/javascript"></script>
+    <script src="/assets/custom/admin/messages/create-message-validation.js" type="text/javascript"></script>
 
     <script>
         $(document).ready(function () {
-            Create.init();
+            CreateMessages.init();
         });
 
 
         $('#country').change(function(){
             var id=this.value;
-            var route='/committee/get-all-states/'+id;
+            var route='/message/get-all-states/'+id;
             $.get(route,function(res){
                 if (res.length == 0)
                 {
@@ -192,7 +212,7 @@
         });
         $('#state').change(function(){
             var id=this.value;
-            var route='/committee/get-all-cities/'+id;
+            var route='/message/get-all-cities/'+id;
             $.get(route,function(res){
                 if (res.length == 0)
                 {
@@ -207,23 +227,31 @@
                 }
             });
         });
-    </script>
-    <script>
-        $('form').submit(function(){
-            var committee_name = $.trim($("#committee_name_gj").val());
-            if(committee_name == ''){
-                $('#committee_name_gj').hide();
-                $("#committee_name_gj").prop("disabled", true);
-                $('#committee_name_gj').removeAttr('name');
+        $("#imageupload").on('change', function () {
+            var countFiles = $(this)[0].files.length;
+            var imgPath = $(this)[0].value;
+            var extn = imgPath.substring(imgPath.lastIndexOf('.') + 1).toLowerCase();
+            var image_holder = $("#preview-image");
+            image_holder.empty();
+            if (extn == "gif" || extn == "png" || extn == "jpg" || extn == "jpeg") {
+                if (typeof (FileReader) != "undefined") {
+                    for (var i = 0; i < countFiles; i++) {
+                        var reader = new FileReader()
+                        reader.onload = function (e) {
+                            var imagePreview = '<div class="col-md-2"><input type="hidden" name="message_images" value="'+e.target.result+'"><img src="'+e.target.result+'" class="thumbimage" /></div>';
+                            image_holder.append(imagePreview);
+                        };
+                        image_holder.show();
+                        reader.readAsDataURL($(this)[0].files[i]);
+                    }
+                } else {
+                    alert("It doesn't supports");
+                }
+            } else {
+                alert("Select Only images");
             }
-            var description = $('#description_gj').val();
-            if(description == ''){
-                $('#description_gj').hide();
-                $("#description_gj").prop("disabled", true);
-                $('#description_gj').removeAttr('name');
-            }
-
         });
     </script>
+
 @endsection
 

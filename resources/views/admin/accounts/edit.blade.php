@@ -34,8 +34,12 @@
                         <div class="page-head">
                             <div class="container">
                                 <!-- BEGIN PAGE TITLE -->
-                                <div class="page-title">
+                                <div class="page-title col-md-2">
                                     <h1>Edit Account</h1>
+                                </div>
+                                <div class="btn red-flamingo col-md-1 pull-right" style="margin-top: 1%"><a href="/account/manage" style="color: white">
+                                        Back
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -134,8 +138,15 @@
                                                                 <div class="col-md-12">
                                                                     @if($accountImages[0] != null)
                                                                         @for($index = 0;$index < count($accountImages); $index++)
-                                                                            <img src="{{$accountImages[$index]}}" style="height: 150px; width: 150px" />
-                                                                            <input type='checkbox' class='js-switch' name="images[]" onchange='return deleteImage(this.checked,"{{$accountImagesId[$index]}}","{{$accountData['id']}}")' id='' value='{{$accountImages[$index]}}'/>
+                                                                            <div class="col-md-2">
+                                                                                <div class="content">
+                                                                                    <img src="{{$accountImages[$index]}}" style="height: 150px; width: 150px" />
+                                                                                </div>
+                                                                                <div>
+                                                                                    <span>Delete Image</span>
+                                                                                    <input type='checkbox' class='js-switch' name="images[]" onchange='return deleteImage(this.checked,"{{$accountImagesId[$index]}}","{{$accountData['id']}}")' id='' value='{{$accountImages[$index]}}'/>
+                                                                                </div>
+                                                                            </div>
                                                                         @endfor
                                                                     @endif
                                                                 </div>
@@ -244,7 +255,7 @@
             }
         });
         function deleteImage(status,imageId,accountId){
-            if (confirm("are you sure ?")) {
+            if (confirm("Delete Image! are you sure ?")) {
                 var route = '/account/delete-image/' + imageId;
                 $.get(route, function () {
                     var route = '/account/edit/' + accountId;

@@ -34,8 +34,12 @@
                         <div class="page-head">
                             <div class="container">
                                 <!-- BEGIN PAGE TITLE -->
-                                <div class="page-title">
+                                <div class="page-title col-md-2">
                                     <h1>Create Members</h1>
+                                </div>
+                                <div class="btn red-flamingo col-md-1 pull-right" style="margin-top: 1%"><a href="/committee-members/manage/{{$id}}" style="color: white">
+                                        Back
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -148,7 +152,7 @@
     <script  src="/assets/global/plugins/datatables/datatables.min.js"></script>
     <script src="/assets/global/scripts/datatable.js" type="text/javascript"></script>
     <script src="/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js" type="text/javascript"></script>
-    <script src="/assets/custom/admin/members/create-members-validation.js" type="text/javascript"></script>
+    <script src="/assets/custom/admin/committees/committee-members-validation.js" type="text/javascript"></script>
 
     <script>
         $(document).ready(function () {
