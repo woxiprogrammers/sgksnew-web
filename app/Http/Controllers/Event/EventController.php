@@ -29,7 +29,7 @@ class EventController extends Controller
         }catch(\Exception $exception){
             $data = [
                 'params' => $request->all(),
-                'action' => 'Members View page',
+                'action' => 'Event View page',
                 'exception' => $exception->getMessage()
             ];
             Log::critical(json_encode($data));
@@ -44,7 +44,7 @@ class EventController extends Controller
         }catch(\Exception $exception){
             $data = [
                 'params' => $request->all(),
-                'action' => 'Create members View',
+                'action' => 'Create Event View',
                 'exception' => $exception->getMessage()
             ];
             Log::critical(json_encode($data));
@@ -104,7 +104,7 @@ class EventController extends Controller
             return redirect('/event/manage');
         }catch(\Exception $exception){
             $data = [
-                'action' => 'Create committee',
+                'action' => 'Create Event',
                 'params' => $request->all(),
                 'exception' => $exception->getMessage()
             ];
@@ -121,11 +121,20 @@ class EventController extends Controller
             $records["draw"] = intval($request->draw);
             $eventsData = Events::orderBy('created_at','desc')->pluck('id')->toArray();
             $filterFlag = true;
-            if($request->has('search_event') /*&& $request->search_name != ''*/){
+            if($request->has('search_event')){
                 $eventsData = Events::where('event_name','like','%'.$request->search_event.'%')
                     ->whereIn('id',$eventsData)
                     ->pluck('id')->toArray();
-                if(count($eventsData) > 0){
+                if(count($eventsData) < 0){
+                    $filterFlag = false;
+                }
+            }
+            if($filterFlag == true && $request->has('search_city') && $request->search_city != ''){
+                $eventsData = Events::join('cities','cities.id','=','events.city_id')
+                    ->where('cities.name','ilike','%'.$request->search_city.'%')
+                    ->pluck('events.id')
+                    ->toArray();
+                if(count($eventsData) < 0){
                     $filterFlag = false;
                 }
             }
@@ -139,18 +148,20 @@ class EventController extends Controller
                     $length = $request->length;
                 }
                 for ($iterator = 0, $pagination = $request->start; $iterator < $length && $pagination < count($finalEventsData); $iterator++, $pagination++) {
-                    $eventName = str_limit($finalEventsData[$pagination]->event_name,15);
-                    $description = str_limit($finalEventsData[$pagination]->description,15);
-                    $venue = str_limit($finalEventsData[$pagination]->venue,15);
-                    $startDate = $finalEventsData[$pagination]->start_date;
-                    $endDate = $finalEventsData[$pagination]->end_date;
+                    $srNo = $iterator+1;
+                    $eventName = str_limit($finalEventsData[$pagination]->event_name,10);
+                    $description = str_limit($finalEventsData[$pagination]->description,10);
+                    $venue = str_limit($finalEventsData[$pagination]->venue,10);
+                    $city = Cities::where('id',$finalEventsData[$pagination]->city_id)->pluck('name')->first();
+                    $startDate = strtotime($finalEventsData[$pagination]->start_date);
+                    $endDate = strtotime($finalEventsData[$pagination]->end_date);
                     $isActiveStatus = $finalEventsData[$pagination]->is_active;
-                    $srNo = $finalEventsData[$pagination]->id;
+                    $id = $finalEventsData[$pagination]->id;
                     $gujaratiDetails = EventsTranslations::where('event_id',$finalEventsData[$pagination]->id)->first();
                     if($isActiveStatus){
-                        $isActive = "<input type='checkbox' class='js-switch' onchange='return statusFolder(this.checked,$srNo)' id='status$srNo' value='$srNo' checked/>";
+                        $isActive = "<input type='checkbox' class='js-switch' onchange='return statusFolder(this.checked,$id)' id='status$id' value='$id' checked/>";
                     }else{
-                        $isActive = "<input type='checkbox' class='js-switch' onchange='return statusFolder(this.checked,$srNo)' id='status$srNo' value='$srNo'/>";
+                        $isActive = "<input type='checkbox' class='js-switch' onchange='return statusFolder(this.checked,$id)' id='status$id' value='$id'/>";
                     }
                     $actionButton = '<div id="sample_editable_1_new" class="btn btn-small blue">
                         <a href="/event/edit/' . $finalEventsData[$pagination]['id'] . '" style="color: white">Edit
@@ -158,13 +169,14 @@ class EventController extends Controller
                     $records['data'][$iterator] = [
                         $srNo,
                         $eventName,
-                        str_limit($gujaratiDetails['event_name'],15),
+                        str_limit($gujaratiDetails['event_name'],10),
                         $description,
-                        str_limit($gujaratiDetails['description'],15),
+                        str_limit($gujaratiDetails['description'],10),
                         $venue,
-                        str_limit($gujaratiDetails['venue'],15),
-                        $startDate,
-                        $endDate,
+                        str_limit($gujaratiDetails['venue'],10),
+                        $city,
+                        date('d/M/Y', $startDate ),
+                        date('d/M/Y', $endDate ),
                         $isActive,
                         $actionButton
                     ];
@@ -217,7 +229,7 @@ class EventController extends Controller
         }catch(\Exception $exception){
             $data = [
                 'params' => $request->all(),
-                'action' => 'Create members View',
+                'action' => 'Edit event View',
                 'exception' => $exception->getMessage()
             ];
             Log::critical(json_encode($data));
@@ -311,7 +323,7 @@ class EventController extends Controller
             return $cities;
         }catch(\Exception $exception){
             $data = [
-                'action' => 'listing of states',
+                'action' => 'listing of cities',
                 'params' => $request->all(),
                 'exception' => $exception->getMessage()
             ];

@@ -24,10 +24,10 @@
                         <div class="page-head">
                             <div class="container">
                                 <!-- BEGIN PAGE TITLE -->
-                                <div class="page-title">
+                                <div class="page-title col-md-2">
                                     <h1>Event Listing</h1>
                                 </div>
-                                <div id="events_add" class="btn red-flamingo" style="margin-top: 1%; margin-left: 77%"><a href="/event/create" style="color: white">
+                                <div id="events_add" class="btn red-flamingo col-md-2 pull-right" style="margin-top: 1%"><a href="/event/create" style="color: white">
                                         Add Event
                                     </a>
                                 </div>
@@ -53,17 +53,18 @@
                                                 <table class="table table-striped table-bordered table-hover table-checkable order-column" id="eventTable">
                                                     <thead>
                                                     <tr>
-                                                        <th>Event Id</th>
+                                                        <th> Sr.No </th>
                                                         <th width="10%"> Name </th>
-                                                        <th> Gujarati Name </th>
-                                                        <th> Description </th>
-                                                        <th> Gujarati Description </th>
-                                                        <th> Venue </th>
-                                                        <th> Gujarati Venue </th>
-                                                        <th> Start date </th>
-                                                        <th> End date </th>
-                                                        <th> Status <i class="fa fa-check-square"> Enable</i></th>
-                                                        <th> Actions </th>
+                                                        <th>Gujarati Name</th>
+                                                        <th>Description</th>
+                                                        <th>Gujarati Description</th>
+                                                        <th>Venue</th>
+                                                        <th>Gujarati Venue</th>
+                                                        <th width="10%">  City  </th>
+                                                        <th>Start date</th>
+                                                        <th>End date</th>
+                                                        <th>Status<i class="fa fa-check-square"> Enable</i></th>
+                                                        <th>Actions</th>
                                                     </tr>
                                                     <tr class="filter">
                                                         <th></th>
@@ -73,6 +74,7 @@
                                                         <th></th>
                                                         <th></th>
                                                         <th></th>
+                                                        <th> <input type="text" class="form-control form-filter" name="search_city"> </th>
                                                         <th></th>
                                                         <th></th>
                                                         <th></th>
@@ -128,7 +130,7 @@
         });
 
         function statusFolder(status,id){
-            if(confirm("are you sure ?")){
+            if(confirm("Change Status! are you sure ?")){
                 var route='/event/change-status/'+id;
                 $.get(route,function(res){
                         var route= "/event/manage";

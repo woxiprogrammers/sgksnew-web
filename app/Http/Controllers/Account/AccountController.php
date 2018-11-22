@@ -28,7 +28,7 @@ class AccountController extends Controller
         }catch(\Exception $exception){
             $data = [
                 'params' => $request->all(),
-                'action' => 'Members View page',
+                'action' => 'Accounts View page',
                 'exception' => $exception->getMessage()
             ];
             Log::critical(json_encode($data));
@@ -43,7 +43,7 @@ class AccountController extends Controller
         }catch(\Exception $exception){
             $data = [
                 'params' => $request->all(),
-                'action' => 'Create members View',
+                'action' => 'Create Account View',
                 'exception' => $exception->getMessage()
             ];
             Log::critical(json_encode($data));
@@ -131,9 +131,9 @@ class AccountController extends Controller
                     $length = $request->length;
                 }
                 for ($iterator = 0, $pagination = $request->start; $iterator < $length && $pagination < count($finalAccountsData); $iterator++, $pagination++) {
+                    $srNo = $iterator + 1;
                     $accountName = str_limit($finalAccountsData[$pagination]->name,20);
                     $description = str_limit($finalAccountsData[$pagination]->description,20);
-                    $srNo = $finalAccountsData[$pagination]->id;
                     $gujaratiDetails = AccountsTranslations::where('account_id',$finalAccountsData[$pagination]->id)->first();
                     $actionButton = '<div id="sample_editable_1_new" class="btn btn-small blue">
                         <a href="/account/edit/' . $finalAccountsData[$pagination]['id'] . '" style="color: white">Edit
@@ -284,7 +284,7 @@ class AccountController extends Controller
             return $cities;
         }catch(\Exception $exception){
             $data = [
-                'action' => 'listing of states',
+                'action' => 'listing of cities',
                 'params' => $request->all(),
                 'exception' => $exception->getMessage()
             ];
@@ -310,7 +310,7 @@ class AccountController extends Controller
             }
         }catch(\Exception $exception){
             $data = [
-                'action' => 'delete image',
+                'action' => 'delete account image',
                 'params' => $request->all(),
                 'exception' => $exception->getMessage()
             ];

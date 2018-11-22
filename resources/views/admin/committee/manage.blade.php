@@ -25,10 +25,10 @@
                             <div class="container">
                                 <!-- BEGIN PAGE TITLE -->
 
-                                <div class="page-title">
+                                <div class="page-title col-md-2">
                                     <h1>Committee Listing</h1>
                                 </div>
-                                <div id="committee_add" class="btn red-flamingo" style="margin-top: 1%; margin-left: 77%"><a href="/committee/create/" style="color: white">
+                                <div id="committee_add" class="btn red-flamingo col-md-2 pull-right" style="margin-top: 1%"><a href="/committee/create/" style="color: white">
                                     Add Committee
                                     </a>
                                 </div>
@@ -59,6 +59,8 @@
                                                         <th> Gujarati Name </th>
                                                         <th> Description </th>
                                                         <th> Gujarati Description </th>
+                                                        <th> City </th>
+                                                        <th> Date </th>
                                                         <th> Total Members </th>
                                                         <th> Status
                                                             <i class="fa fa-check-square"> Enable</i>
@@ -70,6 +72,8 @@
                                                         <th style="width: 20%"> <input type="text" class="form-control form-filter" name="search_committee"> </th>
                                                         <th></th>
                                                         <th></th>
+                                                        <th></th>
+                                                        <th style="width: 20%"> <input type="text" class="form-control form-filter" name="search_city"> </th>
                                                         <th></th>
                                                         <th></th>
                                                         <th></th>
@@ -116,7 +120,7 @@
            $('#committeeTable').DataTable();
         });
         function statusFolder(status,id){
-            if(confirm("are you sure ?")){
+            if(confirm("Change Status! are you sure ?")){
                 var route='/committee/change-status/'+id;
                 $.get(route,function(){
                         var route= "/committee/manage";

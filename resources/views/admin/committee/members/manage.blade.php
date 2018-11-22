@@ -24,10 +24,14 @@
                         <div class="page-head">
                             <div class="container">
                                 <!-- BEGIN PAGE TITLE -->
-                                <div class="page-title">
+                                <div class="page-title col-md-2">
                                     <h1>Members Listing</h1>
                                 </div>
-                                <div id="members_add" class="btn red-flamingo" style="margin-top: 1%; margin-left: 77%"><a href="/committee-members/create/{{$id}}" style="color: white">
+                                <div class="btn red-flamingo col-md-1 pull-right" style="margin-top: 1%"><a href="/committee/manage" style="color: white">
+                                        Back
+                                    </a>
+                                </div>
+                                <div id="members_add" class="btn red-flamingo col-md-2 pull-right" style="margin-top: 1%"><a href="/committee-members/create/{{$id}}" style="color: white">
                                         Add Members
                                     </a>
                                 </div>
@@ -57,11 +61,15 @@
                                                         <th> Gujarati Name </th>
                                                         <th> Mobile </th>
                                                         <th> Email </th>
+                                                        <th> Status
+                                                            <i class="fa fa-check-square"> Enable</i>
+                                                        </th>
                                                         <th> Actions </th>
                                                     </tr>
                                                     <tr class="filter">
                                                         <th><input type="hidden" id="committee-id" value="{{$id}}" /></th>
                                                         <th style="width: 20%"> <input type="text" class="form-control form-filter" name="search_name"> </th>
+                                                        <th></th>
                                                         <th></th>
                                                         <th></th>
                                                         <th></th>
@@ -111,6 +119,15 @@
             $('#memberTable').DataTable();
         });
 
+        function statusFolder(status,id){
+            if(confirm("Change Status! are you sure ?")){
+                var route='/committee-members/change-status/'+id;
+                $.get(route,function(){
+                    var route= "/committee-members/manage";
+                    window.location.replace(route);
+                });
+            }
+        }
     </script>
 @endsection
 

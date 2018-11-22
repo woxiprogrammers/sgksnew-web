@@ -48,6 +48,7 @@ Route::group(['prefix' => 'committee-members'], function() {
     Route::post('/create/{id}',array('uses' => 'Committee\CommitteeController@createMember'));
     Route::get('/edit/{id}',array('uses' => 'Committee\CommitteeController@editMemberView'));
     Route::post('/edit/{id}',array('uses' => 'Committee\CommitteeController@editMember'));
+    Route::get('/change-status/{id}',array('uses' => 'Committee\CommitteeController@changeMemberStatus'));
 });
 
 Route::group(['prefix' => 'event'], function (){
@@ -73,4 +74,17 @@ Route::group(['prefix' => 'account'], function() {
     Route::get('/get-all-states/{id}', array('uses' => 'Account\AccountController@getAllStates'));
     Route::get('/get-all-cities/{id}', array('uses' => 'Account\AccountController@getAllCities'));
     Route::get('/delete-image/{id}',array('uses' => 'Account\AccountController@deleteAccountImage'));
+});
+
+Route::group(['prefix' => 'message'], function() {
+    Route::get('/manage', array('uses' => 'Message\MessageController@manage'));
+    Route::get('/create', array('uses' => 'Message\MessageController@createView'));
+    Route::post('/create', array('uses' => 'Message\MessageController@create'));
+    Route::post('/listing', array('uses' => 'Message\MessageController@listing'));
+    Route::get('/edit/{id}', array('uses' => 'Message\MessageController@editView'));
+    Route::post('/edit/{id}', array('uses' => 'Message\MessageController@edit'));
+    Route::get('/delete-image/{id}', array('uses' => 'Message\MessageController@deleteImage'));
+    Route::get('/get-all-states/{id}', array('uses' => 'Message\MessageController@getAllStates'));
+    Route::get('/get-all-cities/{id}', array('uses' => 'Message\MessageController@getAllCities'));
+    Route::get('/change-status/{id}', array('uses' => 'Message\MessageController@changeStatus'));
 });
