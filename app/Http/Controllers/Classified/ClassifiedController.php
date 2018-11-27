@@ -153,7 +153,7 @@ class ClassifiedController extends Controller
                     $image = ClassifiedImages::where('classified_id',$id)->first();
                     if ($image != null) {
                         $classifiedImage = env('CLASSIFIED_IMAGES_UPLOAD') . DIRECTORY_SEPARATOR . $createClassifiedDirectoryName . DIRECTORY_SEPARATOR . $image['image_url'];
-                        $img = '<img src="'.$classifiedImage.'" style="height: 100px; width: 100px">';
+                        $img = '<img src="'.$classifiedImage.'" style="height: 50px; width: 50px">';
                     }else{
                         $img = null;
                     }
