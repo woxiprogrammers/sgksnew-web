@@ -88,3 +88,17 @@ Route::group(['prefix' => 'message'], function() {
     Route::get('/get-all-cities/{id}', array('uses' => 'Message\MessageController@getAllCities'));
     Route::get('/change-status/{id}', array('uses' => 'Message\MessageController@changeStatus'));
 });
+
+Route::group(['prefix' => 'classified'], function() {
+    Route::get('/manage', array('uses' => 'Classified\ClassifiedController@manage'));
+    Route::get('/create', array('uses' => 'Classified\ClassifiedController@createView'));
+    Route::post('/create', array('uses' => 'Classified\ClassifiedController@create'));
+    Route::post('/listing', array('uses' => 'Classified\ClassifiedController@listing'));
+    Route::get('/edit/{id}', array('uses' => 'Classified\ClassifiedController@editView'));
+    Route::post('/edit/{id}', array('uses' => 'Classified\ClassifiedController@edit'));
+    Route::get('/get-all-package/{id}', array('uses' => 'Classified\ClassifiedController@getAllPackageType'));
+    Route::get('/get-all-states/{id}', array('uses' => 'Classified\ClassifiedController@getAllStates'));
+    Route::get('/get-all-cities/{id}', array('uses' => 'Classified\ClassifiedController@getAllCities'));
+    Route::get('/change-status/{id}', array('uses' => 'Classified\ClassifiedController@changeStatus'));
+    Route::get('/delete-image/{id}',array('uses' => 'Classified\ClassifiedController@deleteClassifiedImage'));
+});
