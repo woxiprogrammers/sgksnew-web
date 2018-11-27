@@ -102,3 +102,14 @@ Route::group(['prefix' => 'classified'], function() {
     Route::get('/change-status/{id}', array('uses' => 'Classified\ClassifiedController@changeStatus'));
     Route::get('/delete-image/{id}',array('uses' => 'Classified\ClassifiedController@deleteClassifiedImage'));
 });
+
+Route::group(['prefix' => 'cities'], function() {
+    Route::get('/manage', array('uses' => 'Cities\CityController@manage'));
+    Route::get('/create', array('uses' => 'Cities\CityController@createView'));
+    Route::post('/create', array('uses' => 'Cities\CityController@create'));
+    Route::post('/listing', array('uses' => 'Cities\CityController@listing'));
+    Route::get('/edit/{id}', array('uses' => 'Cities\CityController@editView'));
+    Route::post('/edit/{id}', array('uses' => 'Cities\CityController@edit'));
+    Route::get('/change-status/{id}', array('uses' => 'Cities\CityController@changeStatus'));
+    Route::get('/get-all-states/{id}', array('uses' => 'Cities\CityController@getAllStates'));
+});
