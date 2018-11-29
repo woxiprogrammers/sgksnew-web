@@ -100,6 +100,7 @@ class WebviewController extends Controller
                     $srNo = $iterator+1;
                     $desc = $finalWebviewData[$pagination]->description;
                     $id = $finalWebviewData[$pagination]->drawer_web_id;
+                    $city = Cities::where('id',$finalWebviewData[$pagination]->city_id)->value('name');
                     $drawerWebviewData = DrawerWebview::where('id',$id)->first();
                     $actionButton = '<div id="sample_editable_1_new" class="btn btn-small blue">
                         <a href="/webview/edit/' . $finalWebviewData[$pagination]->id . '" style="color: white">Edit
@@ -108,6 +109,7 @@ class WebviewController extends Controller
                         $srNo,
                         $drawerWebviewData['name'],
                         $desc,
+                        $city,
                         $actionButton
                     ];
                 }
@@ -132,7 +134,18 @@ class WebviewController extends Controller
             $webview = DrawerWebview::where('id',$webviewDetails['drawer_web_id'])->first();
             $webviews = DrawerWebview::get();
             $countries = Countries::get();
-            return view('admin.webview.edit')->with(compact('webviews','webview','webviewDetails','countries'));
+
+            $cityId = $webviewDetails['city_id'];
+            $city = Cities::where('id',$cityId)->first();
+            $cityName = $city['name'];
+            $stateId = $city['state_id'];
+            $state = States::where('id',$stateId)->first();
+            $stateName = $state['name'];
+            $countryId = $state['country_id'];
+            $country = Countries::where('id',$countryId)->first();
+            $countryName = $country['name'];
+
+            return view('admin.webview.edit')->with(compact('webviews','webview','webviewDetails','countries','cityName','countryName','stateName','cityId'));
         }catch(\Exception $exception){
             $data = [
                 'action' => 'edit webview View',
@@ -147,7 +160,6 @@ class WebviewController extends Controller
     public function edit(Request $request, $id){
         try{
             $data = $request->all();
-            dd($data);
             $webviewData['drawer_web_id'] = $data['webviewType'];
             $webviewData['description'] = $data['description'];
             $webviewData['city_id'] = $data['city'];

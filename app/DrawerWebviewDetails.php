@@ -8,5 +8,5 @@ class DrawerWebviewDetails extends Model
 {
     protected $table = 'drawer_web_view_details';
 
-    protected $fillable = ['drawer_web_id','description'];
+    protected $fillable = ['drawer_web_id','description','city_id'];
 }
