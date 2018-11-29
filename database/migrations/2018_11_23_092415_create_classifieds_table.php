@@ -21,6 +21,7 @@ class CreateClassifiedsTable extends Migration
             $table->foreign('package_id')->references('id')->on('classified_packages')->onUpdate('cascade')->onDelete('cascade');
             $table->unsignedInteger('city_id')->nullable();
             $table->foreign('city_id')->references('id')->on('cities')->onUpdate('cascade')->onDelete('cascade');
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }

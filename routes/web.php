@@ -113,3 +113,14 @@ Route::group(['prefix' => 'cities'], function() {
     Route::get('/change-status/{id}', array('uses' => 'Cities\CityController@changeStatus'));
     Route::get('/get-all-states/{id}', array('uses' => 'Cities\CityController@getAllStates'));
 });
+
+Route::group(['prefix' => 'webview'], function() {
+    Route::get('/manage', array('uses' => 'Webview\WebviewController@manage'));
+    Route::get('/create', array('uses' => 'Webview\WebviewController@createView'));
+    Route::post('/create', array('uses' => 'Webview\WebviewController@create'));
+    Route::post('/listing', array('uses' => 'Webview\WebviewController@listing'));
+    Route::get('/edit/{id}', array('uses' => 'Webview\WebviewController@editView'));
+    Route::post('/edit/{id}', array('uses' => 'Webview\WebviewController@edit'));
+    Route::get('/get-all-states/{id}', array('uses' => 'Webview\WebviewController@getAllStates'));
+    Route::get('/get-all-cities/{id}', array('uses' => 'Webview\WebviewController@getAllCities'));
+});
