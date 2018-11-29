@@ -27,7 +27,7 @@ class AddCityIdToDrawerWebViewDetailsTable extends Migration
     public function down()
     {
         Schema::table('drawer_web_view_details', function (Blueprint $table) {
-            //
+            $table->dropColumn('city_id');
         });
     }
 }

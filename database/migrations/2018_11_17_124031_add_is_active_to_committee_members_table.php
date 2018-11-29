@@ -26,7 +26,7 @@ class AddIsActiveToCommitteeMembersTable extends Migration
     public function down()
     {
         Schema::table('committee_members', function (Blueprint $table) {
-            //
+            $table->dropColumn('is_active');
         });
     }
 }
