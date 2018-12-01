@@ -7,11 +7,13 @@
  */
 namespace App\Http\Controllers\Cities;
 use App\Cities;
+use App\CitiesTranslation;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use App\Countries;
 use App\States;
+use App\Languages;
 
 class CityController extends Controller
 {
@@ -47,9 +49,17 @@ class CityController extends Controller
     public function create(Request $request){
         try{
             $data = $request->all();
-            $cityData['name'] = $data['city_name'];
-            $cityData['state_id'] = $data['state'];
+            $cityData['name'] = $data['en']['city'];
+            $cityData['state_id'] = $data['en']['state'];
             $createCity = Cities::create($cityData);
+            if(array_key_exists('gj',$data)){
+                if(array_key_exists('city',$data['gj'])){
+                    $gujaratiCityData['name'] = $data['gj']['city'];
+                }
+                $gujaratiCityData['city_id'] = $createCity->id;
+                $gujaratiCityData['language_id'] = Languages::where('abbreviation','=','gj')->pluck('id')->first();
+                CitiesTranslation::create($gujaratiCityData);
+            }
             if($createCity){
                 $request->session()->flash('success','City Created Successfully');
             }else{
@@ -72,9 +82,10 @@ class CityController extends Controller
             $city = Cities::where('id',$id)->first();
             $state = States::where('id',$city['state_id'])->first();
             $country = Countries::where('id',$state['country_id'])->first();
+            $gujaratiCityData = CitiesTranslation::where('city_id',$id)->first();
 
             $countries = Countries::get();
-            return view('admin.cities.edit')->with(compact('countries','city','state','country'));
+            return view('admin.cities.edit')->with(compact('countries','city','state','country','gujaratiCityData'));
         }catch(\Exception $exception){
             $data = [
                 'params' => $request->all(),
@@ -89,9 +100,17 @@ class CityController extends Controller
     public function edit(Request $request, $id){
         try{
             $data = $request->all();
-            $cityData['name'] = $data['city_name'];
-            $cityData['state_id'] = $data['state'];
+            $cityData['name'] = $data['en']['city'];
+            $cityData['state_id'] = $data['en']['state'];
             $updateCity = Cities::where('id',$id)->update($cityData);
+            if(array_key_exists('gj',$data)){
+                if(array_key_exists('city',$data['gj'])){
+                    $gujaratiCityData['name'] = $data['gj']['city'];
+                }
+                $gujaratiCityData['city_id'] = $id;
+                $gujaratiCityData['language_id'] = Languages::where('abbreviation','=','gj')->pluck('id')->first();
+                CitiesTranslation::where('city_id',$id)->update($gujaratiCityData);
+            }
             if($updateCity){
                 $request->session()->flash('success','City Updated Successfully');
             }else{
@@ -139,6 +158,7 @@ class CityController extends Controller
                     $cityName = $finalCitiesData[$pagination]->name;
                     $isActiveStatus = $finalCitiesData[$pagination]->is_active;
                     $id = $finalCitiesData[$pagination]->id;
+                    $gujaratiCityName = CitiesTranslation::where('city_id',$id)->value('name');
                     if($isActiveStatus){
                         $isActive = "<input type='checkbox' class='js-switch' onchange='return statusFolder(this.checked,$id)' id='status$id' value='$id' checked/>";
                     }else{
@@ -150,6 +170,7 @@ class CityController extends Controller
                     $records['data'][$iterator] = [
                         $srNo,
                         $cityName,
+                        $gujaratiCityName,
                         $isActive,
                         $actionButton
                     ];
