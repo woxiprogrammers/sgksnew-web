@@ -10,8 +10,10 @@ namespace App\Http\Controllers\Webview;
 use App\Countries;
 use App\DrawerWebview;
 use App\DrawerWebviewDetails;
+use App\DrawerWebviewDetailsTranslations;
 use App\States;
 use App\Cities;
+use App\Languages;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
@@ -50,10 +52,20 @@ class WebviewController extends Controller
     public function create(Request $request){
         try{
             $data = $request->all();
-            $webviewData['drawer_web_id'] = $data['webviewType'];
-            $webviewData['description'] = $data['description'];
-            $webviewData['city_id'] = $data['city'];
+            $webviewData['drawer_web_id'] = $data['en']['webviewType'];
+            $webviewData['description'] = $data['en']['description'];
+            $webviewData['city_id'] = $data['en']['city'];
             $createWebview = DrawerWebviewDetails::create($webviewData);
+
+            if(array_key_exists('gj',$data)){
+                if (array_key_exists('description',$data['gj'])){
+                    $gujaratiWebviewData['description'] = $data['gj']['description'];
+                }
+                $gujaratiWebviewData['language_id'] = Languages::where('abbreviation','=','gj')->pluck('id')->first();
+                $gujaratiWebviewData['drawer_webview_details_id'] = $createWebview->id;
+                DrawerWebviewDetailsTranslations::create($gujaratiWebviewData);
+            }
+
             if($createWebview){
                 $request->session()->flash('success','Data Inserted Successfully');
             }else{
@@ -98,7 +110,6 @@ class WebviewController extends Controller
                 }
                 for ($iterator = 0, $pagination = $request->start; $iterator < $length && $pagination < count($finalWebviewData); $iterator++, $pagination++) {
                     $srNo = $iterator+1;
-                    $desc = $finalWebviewData[$pagination]->description;
                     $id = $finalWebviewData[$pagination]->drawer_web_id;
                     $city = Cities::where('id',$finalWebviewData[$pagination]->city_id)->value('name');
                     $drawerWebviewData = DrawerWebview::where('id',$id)->first();
@@ -108,7 +119,6 @@ class WebviewController extends Controller
                     $records['data'][$iterator] = [
                         $srNo,
                         $drawerWebviewData['name'],
-                        $desc,
                         $city,
                         $actionButton
                     ];
@@ -131,21 +141,19 @@ class WebviewController extends Controller
     public function editView(Request $request, $id){
         try{
             $webviewDetails = DrawerWebviewDetails::where('id',$id)->first();
+            $webviewDetailsInGujarati = DrawerWebviewDetailsTranslations::where('drawer_webview_details_id',$id)->first();
             $webview = DrawerWebview::where('id',$webviewDetails['drawer_web_id'])->first();
             $webviews = DrawerWebview::get();
             $countries = Countries::get();
 
             $cityId = $webviewDetails['city_id'];
             $city = Cities::where('id',$cityId)->first();
-            $cityName = $city['name'];
             $stateId = $city['state_id'];
             $state = States::where('id',$stateId)->first();
-            $stateName = $state['name'];
             $countryId = $state['country_id'];
             $country = Countries::where('id',$countryId)->first();
-            $countryName = $country['name'];
 
-            return view('admin.webview.edit')->with(compact('webviews','webview','webviewDetails','countries','cityName','countryName','stateName','cityId'));
+            return view('admin.webview.edit')->with(compact('webviews','webview','webviewDetails','countries','city','country','state','webviewDetailsInGujarati'));
         }catch(\Exception $exception){
             $data = [
                 'action' => 'edit webview View',
@@ -160,10 +168,20 @@ class WebviewController extends Controller
     public function edit(Request $request, $id){
         try{
             $data = $request->all();
-            $webviewData['drawer_web_id'] = $data['webviewType'];
-            $webviewData['description'] = $data['description'];
-            $webviewData['city_id'] = $data['city'];
+            $webviewData['drawer_web_id'] = $data['en']['webviewType'];
+            $webviewData['description'] = $data['en']['description'];
+            $webviewData['city_id'] = $data['en']['city'];
             $updateWebview = DrawerWebviewDetails::where('id',$id)->update($webviewData);
+
+            if(array_key_exists('gj',$data)){
+                if (array_key_exists('description',$data['gj'])){
+                    $gujaratiWebviewData['description'] = $data['gj']['description'];
+                }
+                $gujaratiWebviewData['language_id'] = Languages::where('abbreviation','=','gj')->pluck('id')->first();
+                $gujaratiWebviewData['drawer_webview_details_id'] = $id;
+                DrawerWebviewDetailsTranslations::where('drawer_webview_details_id',$id)->update($gujaratiWebviewData);
+            }
+
             if($updateWebview){
                 $request->session()->flash('success','Data Updated Successfully');
             }else{

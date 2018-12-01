@@ -41,11 +41,6 @@ class DrawerWebViewSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now
             ],[
-                'name' => 'Master List',
-                'slug' => 'master-list',
-                'created_at' => $now,
-                'updated_at' => $now
-            ],[
                 'name' => 'Version Support',
                 'slug' => 'version-support',
                 'created_at' => $now,

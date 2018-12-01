@@ -39,18 +39,34 @@
                                     <!-- BEGIN VALIDATION STATES-->
                                     <div class="portlet light ">
                                         <div class="portlet-body form">
-                                            <form role="form" class="form-horizontal" action="/webview/edit/{{$webviewDetails['id']}}" method="post">
+                                            <form role="form" id="create-webview" class="form-horizontal" action="/webview/edit/{{$webviewDetails['id']}}" method="post">
                                                 {!! csrf_field() !!}
                                                 <div class="tab-content">
                                                     <div class="tab-pane fade in active" id="tab_general">
+                                                        <fieldset>
+                                                            <div class="form-group">
+                                                                <div class="row">
+                                                                    <div class="col-md-8 pull-left">
+                                                                        <h4 style="margin-left: 500px">
+                                                                            English
+                                                                        </h4>
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <h4>
+                                                                            Gujarati
+                                                                        </h4>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </fieldset>
                                                         <fieldset>
                                                             <div class="form-group">
                                                                 <label class="col-md-3 control-label">Country
                                                                     <span style="color: red">*</span>
                                                                 </label>
                                                                 <div class="col-md-4">
-                                                                    <select class="form-control" id="country" name="country" required>
-                                                                        <option value="">{{$countryName}}</option>
+                                                                    <select class="form-control" id="country" name="en[country]" required>
+                                                                        <option value="{{$country['id']}}">{{$country['name']}}</option>
                                                                         @foreach($countries as $country)
                                                                             <option value="{{$country['id']}}">{{$country['name']}}</option>
                                                                         @endforeach
@@ -62,8 +78,8 @@
                                                                     <span style="color: red">*</span>
                                                                 </label>
                                                                 <div class="col-md-4">
-                                                                    <select class="form-control" id="state" name="state" required>
-                                                                        <option value="">{{$stateName}}</option>
+                                                                    <select class="form-control" id="state" name="en[state]" required>
+                                                                        <option value="{{$state['id']}}">{{$state['name']}}</option>
                                                                     </select>
                                                                 </div>
                                                             </div>
@@ -72,8 +88,8 @@
                                                                     <span style="color: red">*</span>
                                                                 </label>
                                                                 <div class="col-md-4">
-                                                                    <select class="form-control " id="city" name="city" required>
-                                                                        <option value="{{$cityId}}">{{$cityName}}</option>
+                                                                    <select class="form-control " id="city" name="en[city]" required>
+                                                                        <option value="{{$city['id']}}">{{$city['name']}}</option>
                                                                     </select>
                                                                 </div>
                                                             </div>
@@ -82,7 +98,7 @@
                                                                     <span style="color: red">*</span>
                                                                 </label>
                                                                 <div class="col-md-4">
-                                                                    <select class="form-control" name="webviewType" required>
+                                                                    <select class="form-control" name="en[webviewType]" required>
                                                                         <option value="{{$webview['id']}}">{{$webview['name']}}</option>
                                                                         @foreach($webviews as $drawerWeb)
                                                                             <option value="{{$drawerWeb['id']}}">{{$drawerWeb['name']}}</option>
@@ -94,8 +110,11 @@
                                                                 <label class="col-md-3 control-label">Web View Description
                                                                     <span style="color: red">*</span>
                                                                 </label>
-                                                                <div class="col-md-9">
-                                                                    <textarea id="" name="description" class="form-control" cols="50" rows="4" required>{{$webviewDetails['description']}}</textarea>
+                                                                <div class="col-md-4">
+                                                                    <textarea id="cktext" name="en[description]" class="form-control" cols="50" rows="4" required>{{$webviewDetails['description']}}</textarea>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <textarea id="cktext_gj" name="gj[description]" class="form-control" cols="50" rows="4" required>{{$webviewDetailsInGujarati['description']}}</textarea>
                                                                 </div>
                                                             </div>
                                                         </fieldset>
@@ -135,11 +154,14 @@
     <script  src="/assets/global/plugins/datatables/datatables.min.js"></script>
     <script src="/assets/global/scripts/datatable.js" type="text/javascript"></script>
     <script src="/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js" type="text/javascript"></script>
+
+    <script src="/assets/custom/admin/webview/create-webview-validation.js" type="text/javascript"></script>
     <script src="/assets/ckeditor/ckeditor.js"></script>
     <script src="/assets/ckeditor/adapters/jquery.js"></script>
     <script>
         $(document).ready(function () {
             $("textarea").ckeditor();
+            //CreateWebview.init();
         });
         $('#country').change(function(){
             var id=this.value;
@@ -174,6 +196,15 @@
                     $('#city').html(str);
                 }
             });
+        });
+    </script>
+    <script>
+        $("form").submit( function(e) {
+            var messageLength = CKEDITOR.instances['cktext'].getData();
+            if(messageLength == 0 ) {
+                alert( 'Webview Description in English should not be empty' );
+                e.preventDefault();
+            }
         });
     </script>
 @endsection

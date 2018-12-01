@@ -55,11 +55,27 @@
                                                     <div class="tab-pane fade in active" id="tab_general">
                                                         <fieldset>
                                                             <div class="form-group">
+                                                                <div class="row">
+                                                                    <div class="col-md-8 pull-left">
+                                                                        <h4 style="margin-left: 500px">
+                                                                            English
+                                                                        </h4>
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <h4>
+                                                                            Gujarati
+                                                                        </h4>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </fieldset>
+                                                        <fieldset>
+                                                            <div class="form-group">
                                                                 <label class="col-md-3 control-label">Country
                                                                     <span style="color: red">*</span>
                                                                 </label>
                                                                 <div class="col-md-4">
-                                                                    <select class="form-control" id="country" name="country" required>
+                                                                    <select class="form-control" id="country" name="en[country]" required>
                                                                         <option value="">-</option>
                                                                         @foreach($countries as $country)
                                                                             <option value="{{$country['id']}}">{{$country['name']}}</option>
@@ -72,7 +88,7 @@
                                                                     <span style="color: red">*</span>
                                                                 </label>
                                                                 <div class="col-md-4">
-                                                                    <select class="form-control" id="state" name="state" required>
+                                                                    <select class="form-control" id="state" name="en[state]" required>
 
                                                                     </select>
                                                                 </div>
@@ -82,7 +98,10 @@
                                                                     <span style="color: red">*</span>
                                                                 </label>
                                                                 <div class="col-md-4">
-                                                                    <input type="text" name="city_name" class="form-control " placeholder="Enter City Name" required>
+                                                                    <input type="text" name="en[city]" class="form-control " placeholder="Enter City Name" required>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <input type="text" name="gj[city]" class="form-control " placeholder="Enter City Name in Gujarati" required>
                                                                 </div>
                                                             </div>
                                                         </fieldset>

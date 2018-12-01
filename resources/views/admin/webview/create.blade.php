@@ -45,11 +45,27 @@
                                                     <div class="tab-pane fade in active" id="tab_general">
                                                         <fieldset>
                                                             <div class="form-group">
+                                                                <div class="row">
+                                                                    <div class="col-md-8 pull-left">
+                                                                        <h4 style="margin-left: 500px">
+                                                                            English
+                                                                        </h4>
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <h4>
+                                                                            Gujarati
+                                                                        </h4>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </fieldset>
+                                                        <fieldset>
+                                                            <div class="form-group">
                                                                 <label class="col-md-3 control-label">Country
                                                                     <span style="color: red">*</span>
                                                                 </label>
                                                                 <div class="col-md-4">
-                                                                    <select class="form-control" id="country" name="country" required>
+                                                                    <select class="form-control" id="country" name="en[country]" required>
                                                                         <option value="">-</option>
                                                                         @foreach($countries as $country)
                                                                             <option value="{{$country['id']}}">{{$country['name']}}</option>
@@ -62,7 +78,7 @@
                                                                     <span style="color: red">*</span>
                                                                 </label>
                                                                 <div class="col-md-4">
-                                                                    <select class="form-control" id="state" name="state" required>
+                                                                    <select class="form-control" id="state" name="en[state]" required>
 
                                                                     </select>
                                                                 </div>
@@ -72,7 +88,7 @@
                                                                     <span style="color: red">*</span>
                                                                 </label>
                                                                 <div class="col-md-4">
-                                                                    <select class="form-control " id="city" name="city" required>
+                                                                    <select class="form-control " id="city" name="en[city]" required>
 
                                                                     </select>
                                                                 </div>
@@ -82,7 +98,7 @@
                                                                     <span style="color: red">*</span>
                                                                 </label>
                                                                 <div class="col-md-4">
-                                                                    <select class="form-control" name="webviewType" required>
+                                                                    <select class="form-control" name="en[webviewType]" required>
                                                                         <option value="">-</option>
                                                                         @foreach($drawerWeb as $drawer)
                                                                             <option value="{{$drawer['id']}}">{{$drawer['name']}}</option>
@@ -94,15 +110,18 @@
                                                                 <label class="col-md-3 control-label">Web View Description
                                                                     <span style="color: red">*</span>
                                                                 </label>
-                                                                <div class="col-md-9">
-                                                                    <textarea id="" name="description" class="form-control " cols="50" rows="4" required> </textarea>
+                                                                <div class="col-md-4" id="f3">
+                                                                    <textarea id="cktext" name="en[description]" class="form-control " cols="50" rows="4" required> </textarea>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <textarea id="cktext_gj" name="gj[description]" class="form-control " cols="50" rows="4" required> </textarea>
                                                                 </div>
                                                             </div>
                                                         </fieldset>
                                                         <fieldset>
                                                             <div class="form-group">
                                                                 <div class="col-md-3 col-md-offset-7" >
-                                                                    <button type="submit" class="btn btn-circle"><i class="fa fa-check"></i> Submit </button>
+                                                                    <button id="submit" type="submit" class="btn btn-circle"><i class="fa fa-check"></i> Submit </button>
                                                                 </div>
                                                             </div>
                                                         </fieldset>
@@ -135,11 +154,14 @@
     <script  src="/assets/global/plugins/datatables/datatables.min.js"></script>
     <script src="/assets/global/scripts/datatable.js" type="text/javascript"></script>
     <script src="/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js" type="text/javascript"></script>
+
+    <script src="/assets/custom/admin/webview/create-webview-validation.js" type="text/javascript"></script>
     <script src="/assets/ckeditor/ckeditor.js"></script>
     <script src="/assets/ckeditor/adapters/jquery.js"></script>
     <script>
         $(document).ready(function () {
             $("textarea").ckeditor();
+            //CreateWebview.init();
         });
 
         $('#country').change(function(){
@@ -175,6 +197,15 @@
                     $('#city').html(str);
                 }
             });
+        });
+    </script>
+    <script>
+        $("form").submit( function(e) {
+            var messageLength = CKEDITOR.instances['cktext'].getData();
+            if(messageLength == 0 ) {
+                alert( 'Webview Description in English should not be empty' );
+                e.preventDefault();
+            }
         });
     </script>
 @endsection
