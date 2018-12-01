@@ -2,12 +2,12 @@
 /**
  * Created by PhpStorm.
  * User: vaibhav
- * Date: 15/11/18
- * Time: 1:31 PM
+ * Date: 27/11/18
+ * Time: 4:06 PM
  */
 ?>
 @extends('layout.master')
-@section('title','Sgks|Messages')
+@section('title','Sgks|Cities')
 @include('partials.common.navbar')
 @section('css')
     <style>
@@ -35,9 +35,9 @@
                             <div class="container">
                                 <!-- BEGIN PAGE TITLE -->
                                 <div class="page-title col-md-2">
-                                    <h1>Create Message</h1>
+                                    <h1>Edit City</h1>
                                 </div>
-                                <div class="btn red-flamingo col-md-1 pull-right" style="margin-top: 1%"><a href="/message/manage" style="color: white">
+                                <div class="btn red-flamingo col-md-1 pull-right" style="margin-top: 1%"><a href="/cities/manage" style="color: white">
                                         Back
                                     </a>
                                 </div>
@@ -49,7 +49,7 @@
                                     <!-- BEGIN VALIDATION STATES-->
                                     <div class="portlet light ">
                                         <div class="portlet-body form">
-                                                <form role="form" id="create-messages" class="form-horizontal" action="/message/create" method="post">
+                                            <form role="form" id="create-city" class="form-horizontal" action="/cities/edit/{{$city['id']}}" method="post">
                                                 {!! csrf_field() !!}
                                                 <div class="tab-content">
                                                     <div class="tab-pane fade in active" id="tab_general">
@@ -71,47 +71,12 @@
                                                         </fieldset>
                                                         <fieldset>
                                                             <div class="form-group">
-                                                                <label class="col-md-3 control-label">Select Message Type
-                                                                    <span style="color: red">*</span>
-                                                                </label>
-                                                                <div class="col-md-4">
-                                                                    @foreach($message_Types as $message_Type)
-                                                                        <div class="form-check form-check-inline">
-                                                                            <input class="form-check-input" type="radio" name="en[message_type]" id="message_type" value="{{$message_Type['id']}}" required>
-                                                                            <label class="form-check-label" for="message_type">{{$message_Type['name']}}</label>
-                                                                        </div>
-                                                                    @endforeach
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label class="col-md-3 control-label">Title
-                                                                    <span style="color: red">*</span>
-                                                                </label>
-                                                                <div class="col-md-4">
-                                                                    <input type="text" id="title" name="en[title]" class="form-control " placeholder="Enter Title" required>
-                                                                </div>
-                                                                <div class="col-md-4" >
-                                                                    <input type="text" id="title_gj" name="gj[title]" class="form-control " placeholder="Enter Title in gujarati" >
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label class="col-md-3 control-label">Description
-                                                                    <span style="color: red">*</span>
-                                                                </label>
-                                                                <div class="col-md-4">
-                                                                    <textarea id="description" name="en[description]" class="form-control " placeholder="Enter Description" required></textarea>
-                                                                </div>
-                                                                <div class="col-md-4">
-                                                                    <textarea id="description_gj" name="gj[description]" class="form-control " placeholder="Enter Description in gujarati" ></textarea>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group">
                                                                 <label class="col-md-3 control-label">Country
                                                                     <span style="color: red">*</span>
                                                                 </label>
                                                                 <div class="col-md-4">
                                                                     <select class="form-control" id="country" name="en[country]" required>
-                                                                        <option value="">-</option>
+                                                                        <option value="{{$country['id']}}">{{$country['name']}}</option>
                                                                         @foreach($countries as $country)
                                                                             <option value="{{$country['id']}}">{{$country['name']}}</option>
                                                                         @endforeach
@@ -124,7 +89,7 @@
                                                                 </label>
                                                                 <div class="col-md-4">
                                                                     <select class="form-control" id="state" name="en[state]" required>
-
+                                                                        <option value="{{$state['id']}}">{{$state['name']}}</option>
                                                                     </select>
                                                                 </div>
                                                             </div>
@@ -133,19 +98,10 @@
                                                                     <span style="color: red">*</span>
                                                                 </label>
                                                                 <div class="col-md-4">
-                                                                    <select class="form-control " id="city" name="en[city]" required>
-
-                                                                    </select>
+                                                                    <input type="text" name="en[city]" class="form-control" value="{{$city['name']}}" placeholder="Enter City Name" required>
                                                                 </div>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label class="control-label col-md-3">Select Images :</label>
-                                                                <input id="imageupload" type="file" class="btn blue"/>
-                                                                <br />
-                                                                <div class="row" >
-                                                                    <div id="preview-image" class="row">
-
-                                                                    </div>
+                                                                <div class="col-md-4">
+                                                                    <input type="text" name="gj[city]" class="form-control" value="{{$gujaratiCityData['name']}}" placeholder="Enter City Name" required>
                                                                 </div>
                                                             </div>
                                                         </fieldset>
@@ -185,17 +141,11 @@
     <script  src="/assets/global/plugins/datatables/datatables.min.js"></script>
     <script src="/assets/global/scripts/datatable.js" type="text/javascript"></script>
     <script src="/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js" type="text/javascript"></script>
-    <script src="/assets/custom/admin/messages/create-message-validation.js" type="text/javascript"></script>
 
     <script>
-        $(document).ready(function () {
-            CreateMessages.init();
-        });
-
-
         $('#country').change(function(){
             var id=this.value;
-            var route='/message/get-all-states/'+id;
+            var route='/cities/get-all-states/'+id;
             $.get(route,function(res){
                 if (res.length == 0)
                 {
@@ -210,48 +160,6 @@
                 }
             });
         });
-        $('#state').change(function(){
-            var id=this.value;
-            var route='/message/get-all-cities/'+id;
-            $.get(route,function(res){
-                if (res.length == 0)
-                {
-                    $('#city').html("no record found");
-                } else {
-                    var str='<option value="">Please select city</option>';
-                    for(var i=0; i<res.length; i++)
-                    {
-                        str+='<option value="'+res[i]['id']+'">'+res[i]['name']+'</option>';
-                    }
-                    $('#city').html(str);
-                }
-            });
-        });
-        $("#imageupload").on('change', function () {
-            var countFiles = $(this)[0].files.length;
-            var imgPath = $(this)[0].value;
-            var extn = imgPath.substring(imgPath.lastIndexOf('.') + 1).toLowerCase();
-            var image_holder = $("#preview-image");
-            image_holder.empty();
-            if (extn == "gif" || extn == "png" || extn == "jpg" || extn == "jpeg") {
-                if (typeof (FileReader) != "undefined") {
-                    for (var i = 0; i < countFiles; i++) {
-                        var reader = new FileReader()
-                        reader.onload = function (e) {
-                            var imagePreview = '<div class="col-md-2"><input type="hidden" name="message_images" value="'+e.target.result+'"><img src="'+e.target.result+'" class="thumbimage" /></div>';
-                            image_holder.append(imagePreview);
-                        };
-                        image_holder.show();
-                        reader.readAsDataURL($(this)[0].files[i]);
-                    }
-                } else {
-                    alert("It doesn't supports");
-                }
-            } else {
-                alert("Select Only images");
-            }
-        });
     </script>
-
 @endsection
 

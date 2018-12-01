@@ -199,6 +199,7 @@ class MessageController extends Controller
             $messageData = Messages::where('id',$id)->first();
             $messageDataGujarati = MessageTranslations::where('message_id',$id)->first();
             $countries = Countries::get();
+            $png = '.png';
 
             $cityId = $messageData['city_id'];
             $city = Cities::where('id',$cityId)->first();
@@ -212,13 +213,13 @@ class MessageController extends Controller
 
             $messageTypes = new MessageTypes();
             $message_Types = $messageTypes->get();
-
+            $message_Type = MessageTypes::where('id',$messageData['message_type_id'])->value('slug');
             $createMessageDirectoryName = sha1($messageData->id);
             $image = $messageData['image_url'];
             if($image != null) {
                 $messageImage = env('MESSAGE_IMAGES_UPLOAD') . DIRECTORY_SEPARATOR . $createMessageDirectoryName . DIRECTORY_SEPARATOR . $image;
             }else{
-                $messageImage = null;
+                $messageImage = env('MESSAGE_TYPE_IMAGES').DIRECTORY_SEPARATOR.$message_Type.$png;
             }
             return view('admin.messages.edit')->with(compact('countries','messageData','messageDataGujarati','cityName','stateName','countryName','cityId','messageImage','message_Types'));
         }catch(\Exception $exception){

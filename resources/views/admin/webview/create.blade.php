@@ -2,24 +2,14 @@
 /**
  * Created by PhpStorm.
  * User: vaibhav
- * Date: 15/11/18
- * Time: 1:31 PM
+ * Date: 28/11/18
+ * Time: 2:23 PM
  */
 ?>
 @extends('layout.master')
-@section('title','Sgks|Messages')
+@section('title','Sgks|Webview')
 @include('partials.common.navbar')
 @section('css')
-    <style>
-        .thumbimage {
-            float:left;
-            width:100%;
-            height: 200px;
-            position:relative;
-            padding:5px;
-            margin-left: 50%;
-        }
-    </style>
     <link href="/assets/global/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" type="text/css" />
 @endsection
 @section('content')
@@ -35,9 +25,9 @@
                             <div class="container">
                                 <!-- BEGIN PAGE TITLE -->
                                 <div class="page-title col-md-2">
-                                    <h1>Create Message</h1>
+                                    <h1>Create Webview</h1>
                                 </div>
-                                <div class="btn red-flamingo col-md-1 pull-right" style="margin-top: 1%"><a href="/message/manage" style="color: white">
+                                <div class="btn red-flamingo col-md-1 pull-right" style="margin-top: 1%"><a href="/webview/manage" style="color: white">
                                         Back
                                     </a>
                                 </div>
@@ -49,7 +39,7 @@
                                     <!-- BEGIN VALIDATION STATES-->
                                     <div class="portlet light ">
                                         <div class="portlet-body form">
-                                                <form role="form" id="create-messages" class="form-horizontal" action="/message/create" method="post">
+                                            <form role="form" id="create-webview" class="form-horizontal" action="/webview/create" method="post">
                                                 {!! csrf_field() !!}
                                                 <div class="tab-content">
                                                     <div class="tab-pane fade in active" id="tab_general">
@@ -70,41 +60,6 @@
                                                             </div>
                                                         </fieldset>
                                                         <fieldset>
-                                                            <div class="form-group">
-                                                                <label class="col-md-3 control-label">Select Message Type
-                                                                    <span style="color: red">*</span>
-                                                                </label>
-                                                                <div class="col-md-4">
-                                                                    @foreach($message_Types as $message_Type)
-                                                                        <div class="form-check form-check-inline">
-                                                                            <input class="form-check-input" type="radio" name="en[message_type]" id="message_type" value="{{$message_Type['id']}}" required>
-                                                                            <label class="form-check-label" for="message_type">{{$message_Type['name']}}</label>
-                                                                        </div>
-                                                                    @endforeach
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label class="col-md-3 control-label">Title
-                                                                    <span style="color: red">*</span>
-                                                                </label>
-                                                                <div class="col-md-4">
-                                                                    <input type="text" id="title" name="en[title]" class="form-control " placeholder="Enter Title" required>
-                                                                </div>
-                                                                <div class="col-md-4" >
-                                                                    <input type="text" id="title_gj" name="gj[title]" class="form-control " placeholder="Enter Title in gujarati" >
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label class="col-md-3 control-label">Description
-                                                                    <span style="color: red">*</span>
-                                                                </label>
-                                                                <div class="col-md-4">
-                                                                    <textarea id="description" name="en[description]" class="form-control " placeholder="Enter Description" required></textarea>
-                                                                </div>
-                                                                <div class="col-md-4">
-                                                                    <textarea id="description_gj" name="gj[description]" class="form-control " placeholder="Enter Description in gujarati" ></textarea>
-                                                                </div>
-                                                            </div>
                                                             <div class="form-group">
                                                                 <label class="col-md-3 control-label">Country
                                                                     <span style="color: red">*</span>
@@ -139,20 +94,34 @@
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
-                                                                <label class="control-label col-md-3">Select Images :</label>
-                                                                <input id="imageupload" type="file" class="btn blue"/>
-                                                                <br />
-                                                                <div class="row" >
-                                                                    <div id="preview-image" class="row">
-
-                                                                    </div>
+                                                                <label class="col-md-3 control-label">Select Webview Type
+                                                                    <span style="color: red">*</span>
+                                                                </label>
+                                                                <div class="col-md-4">
+                                                                    <select class="form-control" name="en[webviewType]" required>
+                                                                        <option value="">-</option>
+                                                                        @foreach($drawerWeb as $drawer)
+                                                                            <option value="{{$drawer['id']}}">{{$drawer['name']}}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="col-md-3 control-label">Web View Description
+                                                                    <span style="color: red">*</span>
+                                                                </label>
+                                                                <div class="col-md-4" id="f3">
+                                                                    <textarea id="cktext" name="en[description]" class="form-control " cols="50" rows="4" required> </textarea>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <textarea id="cktext_gj" name="gj[description]" class="form-control " cols="50" rows="4" required> </textarea>
                                                                 </div>
                                                             </div>
                                                         </fieldset>
                                                         <fieldset>
                                                             <div class="form-group">
                                                                 <div class="col-md-3 col-md-offset-7" >
-                                                                    <button type="submit" class="btn btn-circle"><i class="fa fa-check"></i> Submit </button>
+                                                                    <button id="submit" type="submit" class="btn btn-circle"><i class="fa fa-check"></i> Submit </button>
                                                                 </div>
                                                             </div>
                                                         </fieldset>
@@ -185,17 +154,19 @@
     <script  src="/assets/global/plugins/datatables/datatables.min.js"></script>
     <script src="/assets/global/scripts/datatable.js" type="text/javascript"></script>
     <script src="/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js" type="text/javascript"></script>
-    <script src="/assets/custom/admin/messages/create-message-validation.js" type="text/javascript"></script>
 
+    <script src="/assets/custom/admin/webview/create-webview-validation.js" type="text/javascript"></script>
+    <script src="/assets/ckeditor/ckeditor.js"></script>
+    <script src="/assets/ckeditor/adapters/jquery.js"></script>
     <script>
         $(document).ready(function () {
-            CreateMessages.init();
+            $("textarea").ckeditor();
+            //CreateWebview.init();
         });
-
 
         $('#country').change(function(){
             var id=this.value;
-            var route='/message/get-all-states/'+id;
+            var route='/webview/get-all-states/'+id;
             $.get(route,function(res){
                 if (res.length == 0)
                 {
@@ -212,7 +183,7 @@
         });
         $('#state').change(function(){
             var id=this.value;
-            var route='/message/get-all-cities/'+id;
+            var route='/webview/get-all-cities/'+id;
             $.get(route,function(res){
                 if (res.length == 0)
                 {
@@ -227,31 +198,15 @@
                 }
             });
         });
-        $("#imageupload").on('change', function () {
-            var countFiles = $(this)[0].files.length;
-            var imgPath = $(this)[0].value;
-            var extn = imgPath.substring(imgPath.lastIndexOf('.') + 1).toLowerCase();
-            var image_holder = $("#preview-image");
-            image_holder.empty();
-            if (extn == "gif" || extn == "png" || extn == "jpg" || extn == "jpeg") {
-                if (typeof (FileReader) != "undefined") {
-                    for (var i = 0; i < countFiles; i++) {
-                        var reader = new FileReader()
-                        reader.onload = function (e) {
-                            var imagePreview = '<div class="col-md-2"><input type="hidden" name="message_images" value="'+e.target.result+'"><img src="'+e.target.result+'" class="thumbimage" /></div>';
-                            image_holder.append(imagePreview);
-                        };
-                        image_holder.show();
-                        reader.readAsDataURL($(this)[0].files[i]);
-                    }
-                } else {
-                    alert("It doesn't supports");
-                }
-            } else {
-                alert("Select Only images");
+    </script>
+    <script>
+        $("form").submit( function(e) {
+            var messageLength = CKEDITOR.instances['cktext'].getData();
+            if(messageLength == 0 ) {
+                alert( 'Webview Description in English should not be empty' );
+                e.preventDefault();
             }
         });
     </script>
-
 @endsection
 

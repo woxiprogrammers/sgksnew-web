@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddIsActiveToCommitteeMembersTable extends Migration
+class CreateClassifiedPackagesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,11 @@ class AddIsActiveToCommitteeMembersTable extends Migration
      */
     public function up()
     {
-        Schema::table('committee_members', function (Blueprint $table) {
-            $table->boolean('is_active')->nullable()->default(true);
+        Schema::create('classified_packages', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('package_name',255)->nullable();
+            $table->string('slug',255)->nullable();
+            $table->timestamps();
         });
     }
 
@@ -25,8 +28,6 @@ class AddIsActiveToCommitteeMembersTable extends Migration
      */
     public function down()
     {
-        Schema::table('committee_members', function (Blueprint $table) {
-            $table->dropColumn('is_active');
-        });
+        Schema::dropIfExists('classified_packages');
     }
 }

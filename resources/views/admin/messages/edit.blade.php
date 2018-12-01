@@ -78,7 +78,7 @@
                                                                     @foreach($message_Types as $message_Type)
                                                                         @if($message_Type['id'] == $messageData['message_type_id'])
                                                                             <div class="form-check form-check-inline">
-                                                                              <input class="form-check-input" type="radio" name="en[message_type]" id="message_type" value="{{$message_Type['id']}}" checked>
+                                                                              <input class="form-check-input" type="radio" name="en[message_type]" id="message_type" value="{{$message_Type['id']}}" checked required>
                                                                                <label class="form-check-label" for="message_type">{{$message_Type['name']}}</label>
                                                                             </div>
                                                                         @else
