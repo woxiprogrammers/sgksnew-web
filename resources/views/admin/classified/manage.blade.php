@@ -74,7 +74,7 @@
                                                         <th></th>
                                                         <th></th>
                                                         <th></th>
-                                                        <th></th>
+                                                        <th><input type="text" class="form-control form-filter" name="search_city"></th>
                                                         <th></th>
                                                         <th></th>
                                                         <th></th>

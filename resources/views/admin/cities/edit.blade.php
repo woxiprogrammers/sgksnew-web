@@ -70,7 +70,7 @@
                                                             </div>
                                                         </fieldset>
                                                         <fieldset>
-                                                            <div class="form-group">
+                                                            {{--<div class="form-group">
                                                                 <label class="col-md-3 control-label">Country
                                                                     <span style="color: red">*</span>
                                                                 </label>
@@ -92,7 +92,7 @@
                                                                         <option value="{{$state['id']}}">{{$state['name']}}</option>
                                                                     </select>
                                                                 </div>
-                                                            </div>
+                                                            </div>--}}
                                                             <div class="form-group">
                                                                 <label class="col-md-3 control-label">City
                                                                     <span style="color: red">*</span>
@@ -142,7 +142,7 @@
     <script src="/assets/global/scripts/datatable.js" type="text/javascript"></script>
     <script src="/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js" type="text/javascript"></script>
 
-    <script>
+    {{--<script>
         $('#country').change(function(){
             var id=this.value;
             var route='/cities/get-all-states/'+id;
@@ -160,6 +160,6 @@
                 }
             });
         });
-    </script>
+    </script>--}}
 @endsection
 

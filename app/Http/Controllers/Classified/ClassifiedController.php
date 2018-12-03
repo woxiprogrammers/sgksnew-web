@@ -40,9 +40,10 @@ class ClassifiedController extends Controller
 
     public function createView(Request $request){
         try{
-            $countries = Countries::get();
+            //$countries = Countries::get();
+            $cities = Cities::get();
             $packages = ClassifiedPackages::get();
-            return view('admin.classified.create')->with(compact('countries','packages'));
+            return view('admin.classified.create')->with(compact('cities','packages'));
         }catch(\Exception $exception){
             $data = [
                 'params' => $request->all(),
@@ -127,6 +128,16 @@ class ClassifiedController extends Controller
                     $filterFlag = false;
                 }
             }
+            if($filterFlag == true && $request->has('search_city') && $request->search_city != ''){
+                $classifiedsData = Classifieds::join('cities','cities.id','=','classifieds.city_id')
+                    ->where('cities.name','ilike','%'.$request->search_city.'%')
+                    ->pluck('classifieds.id')
+                    ->toArray();
+                if(count($classifiedsData) < 0){
+                    $filterFlag = false;
+                }
+            }
+
 
             $finalClassifiedsData = Classifieds::whereIn('id', $classifiedsData)->orderBy('created_at','desc')->get();
             {
@@ -175,7 +186,7 @@ class ClassifiedController extends Controller
                         $package['package_name'],
                         $packageType,
                         $city,
-                        $date->format('d/M/Y'),
+                        $date->format('d M Y'),
                         $img,
                         $isActive,
                         $actionButton
@@ -202,16 +213,16 @@ class ClassifiedController extends Controller
             $packages = ClassifiedPackages::get();
             $classifiedData = Classifieds::where('id',$id)->first();
             $classifiedGujaratiData = ClassifiedsTranslations::where('classified_id',$id)->first();
+            $city = Cities::where('id',$classifiedData['city_id'])->first();
+            $cities = Cities::get();
 
-            $cityId = $classifiedData['city_id'];
-            $city = Cities::where('id',$cityId)->first();
-            $cityName = $city['name'];
+            /*$cityName = $city['name'];
             $stateId = $city['state_id'];
             $state = States::where('id',$stateId)->first();
             $stateName = $state['name'];
             $countryId = $state['country_id'];
             $country = Countries::where('id',$countryId)->first();
-            $countryName = $country['name'];
+            $countryName = $country['name'];*/
 
             $classifiedPackage = ClassifiedPackages::where('id',$classifiedData['package_id'])->first();
             $classifiedPackageType = PackageRules::where('package_id',$classifiedPackage['id'])->first();
@@ -230,7 +241,7 @@ class ClassifiedController extends Controller
                 $classifiedImagesId[] = null;
             }
 
-            return view('admin.classified.edit')->with(compact('countries','packages','classifiedData','classifiedGujaratiData','stateName','countryName','cityName','cityId','classifiedPackage','classifiedPackageType','classifiedImages','classifiedImagesId'));
+            return view('admin.classified.edit')->with(compact('countries','packages','classifiedData','classifiedGujaratiData','city','cities','classifiedPackage','classifiedPackageType','classifiedImages','classifiedImagesId'));
         }catch(\Exception $exception){
             $data = [
                 'params' => $request->all(),
@@ -300,7 +311,7 @@ class ClassifiedController extends Controller
         }
     }
 
-    public function getAllStates(Request $request,$id){
+    /*public function getAllStates(Request $request,$id){
         try{
             $states = States::where('country_id',$id)->get();
             return $states;
@@ -329,7 +340,7 @@ class ClassifiedController extends Controller
             Log::critical(json_encode($data));
             abort(500);
         }
-    }
+    }*/
 
     public function getAllPackageType(Request $request,$id){
         try{

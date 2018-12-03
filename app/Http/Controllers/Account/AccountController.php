@@ -38,8 +38,9 @@ class AccountController extends Controller
 
     public function createView(Request $request){
         try{
-            $countries = Countries::get();
-            return view('admin.accounts.create')->with(compact('countries'));
+            //$countries = Countries::get();
+            $cities = Cities::get();
+            return view('admin.accounts.create')->with(compact('cities'));
         }catch(\Exception $exception){
             $data = [
                 'params' => $request->all(),
@@ -118,7 +119,16 @@ class AccountController extends Controller
                 $accountsData = Accounts::where('name','like','%'.$request->search_account.'%')
                     ->whereIn('id',$accountsData)
                     ->pluck('id')->toArray();
-                if(count($accountsData) > 0){
+                if(count($accountsData) < 0){
+                    $filterFlag = false;
+                }
+            }
+            if($filterFlag == true && $request->has('search_city') && $request->search_city != ''){
+                $accountsData = Accounts::join('cities','cities.id','=','accounts.city_id')
+                    ->where('cities.name','ilike','%'.$request->search_city.'%')
+                    ->pluck('accounts.id')
+                    ->toArray();
+                if(count($accountsData) < 0){
                     $filterFlag = false;
                 }
             }
@@ -134,6 +144,8 @@ class AccountController extends Controller
                     $srNo = $iterator + 1;
                     $accountName = str_limit($finalAccountsData[$pagination]->name,20);
                     $description = str_limit($finalAccountsData[$pagination]->description,20);
+                    $date = $finalAccountsData[$pagination]->created_at;
+                    $city = Cities::where('id',$finalAccountsData[$pagination]->city_id)->pluck('name')->first();
                     $gujaratiDetails = AccountsTranslations::where('account_id',$finalAccountsData[$pagination]->id)->first();
                     $actionButton = '<div id="sample_editable_1_new" class="btn btn-small blue">
                         <a href="/account/edit/' . $finalAccountsData[$pagination]['id'] . '" style="color: white">Edit
@@ -144,6 +156,8 @@ class AccountController extends Controller
                         str_limit($gujaratiDetails['name'],20),
                         $description,
                         str_limit($gujaratiDetails['description'],20),
+                        $city,
+                        $date->format('d M Y'),
                         $actionButton
                     ];
                 }
@@ -166,17 +180,17 @@ class AccountController extends Controller
         try{
             $accountData = Accounts::where('id',$id)->first();
             $accountDataGujarati = AccountsTranslations::where('account_id',$id)->first();
-            $countries = Countries::get();
+            $city = Cities::where('id',$accountData['city_id'])->first();
+            $cities = Cities::get();
 
-            $cityId = $accountData['city_id'];
-            $city = Cities::where('id',$cityId)->first();
+            /*$countries = Countries::get();
             $cityName = $city['name'];
             $stateId = $city['state_id'];
             $state = States::where('id',$stateId)->first();
             $stateName = $state['name'];
             $countryId = $state['country_id'];
             $country = Countries::where('id',$countryId)->first();
-            $countryName = $country['name'];
+            $countryName = $country['name'];*/
 
             $createAccountDirectoryName = sha1($accountData->id);
             $images = AccountImages::where('account_id',$id)->select('id','url')->get();
@@ -191,7 +205,7 @@ class AccountController extends Controller
                 $accountImages[] = null;
                 $accountImagesId[] = null;
             }
-            return view('admin.accounts.edit')->with(compact('countries','accountData','accountDataGujarati','cityName','stateName','countryName','cityId','accountImages','accountImagesId'));
+            return view('admin.accounts.edit')->with(compact('accountData','accountDataGujarati','city','cities','accountImages','accountImagesId'));
         }catch(\Exception $exception){
             $data = [
                 'params' => $request->all(),
@@ -262,7 +276,7 @@ class AccountController extends Controller
         }
     }
 
-    public function getAllStates(Request $request,$id){
+    /*public function getAllStates(Request $request,$id){
         try{
             $states = States::where('country_id',$id)->get();
             return $states;
@@ -291,7 +305,7 @@ class AccountController extends Controller
             Log::critical(json_encode($data));
             abort(500);
         }
-    }
+    }*/
 
     public function deleteAccountImage(Request $request,$id){
         try{

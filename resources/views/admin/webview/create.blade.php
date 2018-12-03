@@ -60,7 +60,7 @@
                                                             </div>
                                                         </fieldset>
                                                         <fieldset>
-                                                            <div class="form-group">
+                                                            {{--<div class="form-group">
                                                                 <label class="col-md-3 control-label">Country
                                                                     <span style="color: red">*</span>
                                                                 </label>
@@ -82,14 +82,17 @@
 
                                                                     </select>
                                                                 </div>
-                                                            </div>
+                                                            </div>--}}
                                                             <div class="form-group">
                                                                 <label class="col-md-3 control-label">City
                                                                     <span style="color: red">*</span>
                                                                 </label>
                                                                 <div class="col-md-4">
                                                                     <select class="form-control " id="city" name="en[city]" required>
-
+                                                                        <option value="">-</option>
+                                                                        @foreach($cities as $city)
+                                                                            <option value="{{$city['id']}}">{{$city['name']}}</option>
+                                                                        @endforeach
                                                                     </select>
                                                                 </div>
                                                             </div>
@@ -164,7 +167,7 @@
             //CreateWebview.init();
         });
 
-        $('#country').change(function(){
+        /*$('#country').change(function(){
             var id=this.value;
             var route='/webview/get-all-states/'+id;
             $.get(route,function(res){
@@ -197,7 +200,7 @@
                     $('#city').html(str);
                 }
             });
-        });
+        });*/
     </script>
     <script>
         $("form").submit( function(e) {

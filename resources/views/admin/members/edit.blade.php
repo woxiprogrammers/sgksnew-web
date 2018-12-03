@@ -202,10 +202,8 @@
                                                                     <input type="email" id="email_id" name="en[email_id]" value="{{$memberData['email']}}" class="form-control " placeholder="Enter email">
                                                                 </div>
                                                             </div>
-                                                            <?php $selectedState = \App\Cities::where('id',$memberData['city_id'])->first();
-                                                            $selectedCountry = \App\States::where('id',$selectedState['country_id'])->first();
-                                                            ?>
-                                                            <div class="form-group">
+
+                                                            {{--<div class="form-group">
                                                                 <label class="col-md-3 control-label">Country</label>
                                                                 <div class="col-md-4">
                                                                     <select class="form-control" id="country" name="en[country]">
@@ -232,17 +230,14 @@
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
-                                                            </div>
+                                                            </div>--}}
                                                             <div class="form-group">
                                                                 <label class="col-md-3 control-label">City</label>
                                                                 <div class="col-md-4">
                                                                     <select class="form-control " id="city" name="en[city]">
+                                                                        <option value="{{$city['id']}}">{{$city['name']}}</option>
                                                                         @foreach($cities as $city)
-                                                                            @if($city['id'] == $memberData['city_id'])
-                                                                                <option value="{{$city['id']}}" selected>{{$city['name']}}</option>
-                                                                            @else
-                                                                                <option value="{{$city['id']}}">{{$city['name']}}</option>
-                                                                            @endif
+                                                                            <option value="{{$city['id']}}">{{$city['name']}}</option>
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
@@ -316,7 +311,7 @@
         $(document).ready(function () {
             CreateMembers.init();
         });
-        $('#country').change(function(){
+        /*$('#country').change(function(){
             var id=this.value;
             var route='/member/get-all-states/'+id;
             $.get(route,function(res){
@@ -349,7 +344,7 @@
                     $('#city').html(str);
                 }
             });
-        });
+        });*/
         $("#imageupload").on('change', function () {
             var countFiles = $(this)[0].files.length;
             var imgPath = $(this)[0].value;

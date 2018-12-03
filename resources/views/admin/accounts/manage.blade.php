@@ -58,6 +58,8 @@
                                                         <th> Gujarati Name </th>
                                                         <th> Description </th>
                                                         <th> Gujarati Description </th>
+                                                        <th> City </th>
+                                                        <th> Date </th>
                                                         <th> Actions </th>
                                                     </tr>
                                                     <tr class="filter">
@@ -65,6 +67,8 @@
                                                         <th> <input type="text" class="form-control form-filter" name="search_account"> </th>
                                                         <th></th>
                                                         <th></th>
+                                                        <th></th>
+                                                        <th> <input type="text" class="form-control form-filter" name="search_city"> </th>
                                                         <th></th>
                                                         <th>
                                                             <button class="btn btn-xs blue filter-submit"> Search <i class="fa fa-search"></i> </button>

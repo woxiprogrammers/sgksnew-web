@@ -38,10 +38,11 @@ class MessageController extends Controller
 
     public function createView(Request $request){
         try{
-            $countries = Countries::get();
+            //$countries = Countries::get();
             $messageTypes = new MessageTypes();
             $message_Types = $messageTypes->get();
-            return view('admin.messages.create')->with(compact('countries','message_Types'));
+            $cities = Cities::get();
+            return view('admin.messages.create')->with(compact('cities','message_Types'));
         }catch(\Exception $exception){
             $data = [
                 'params' => $request->all(),
@@ -174,7 +175,7 @@ class MessageController extends Controller
                         $description,
                         str_limit($gujaratiDetails['description'],20),
                         $city,
-                        $date->format('d/M/Y'),
+                        $date->format('d M Y'),
                         $isActive,
                         $actionButton
                     ];
@@ -198,18 +199,18 @@ class MessageController extends Controller
         try{
             $messageData = Messages::where('id',$id)->first();
             $messageDataGujarati = MessageTranslations::where('message_id',$id)->first();
-            $countries = Countries::get();
             $png = '.png';
+            $city = Cities::where('id',$messageData['city_id'])->first();
+            $cities = Cities::get();
 
-            $cityId = $messageData['city_id'];
-            $city = Cities::where('id',$cityId)->first();
+            /*$countries = Countries::get();
             $cityName = $city['name'];
             $stateId = $city['state_id'];
             $state = States::where('id',$stateId)->first();
             $stateName = $state['name'];
             $countryId = $state['country_id'];
             $country = Countries::where('id',$countryId)->first();
-            $countryName = $country['name'];
+            $countryName = $country['name'];*/
 
             $messageTypes = new MessageTypes();
             $message_Types = $messageTypes->get();
@@ -221,7 +222,7 @@ class MessageController extends Controller
             }else{
                 $messageImage = env('MESSAGE_TYPE_IMAGES').DIRECTORY_SEPARATOR.$message_Type.$png;
             }
-            return view('admin.messages.edit')->with(compact('countries','messageData','messageDataGujarati','cityName','stateName','countryName','cityId','messageImage','message_Types'));
+            return view('admin.messages.edit')->with(compact('cities','messageData','messageDataGujarati','city','messageImage','message_Types'));
         }catch(\Exception $exception){
             $data = [
                 'params' => $request->all(),
@@ -301,7 +302,7 @@ class MessageController extends Controller
         }
     }
 
-    public function getAllStates(Request $request,$id){
+    /*public function getAllStates(Request $request,$id){
         try{
             $states = States::where('country_id',$id)->get();
             return $states;
@@ -330,7 +331,7 @@ class MessageController extends Controller
             Log::critical(json_encode($data));
             abort(500);
         }
-    }
+    }*/
 
     public function changeStatus(Request $request,$id){
         try{

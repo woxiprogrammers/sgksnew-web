@@ -35,8 +35,9 @@ class MemberController extends Controller
         try{
             $bloodGroupType = new BloodGroupType();
             $blood_group_types = $bloodGroupType->get();
-            $countries = Countries::get();
-            return view('admin.members.create')->with(compact('blood_group_types','countries'));
+            //$countries = Countries::get();
+            $cities = Cities::get();
+            return view('admin.members.create')->with(compact('blood_group_types','cities'));
         }catch(\Exception $exception){
             $data = [
                 'params' => $request->all(),
@@ -113,7 +114,7 @@ class MemberController extends Controller
             abort(500);
         }
     }
-    public function getAllStates(Request $request,$id){
+    /*public function getAllStates(Request $request,$id){
         try{
             $states = States::where('country_id',$id)->get();
             return $states;
@@ -140,7 +141,7 @@ class MemberController extends Controller
             Log::critical(json_encode($data));
             abort(500);
         }
-    }
+    }*/
     public function memberListing(Request $request){
         try{
             $records = array();
@@ -238,10 +239,11 @@ class MemberController extends Controller
         try{
             $memberTranslation = MemberTranslations::where('member_id',$memberData['id'])->first();
             $bloodGroups = BloodGroupType::get()->toArray();
-            $countries = Countries::get()->toArray();
-            $states = States::get()->toArray();
-            $cities = Cities::get()->toArray();
-            return view('admin.members.edit')->with(compact('memberData','bloodGroups','states','cities','countries','memberTranslation'));
+            /*$countries = Countries::get()->toArray();
+            $states = States::get()->toArray();*/
+            $cities = Cities::get();
+            $city  = Cities::where('id',$memberData['id'])->first();
+            return view('admin.members.edit')->with(compact('memberData','bloodGroups','states','city','cities','memberTranslation'));
         }catch(\Exception $exception){
             $data = [
                 'params' => $request->all(),
