@@ -56,11 +56,13 @@
                                                         <th> Sr.No </th>
                                                         <th> Webview </th>
                                                         <th> City </th>
+                                                        <th> Updated at </th>
                                                         <th> Actions </th>
                                                     </tr>
                                                     <tr class="filter">
                                                         <th></th>
                                                         <th> <input type="text" class="form-control form-filter" name="search_webview"> </th>
+                                                        <th> <input type="text" class="form-control form-filter" name="search_city"> </th>
                                                         <th></th>
                                                         <th>
                                                             <button class="btn btn-xs blue filter-submit"> Search <i class="fa fa-search"></i> </button>

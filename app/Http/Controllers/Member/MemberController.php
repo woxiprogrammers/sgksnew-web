@@ -4,11 +4,9 @@ namespace App\Http\Controllers\Member;
 
 use App\BloodGroupType;
 use App\Cities;
-use App\Countries;
 use App\Languages;
 use App\Members;
 use App\MemberTranslations;
-use App\States;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
@@ -35,8 +33,8 @@ class MemberController extends Controller
         try{
             $bloodGroupType = new BloodGroupType();
             $blood_group_types = $bloodGroupType->get();
-            $countries = Countries::get();
-            return view('admin.members.create')->with(compact('blood_group_types','countries'));
+            $cities = Cities::get();
+            return view('admin.members.create')->with(compact('blood_group_types','cities'));
         }catch(\Exception $exception){
             $data = [
                 'params' => $request->all(),
@@ -113,34 +111,7 @@ class MemberController extends Controller
             abort(500);
         }
     }
-    public function getAllStates(Request $request,$id){
-        try{
-            $states = States::where('country_id',$id)->get();
-            return $states;
-        }catch(\Exception $exception){
-            $data = [
-                'params' => $request->all(),
-                'action' => 'listing of states',
-                'exception' => $exception->getMessage()
-            ];
-            Log::critical(json_encode($data));
-            abort(500);
-        }
-    }
-    public function getAllCities(Request $request,$id){
-        try{
-            $cities = Cities::where('state_id',$id)->get();
-            return $cities;
-        }catch(\Exception $exception){
-            $data = [
-                'params' => $request->all(),
-                'action' => 'listing of states',
-                'exception' => $exception->getMessage()
-            ];
-            Log::critical(json_encode($data));
-            abort(500);
-        }
-    }
+
     public function memberListing(Request $request){
         try{
             $records = array();
@@ -238,10 +209,9 @@ class MemberController extends Controller
         try{
             $memberTranslation = MemberTranslations::where('member_id',$memberData['id'])->first();
             $bloodGroups = BloodGroupType::get()->toArray();
-            $countries = Countries::get()->toArray();
-            $states = States::get()->toArray();
-            $cities = Cities::get()->toArray();
-            return view('admin.members.edit')->with(compact('memberData','bloodGroups','states','cities','countries','memberTranslation'));
+            $cities = Cities::get();
+            $city  = Cities::where('id',$memberData['id'])->first();
+            return view('admin.members.edit')->with(compact('memberData','bloodGroups','states','city','cities','memberTranslation'));
         }catch(\Exception $exception){
             $data = [
                 'params' => $request->all(),

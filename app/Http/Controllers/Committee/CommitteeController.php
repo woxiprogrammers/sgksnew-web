@@ -34,8 +34,8 @@ class CommitteeController extends Controller
 
     public function createCommitteeView(Request $request){
         try{
-            $countries = Countries::get();
-            return view('admin.committee.create')->with(compact('countries'));
+            $cities = Cities::get();
+            return view('admin.committee.create')->with(compact('cities'));
         }catch(\Exception $exception){
             $data = [
                 'action' => 'Create committee View',
@@ -75,36 +75,6 @@ class CommitteeController extends Controller
         }catch(\Exception $exception){
             $data = [
                 'action' => 'Create committee',
-                'params' => $request->all(),
-                'exception' => $exception->getMessage()
-            ];
-            Log::critical(json_encode($data));
-            abort(500);
-        }
-    }
-
-
-    public function getAllStates(Request $request,$id){
-        try{
-            $states = States::where('country_id',$id)->get();
-            return $states;
-        }catch(\Exception $exception){
-            $data = [
-                'action' => 'listing of states',
-                'params' => $request->all(),
-                'exception' => $exception->getMessage()
-            ];
-            Log::critical(json_encode($data));
-            abort(500);
-        }
-    }
-    public function getAllCities(Request $request,$id){
-        try{
-            $cities = Cities::where('state_id',$id)->get();
-            return $cities;
-        }catch(\Exception $exception){
-            $data = [
-                'action' => 'listing of Cities',
                 'params' => $request->all(),
                 'exception' => $exception->getMessage()
             ];
@@ -176,7 +146,7 @@ class CommitteeController extends Controller
                         $description,
                         str_limit($gujaratiDetails['description'],20),
                         $city,
-                        $date->format('d/M/Y'),
+                        $date->format('d M Y'),
                         $totalMembers,
                         $isActive,
                         $actionButton
@@ -199,22 +169,12 @@ class CommitteeController extends Controller
 
     public function editCommitteeView(Request $request,$id){
         try{
-            $countries = Countries::get();
             $committeeData  = Committees::where('id',$id)->first();
-
-            $cityId = $committeeData['city_id'];
-            $city = Cities::where('id',$cityId)->first();
-            $cityName = $city['name'];
-            $stateId = $city['state_id'];
-            $state = States::where('id',$stateId)->first();
-            $stateName = $state['name'];
-            $countryId = $state['country_id'];
-            $country = Countries::where('id',$countryId)->first();
-            $countryName = $country['name'];
-
+            $city = Cities::where('id',$committeeData['city_id'])->first();
+            $cities = Cities::get();
             $committeeDataGujarati = CommitteesTranslations::where('committee_id',$id)->first();
 
-            return view('admin.committee.edit')->with(compact('committeeData','countries','countryName','stateName','cityName','cityId','committeeDataGujarati'));
+            return view('admin.committee.edit')->with(compact('committeeData','city','cities','committeeDataGujarati'));
         }catch(\Exception $exception){
             $data = [
                 'action' => 'Committee Edit View',
@@ -380,8 +340,10 @@ class CommitteeController extends Controller
                     $srNo = $iterator + 1;
                     $committeeMemberId = $finalMembersData[$pagination]->id;
                     $memberName = $finalMembersData[$pagination]->full_name;
+                    $designation = $finalMembersData[$pagination]->designation;
                     $mobileNumber = $finalMembersData[$pagination]->mobile_number;
                     $emailId = $finalMembersData[$pagination]->email_id;
+                    $date = $finalMembersData[$pagination]->created_at;
                     $isActiveStatus = $finalMembersData[$pagination]->is_active;
                     $gujaratiDetails = CommitteeMembersTranslations::where('member_id',$finalMembersData[$pagination]->id)->first();
                     if($isActiveStatus){
@@ -396,8 +358,10 @@ class CommitteeController extends Controller
                         $srNo,
                         $memberName,
                         $gujaratiDetails['full_name'],
+                        $designation,
                         $mobileNumber,
                         $emailId,
+                        $date->format('d M Y'),
                         $isActive,
                         $actionButton
                     ];

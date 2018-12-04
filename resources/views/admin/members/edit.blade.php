@@ -202,47 +202,14 @@
                                                                     <input type="email" id="email_id" name="en[email_id]" value="{{$memberData['email']}}" class="form-control " placeholder="Enter email">
                                                                 </div>
                                                             </div>
-                                                            <?php $selectedState = \App\Cities::where('id',$memberData['city_id'])->first();
-                                                            $selectedCountry = \App\States::where('id',$selectedState['country_id'])->first();
-                                                            ?>
-                                                            <div class="form-group">
-                                                                <label class="col-md-3 control-label">Country</label>
-                                                                <div class="col-md-4">
-                                                                    <select class="form-control" id="country" name="en[country]">
-                                                                        @foreach($countries as $country)
-                                                                            @if($country['id'] == $selectedCountry['country_id'])
-                                                                                <option value="{{$country['id']}}" selected>{{$country['name']}}</option>
-                                                                            @else
-                                                                                <option value="{{$country['id']}}">{{$country['name']}}</option>
-                                                                            @endif
-                                                                        @endforeach
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label class="col-md-3 control-label">State</label>
-                                                                <div class="col-md-4">
-                                                                    <select class="form-control" id="state" name="en[state]">
-                                                                        @foreach($states as $state)
-                                                                            @if($state['id'] == $selectedState['state_id'])
-                                                                                <option value="{{$state['id']}}" selected>{{$state['name']}}</option>
-                                                                            @else
-                                                                                <option value="{{$state['id']}}">{{$state['name']}}</option>
-                                                                            @endif
-                                                                        @endforeach
-                                                                    </select>
-                                                                </div>
-                                                            </div>
+
                                                             <div class="form-group">
                                                                 <label class="col-md-3 control-label">City</label>
                                                                 <div class="col-md-4">
                                                                     <select class="form-control " id="city" name="en[city]">
+                                                                        <option value="{{$city['id']}}">{{$city['name']}}</option>
                                                                         @foreach($cities as $city)
-                                                                            @if($city['id'] == $memberData['city_id'])
-                                                                                <option value="{{$city['id']}}" selected>{{$city['name']}}</option>
-                                                                            @else
-                                                                                <option value="{{$city['id']}}">{{$city['name']}}</option>
-                                                                            @endif
+                                                                            <option value="{{$city['id']}}">{{$city['name']}}</option>
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
@@ -315,40 +282,6 @@
     <script>
         $(document).ready(function () {
             CreateMembers.init();
-        });
-        $('#country').change(function(){
-            var id=this.value;
-            var route='/member/get-all-states/'+id;
-            $.get(route,function(res){
-                if (res.length == 0)
-                {
-                    $('#state').html("no record found");
-                } else {
-                    var str='<option value="">Please select state</option>';
-                    for(var i=0; i<res.length; i++)
-                    {
-                        str+='<option value="'+res[i]['id']+'">'+res[i]['name']+'</option>';
-                    }
-                    $('#state').html(str);
-                }
-            });
-        });
-        $('#state').change(function(){
-            var id=this.value;
-            var route='/member/get-all-city/'+id;
-            $.get(route,function(res){
-                if (res.length == 0)
-                {
-                    $('#city').html("no record found");
-                } else {
-                    var str='<option value="">Please select city</option>';
-                    for(var i=0; i<res.length; i++)
-                    {
-                        str+='<option value="'+res[i]['id']+'">'+res[i]['name']+'</option>';
-                    }
-                    $('#city').html(str);
-                }
-            });
         });
         $("#imageupload").on('change', function () {
             var countFiles = $(this)[0].files.length;

@@ -59,8 +59,10 @@
                                                         <th>Sr.No</th>
                                                         <th style="width: 20%"> Name </th>
                                                         <th> Gujarati Name </th>
+                                                        <th> Designation </th>
                                                         <th> Mobile </th>
                                                         <th> Email </th>
+                                                        <th> Date </th>
                                                         <th> Status
                                                             <i class="fa fa-check-square"> Enable</i>
                                                         </th>
@@ -69,6 +71,8 @@
                                                     <tr class="filter">
                                                         <th><input type="hidden" id="committee-id" value="{{$id}}" /></th>
                                                         <th style="width: 20%"> <input type="text" class="form-control form-filter" name="search_name"> </th>
+                                                        <th></th>
+                                                        <th></th>
                                                         <th></th>
                                                         <th></th>
                                                         <th></th>

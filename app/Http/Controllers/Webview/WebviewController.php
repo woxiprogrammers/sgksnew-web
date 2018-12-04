@@ -19,10 +19,11 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 class WebviewController extends Controller
 {
-    public function manage(Request $request){
-        try{
+    public function manage(Request $request)
+    {
+        try {
             return view('admin.webview.manage');
-        }catch(\Exception $exception){
+        } catch (\Exception $exception) {
             $data = [
                 'params' => $request->all(),
                 'action' => 'Webview View page',
@@ -32,13 +33,15 @@ class WebviewController extends Controller
             abort(500);
         }
     }
-    public function createView(Request $request){
-        try{
+
+    public function createView(Request $request)
+    {
+        try {
             $drawerWeb = DrawerWebview::get();
             $drawerWebDetails = DrawerWebviewDetails::get();
-            $countries = Countries::get();
-            return view('admin.webview.create')->with(compact('drawerWeb','drawerWebDetails','countries'));
-        }catch(\Exception $exception){
+            $cities = Cities::get();
+            return view('admin.webview.create')->with(compact('drawerWeb', 'drawerWebDetails','cities'));
+        } catch (\Exception $exception) {
             $data = [
                 'action' => 'Webview View page',
                 'params' => $request->all(),
@@ -49,30 +52,31 @@ class WebviewController extends Controller
         }
     }
 
-    public function create(Request $request){
-        try{
+    public function create(Request $request)
+    {
+        try {
             $data = $request->all();
             $webviewData['drawer_web_id'] = $data['en']['webviewType'];
             $webviewData['description'] = $data['en']['description'];
             $webviewData['city_id'] = $data['en']['city'];
             $createWebview = DrawerWebviewDetails::create($webviewData);
 
-            if(array_key_exists('gj',$data)){
-                if (array_key_exists('description',$data['gj'])){
+            if (array_key_exists('gj', $data)) {
+                if (array_key_exists('description', $data['gj'])) {
                     $gujaratiWebviewData['description'] = $data['gj']['description'];
                 }
-                $gujaratiWebviewData['language_id'] = Languages::where('abbreviation','=','gj')->pluck('id')->first();
+                $gujaratiWebviewData['language_id'] = Languages::where('abbreviation', '=', 'gj')->pluck('id')->first();
                 $gujaratiWebviewData['drawer_webview_details_id'] = $createWebview->id;
                 DrawerWebviewDetailsTranslations::create($gujaratiWebviewData);
             }
 
-            if($createWebview){
-                $request->session()->flash('success','Data Inserted Successfully');
-            }else{
-                $request->session()->flash('error','Something went wrong');
+            if ($createWebview) {
+                $request->session()->flash('success', 'Data Inserted Successfully');
+            } else {
+                $request->session()->flash('error', 'Something went wrong');
             }
             return redirect('/webview/manage');
-        }catch(\Exception $exception){
+        } catch (\Exception $exception) {
             $data = [
                 'action' => 'Create Webview',
                 'params' => $request->all(),
@@ -83,24 +87,34 @@ class WebviewController extends Controller
         }
     }
 
-    public function listing(Request $request){
-        try{
+    public function listing(Request $request)
+    {
+        try {
             $records = array();
             $status = 200;
             $records['data'] = array();
             $records["draw"] = intval($request->draw);
-            $webviewData = DrawerWebviewDetails::orderBy('created_at','desc')->pluck('id')->toArray();
+            $webviewData = DrawerWebviewDetails::orderBy('created_at', 'desc')->pluck('id')->toArray();
             $filterFlag = true;
-            if($request->has('search_webview')){
-                $webviewDataId = DrawerWebview::where('name','like','%'.$request->search_webview.'%')->first();
-                $webviewData = DrawerWebviewDetails::where('drawer_web_id',$webviewDataId['id'])
+            if ($request->has('search_webview')) {
+                $webviewDataId = DrawerWebview::where('name', 'like', '%' . $request->search_webview . '%')->first();
+                $webviewData = DrawerWebviewDetails::where('drawer_web_id', $webviewDataId['id'])
                     ->pluck('id')->toArray();
+                if (count($webviewData) < 0) {
+                    $filterFlag = false;
+                }
+            }
+            if($filterFlag == true && $request->has('search_city') && $request->search_city != ''){
+                $webviewData = DrawerWebviewDetails::join('cities','cities.id','=','drawer_web_view_details.city_id')
+                    ->where('cities.name','ilike','%'.$request->search_city.'%')
+                    ->pluck('drawer_web_view_details.id')
+                    ->toArray();
                 if(count($webviewData) < 0){
                     $filterFlag = false;
                 }
             }
 
-            $finalWebviewData = DrawerWebviewDetails::whereIn('id', $webviewData)->orderBy('created_at','desc')->get();
+            $finalWebviewData = DrawerWebviewDetails::whereIn('id', $webviewData)->orderBy('created_at', 'desc')->get();
             {
                 $records["recordsFiltered"] = $records["recordsTotal"] = count($finalWebviewData);
                 if ($request->length == -1) {
@@ -109,10 +123,11 @@ class WebviewController extends Controller
                     $length = $request->length;
                 }
                 for ($iterator = 0, $pagination = $request->start; $iterator < $length && $pagination < count($finalWebviewData); $iterator++, $pagination++) {
-                    $srNo = $iterator+1;
+                    $srNo = $iterator + 1;
                     $id = $finalWebviewData[$pagination]->drawer_web_id;
-                    $city = Cities::where('id',$finalWebviewData[$pagination]->city_id)->value('name');
-                    $drawerWebviewData = DrawerWebview::where('id',$id)->first();
+                    $UpdateDate = $finalWebviewData[$pagination]->updated_at;
+                    $city = Cities::where('id', $finalWebviewData[$pagination]->city_id)->value('name');
+                    $drawerWebviewData = DrawerWebview::where('id', $id)->first();
                     $actionButton = '<div id="sample_editable_1_new" class="btn btn-small blue">
                         <a href="/webview/edit/' . $finalWebviewData[$pagination]->id . '" style="color: white">Edit
                     </div>';
@@ -120,11 +135,12 @@ class WebviewController extends Controller
                         $srNo,
                         $drawerWebviewData['name'],
                         $city,
+                        $UpdateDate->format('d M Y'),
                         $actionButton
                     ];
                 }
             }
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             $data = [
                 'action' => 'Webview listing',
                 'params' => $request->all(),
@@ -135,7 +151,7 @@ class WebviewController extends Controller
             Log::critical(json_encode($data));
             abort(500);
         }
-        return response()->json($records,$status);
+        return response()->json($records, $status);
     }
 
     public function editView(Request $request, $id){
@@ -144,16 +160,12 @@ class WebviewController extends Controller
             $webviewDetailsInGujarati = DrawerWebviewDetailsTranslations::where('drawer_webview_details_id',$id)->first();
             $webview = DrawerWebview::where('id',$webviewDetails['drawer_web_id'])->first();
             $webviews = DrawerWebview::get();
-            $countries = Countries::get();
 
             $cityId = $webviewDetails['city_id'];
             $city = Cities::where('id',$cityId)->first();
-            $stateId = $city['state_id'];
-            $state = States::where('id',$stateId)->first();
-            $countryId = $state['country_id'];
-            $country = Countries::where('id',$countryId)->first();
+            $cities = Cities::get();
 
-            return view('admin.webview.edit')->with(compact('webviews','webview','webviewDetails','countries','city','country','state','webviewDetailsInGujarati'));
+            return view('admin.webview.edit')->with(compact('webviews','webview','webviewDetails','countries','city','cities','webviewDetailsInGujarati'));
         }catch(\Exception $exception){
             $data = [
                 'action' => 'edit webview View',
@@ -199,34 +211,4 @@ class WebviewController extends Controller
         }
     }
 
-    public function getAllStates(Request $request,$id){
-        try{
-            $states = States::where('country_id',$id)->get();
-            return $states;
-        }catch(\Exception $exception){
-            $data = [
-                'action' => 'listing of states',
-                'params' => $request->all(),
-                'exception' => $exception->getMessage()
-            ];
-            Log::critical(json_encode($data));
-            abort(500);
-        }
-    }
-
-
-    public function getAllCities(Request $request,$id){
-        try{
-            $cities = Cities::where('state_id',$id)->get();
-            return $cities;
-        }catch(\Exception $exception){
-            $data = [
-                'action' => 'listing of cities',
-                'params' => $request->all(),
-                'exception' => $exception->getMessage()
-            ];
-            Log::critical(json_encode($data));
-            abort(500);
-        }
-    }
 }
