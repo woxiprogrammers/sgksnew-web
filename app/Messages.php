@@ -8,5 +8,5 @@ class Messages extends Model
 {
     protected $table = 'messages';
 
-    protected $fillable = ['title','description','message_type_id','city_id','is_active','image_url'];
+    protected $fillable = ['title','description','message_type_id','city_id','is_active','image_url','message_date'];
 }

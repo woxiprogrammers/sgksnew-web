@@ -149,6 +149,14 @@
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
+                                                                <label class="col-md-3 control-label">Message Date
+                                                                    <span style="color: red">*</span>
+                                                                </label>
+                                                                <div class="col-md-4">
+                                                                    <input type="date" id="message_date" value="{{$messageDate}}" name="en[message_date]" class="form-control " required>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
                                                                 <label class="control-label col-md-3">Select Images :</label>
                                                                 <input id="imageupload" type="file" class="btn blue"/>
                                                                 <br />

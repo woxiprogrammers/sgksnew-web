@@ -17,6 +17,7 @@ use App\MessageTypes;
 use App\MessageTranslations;
 use App\Messages;
 use App\Languages;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\File;
 
 class MessageController extends Controller
@@ -71,6 +72,7 @@ class MessageController extends Controller
             $messageData['description'] = $data['en']['description'];
             $messageData['message_type_id'] = $data['en']['message_type'];
             $messageData['city_id'] = $data['en']['city'];
+            $messageData['message_date'] = $data['en']['message_date'];
             $createMessage = Messages::create($messageData);
             if(array_key_exists('gj',$data)){
                 if(array_key_exists('title',$data['gj'])){
@@ -156,7 +158,7 @@ class MessageController extends Controller
                     $title = str_limit($finalMessagesData[$pagination]->title,20);
                     $description = str_limit($finalMessagesData[$pagination]->description,20);
                     $city = Cities::where('id',$finalMessagesData[$pagination]->city_id)->pluck('name')->first();
-                    $date = $finalMessagesData[$pagination]->created_at;
+                    $messageDate = strtotime($finalMessagesData[$pagination]->message_date);
                     $isActiveStatus = $finalMessagesData[$pagination]->is_active;
                     $id = $finalMessagesData[$pagination]->id;
                     $gujaratiDetails = MessageTranslations::where('message_id',$finalMessagesData[$pagination]->id)->first();
@@ -175,7 +177,7 @@ class MessageController extends Controller
                         $description,
                         str_limit($gujaratiDetails['description'],20),
                         $city,
-                        $date->format('d M Y'),
+                        date('d M Y', $messageDate ),
                         $isActive,
                         $actionButton
                     ];
@@ -202,6 +204,7 @@ class MessageController extends Controller
             $png = '.png';
             $city = Cities::where('id',$messageData['city_id'])->first();
             $cities = Cities::get();
+            $messageDate =  date('Y-m-d',strtotime($messageData['message_date']));
 
             /*$countries = Countries::get();
             $cityName = $city['name'];
@@ -222,7 +225,7 @@ class MessageController extends Controller
             }else{
                 $messageImage = env('MESSAGE_TYPE_IMAGES').DIRECTORY_SEPARATOR.$message_Type.$png;
             }
-            return view('admin.messages.edit')->with(compact('cities','messageData','messageDataGujarati','city','messageImage','message_Types'));
+            return view('admin.messages.edit')->with(compact('cities','messageData','messageDataGujarati','city','messageImage','message_Types','messageDate'));
         }catch(\Exception $exception){
             $data = [
                 'params' => $request->all(),
@@ -254,6 +257,7 @@ class MessageController extends Controller
             $messageData['description'] = $data['en']['description'];
             $messageData['message_type_id'] = $data['en']['message_type'];
             $messageData['city_id'] = $data['en']['city'];
+            $messageData['message_date'] = $data['en']['message_date'];
             $messageData['is_active'] = true;
             $editMessage = Messages::where('id',$id)->update($messageData);
             if(array_key_exists('gj',$data)){
