@@ -76,10 +76,17 @@
                                                                 </label>
                                                                 <div class="col-md-4">
                                                                     @foreach($message_Types as $message_Type)
-                                                                        <div class="form-check form-check-inline">
-                                                                            <input class="form-check-input" type="radio" name="en[message_type]" id="message_type" value="{{$message_Type['id']}}" required>
-                                                                            <label class="form-check-label" for="message_type">{{$message_Type['name']}}</label>
-                                                                        </div>
+                                                                        @if($message_Type['name'] == "General")
+                                                                            <div class="form-check form-check-inline">
+                                                                                 <input class="form-check-input" type="radio" name="en[message_type]" id="message_type" value="{{$message_Type['id']}}" checked required>
+                                                                                 <label class="form-check-label" for="message_type">{{$message_Type['name']}}</label>
+                                                                             </div>
+                                                                        @else
+                                                                            <div class="form-check form-check-inline">
+                                                                                <input class="form-check-input" type="radio" name="en[message_type]" id="message_type" value="{{$message_Type['id']}}" required>
+                                                                                <label class="form-check-label" for="message_type">{{$message_Type['name']}}</label>
+                                                                            </div>
+                                                                        @endif
                                                                     @endforeach
                                                                 </div>
                                                             </div>
