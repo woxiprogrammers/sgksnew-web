@@ -40,7 +40,6 @@ class ClassifiedController extends Controller
 
     public function createView(Request $request){
         try{
-            //$countries = Countries::get();
             $cities = Cities::get();
             $packages = ClassifiedPackages::get();
             return view('admin.classified.create')->with(compact('cities','packages'));
@@ -216,14 +215,6 @@ class ClassifiedController extends Controller
             $city = Cities::where('id',$classifiedData['city_id'])->first();
             $cities = Cities::get();
 
-            /*$cityName = $city['name'];
-            $stateId = $city['state_id'];
-            $state = States::where('id',$stateId)->first();
-            $stateName = $state['name'];
-            $countryId = $state['country_id'];
-            $country = Countries::where('id',$countryId)->first();
-            $countryName = $country['name'];*/
-
             $classifiedPackage = ClassifiedPackages::where('id',$classifiedData['package_id'])->first();
             $classifiedPackageType = PackageRules::where('package_id',$classifiedPackage['id'])->first();
 
@@ -310,37 +301,6 @@ class ClassifiedController extends Controller
             abort(500);
         }
     }
-
-    /*public function getAllStates(Request $request,$id){
-        try{
-            $states = States::where('country_id',$id)->get();
-            return $states;
-        }catch(\Exception $exception){
-            $data = [
-                'action' => 'listing of states',
-                'params' => $request->all(),
-                'exception' => $exception->getMessage()
-            ];
-            Log::critical(json_encode($data));
-            abort(500);
-        }
-    }
-
-
-    public function getAllCities(Request $request,$id){
-        try{
-            $cities = Cities::where('state_id',$id)->get();
-            return $cities;
-        }catch(\Exception $exception){
-            $data = [
-                'action' => 'listing of cities',
-                'params' => $request->all(),
-                'exception' => $exception->getMessage()
-            ];
-            Log::critical(json_encode($data));
-            abort(500);
-        }
-    }*/
 
     public function getAllPackageType(Request $request,$id){
         try{

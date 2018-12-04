@@ -203,34 +203,6 @@
                                                                 </div>
                                                             </div>
 
-                                                            {{--<div class="form-group">
-                                                                <label class="col-md-3 control-label">Country</label>
-                                                                <div class="col-md-4">
-                                                                    <select class="form-control" id="country" name="en[country]">
-                                                                        @foreach($countries as $country)
-                                                                            @if($country['id'] == $selectedCountry['country_id'])
-                                                                                <option value="{{$country['id']}}" selected>{{$country['name']}}</option>
-                                                                            @else
-                                                                                <option value="{{$country['id']}}">{{$country['name']}}</option>
-                                                                            @endif
-                                                                        @endforeach
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label class="col-md-3 control-label">State</label>
-                                                                <div class="col-md-4">
-                                                                    <select class="form-control" id="state" name="en[state]">
-                                                                        @foreach($states as $state)
-                                                                            @if($state['id'] == $selectedState['state_id'])
-                                                                                <option value="{{$state['id']}}" selected>{{$state['name']}}</option>
-                                                                            @else
-                                                                                <option value="{{$state['id']}}">{{$state['name']}}</option>
-                                                                            @endif
-                                                                        @endforeach
-                                                                    </select>
-                                                                </div>
-                                                            </div>--}}
                                                             <div class="form-group">
                                                                 <label class="col-md-3 control-label">City</label>
                                                                 <div class="col-md-4">
@@ -311,40 +283,6 @@
         $(document).ready(function () {
             CreateMembers.init();
         });
-        /*$('#country').change(function(){
-            var id=this.value;
-            var route='/member/get-all-states/'+id;
-            $.get(route,function(res){
-                if (res.length == 0)
-                {
-                    $('#state').html("no record found");
-                } else {
-                    var str='<option value="">Please select state</option>';
-                    for(var i=0; i<res.length; i++)
-                    {
-                        str+='<option value="'+res[i]['id']+'">'+res[i]['name']+'</option>';
-                    }
-                    $('#state').html(str);
-                }
-            });
-        });
-        $('#state').change(function(){
-            var id=this.value;
-            var route='/member/get-all-city/'+id;
-            $.get(route,function(res){
-                if (res.length == 0)
-                {
-                    $('#city').html("no record found");
-                } else {
-                    var str='<option value="">Please select city</option>';
-                    for(var i=0; i<res.length; i++)
-                    {
-                        str+='<option value="'+res[i]['id']+'">'+res[i]['name']+'</option>';
-                    }
-                    $('#city').html(str);
-                }
-            });
-        });*/
         $("#imageupload").on('change', function () {
             var countFiles = $(this)[0].files.length;
             var imgPath = $(this)[0].value;

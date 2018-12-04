@@ -25,8 +25,6 @@ Route::group(['prefix' => 'member'], function() {
     Route::get('/edit/{member}',array('uses' => 'Member\MemberController@editView'));
     Route::post('/edit/{member}',array('uses' => 'Member\MemberController@edit'));
     Route::get('change-status/{member}',array('uses' => 'Member\MemberController@changeStatus'));
-    /*Route::get('/get-all-states/{id}',array('uses' => 'Member\MemberController@getAllStates'));
-    Route::get('/get-all-city/{id}',array('uses' => 'Member\MemberController@getAllCities'));*/
 });
 
 Route::group(['prefix' => 'committee'], function() {
@@ -37,8 +35,6 @@ Route::group(['prefix' => 'committee'], function() {
     Route::get('/edit/{id}',array('uses' => 'Committee\CommitteeController@editCommitteeView'));
     Route::post('/edit/{id}',array('uses' => 'Committee\CommitteeController@editCommittee'));
     Route::get('/change-status/{id}',array('uses' => 'Committee\CommitteeController@changeCommitteeStatus'));
-    /*Route::get('/get-all-states/{id}',array('uses' => 'Committee\CommitteeController@getAllStates'));
-    Route::get('/get-all-cities/{id}',array('uses' => 'Committee\CommitteeController@getAllCities'));*/
 });
 
 Route::group(['prefix' => 'committee-members'], function() {
@@ -60,8 +56,6 @@ Route::group(['prefix' => 'event'], function (){
     Route::post('/edit/{id}', array('uses' => 'Event\EventController@edit'));
     Route::get('/change-status/{id}',array('uses' => 'Event\EventController@changeStatus'));
     Route::get('/delete-image/{id}',array('uses' => 'Event\EventController@deleteEventImage'));
-   /* Route::get('/get-all-states/{id}', array('uses' => 'Event\EventController@getAllStates'));
-    Route::get('/get-all-cities/{id}', array('uses' => 'Event\EventController@getAllCities'));*/
 });
 
 Route::group(['prefix' => 'account'], function() {
@@ -72,8 +66,6 @@ Route::group(['prefix' => 'account'], function() {
     Route::get('/edit/{id}', array('uses' => 'Account\AccountController@editView'));
     Route::post('/edit/{id}', array('uses' => 'Account\AccountController@edit'));
     Route::get('/delete-image/{id}',array('uses' => 'Account\AccountController@deleteAccountImage'));
-    /*Route::get('/get-all-states/{id}', array('uses' => 'Account\AccountController@getAllStates'));
-    Route::get('/get-all-cities/{id}', array('uses' => 'Account\AccountController@getAllCities'));*/
 });
 
 Route::group(['prefix' => 'message'], function() {
@@ -85,8 +77,6 @@ Route::group(['prefix' => 'message'], function() {
     Route::post('/edit/{id}', array('uses' => 'Message\MessageController@edit'));
     Route::get('/delete-image/{id}', array('uses' => 'Message\MessageController@deleteImage'));
     Route::get('/change-status/{id}', array('uses' => 'Message\MessageController@changeStatus'));
-    /*Route::get('/get-all-states/{id}', array('uses' => 'Message\MessageController@getAllStates'));
-    Route::get('/get-all-cities/{id}', array('uses' => 'Message\MessageController@getAllCities'));*/
 });
 
 Route::group(['prefix' => 'classified'], function() {
@@ -99,8 +89,6 @@ Route::group(['prefix' => 'classified'], function() {
     Route::get('/get-all-package/{id}', array('uses' => 'Classified\ClassifiedController@getAllPackageType'));
     Route::get('/change-status/{id}', array('uses' => 'Classified\ClassifiedController@changeStatus'));
     Route::get('/delete-image/{id}',array('uses' => 'Classified\ClassifiedController@deleteClassifiedImage'));
-    /*Route::get('/get-all-states/{id}', array('uses' => 'Classified\ClassifiedController@getAllStates'));
-    Route::get('/get-all-cities/{id}', array('uses' => 'Classified\ClassifiedController@getAllCities'));*/
 });
 
 Route::group(['prefix' => 'cities'], function() {
@@ -112,7 +100,6 @@ Route::group(['prefix' => 'cities'], function() {
     Route::post('/edit/{id}', array('uses' => 'Cities\CityController@edit'));
     Route::get('/change-status/{id}', array('uses' => 'Cities\CityController@changeStatus'));
 
-   // Route::get('/get-all-states/{id}', array('uses' => 'Cities\CityController@getAllStates'));
 });
 
 Route::group(['prefix' => 'webview'], function() {
@@ -122,6 +109,4 @@ Route::group(['prefix' => 'webview'], function() {
     Route::post('/listing', array('uses' => 'Webview\WebviewController@listing'));
     Route::get('/edit/{id}', array('uses' => 'Webview\WebviewController@editView'));
     Route::post('/edit/{id}', array('uses' => 'Webview\WebviewController@edit'));
-    /*Route::get('/get-all-states/{id}', array('uses' => 'Webview\WebviewController@getAllStates'));
-    Route::get('/get-all-cities/{id}', array('uses' => 'Webview\WebviewController@getAllCities'));*/
 });

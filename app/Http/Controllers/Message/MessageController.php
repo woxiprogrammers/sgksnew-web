@@ -10,8 +10,6 @@ namespace App\Http\Controllers\Message;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
-use App\Countries;
-use App\States;
 use App\Cities;
 use App\MessageTypes;
 use App\MessageTranslations;
@@ -39,7 +37,6 @@ class MessageController extends Controller
 
     public function createView(Request $request){
         try{
-            //$countries = Countries::get();
             $messageTypes = new MessageTypes();
             $message_Types = $messageTypes->get();
             $cities = Cities::get();
@@ -206,15 +203,6 @@ class MessageController extends Controller
             $cities = Cities::get();
             $messageDate =  date('Y-m-d',strtotime($messageData['message_date']));
 
-            /*$countries = Countries::get();
-            $cityName = $city['name'];
-            $stateId = $city['state_id'];
-            $state = States::where('id',$stateId)->first();
-            $stateName = $state['name'];
-            $countryId = $state['country_id'];
-            $country = Countries::where('id',$countryId)->first();
-            $countryName = $country['name'];*/
-
             $messageTypes = new MessageTypes();
             $message_Types = $messageTypes->get();
             $message_Type = MessageTypes::where('id',$messageData['message_type_id'])->value('slug');
@@ -305,37 +293,6 @@ class MessageController extends Controller
             abort(500);
         }
     }
-
-    /*public function getAllStates(Request $request,$id){
-        try{
-            $states = States::where('country_id',$id)->get();
-            return $states;
-        }catch(\Exception $exception){
-            $data = [
-                'action' => 'listing of states',
-                'params' => $request->all(),
-                'exception' => $exception->getMessage()
-            ];
-            Log::critical(json_encode($data));
-            abort(500);
-        }
-    }
-
-
-    public function getAllCities(Request $request,$id){
-        try{
-            $cities = Cities::where('state_id',$id)->get();
-            return $cities;
-        }catch(\Exception $exception){
-            $data = [
-                'action' => 'listing of cities',
-                'params' => $request->all(),
-                'exception' => $exception->getMessage()
-            ];
-            Log::critical(json_encode($data));
-            abort(500);
-        }
-    }*/
 
     public function changeStatus(Request $request,$id){
         try{

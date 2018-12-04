@@ -11,8 +11,6 @@ use App\CitiesTranslation;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
-use App\Countries;
-use App\States;
 use App\Languages;
 
 class CityController extends Controller
@@ -33,8 +31,7 @@ class CityController extends Controller
 
     public function createView(Request $request){
         try{
-            //$countries = Countries::get();
-            return view('admin.cities.create');/*->with(compact('countries'))*/
+            return view('admin.cities.create');
         }catch(\Exception $exception){
             $data = [
                 'action' => 'Create City View',
@@ -50,7 +47,7 @@ class CityController extends Controller
         try{
             $data = $request->all();
             $cityData['name'] = $data['en']['city'];
-            $cityData['state_id'] =1; //$data['en']['state'];
+            $cityData['state_id'] =1;
             $createCity = Cities::create($cityData);
             if(array_key_exists('gj',$data)){
                 if(array_key_exists('city',$data['gj'])){
@@ -80,12 +77,9 @@ class CityController extends Controller
     public function editView(Request $request, $id){
         try{
             $city = Cities::where('id',$id)->first();
-            /*$state = States::where('id',$city['state_id'])->first();
-            $country = Countries::where('id',$state['country_id'])->first();*/
             $gujaratiCityData = CitiesTranslation::where('city_id',$id)->first();
 
-            $countries = Countries::get();
-            return view('admin.cities.edit')->with(compact('city','gujaratiCityData'/*'countries','state','country'*/));
+            return view('admin.cities.edit')->with(compact('city','gujaratiCityData'));
         }catch(\Exception $exception){
             $data = [
                 'action' => 'City Edit View',
@@ -102,7 +96,7 @@ class CityController extends Controller
             $data = $request->all();
             $gujaratiCityId = null;
             $cityData['name'] = $data['en']['city'];
-            $cityData['state_id'] =1; //$data['en']['state'];
+            $cityData['state_id'] =1;
             $updateCity = Cities::where('id',$id)->update($cityData);
             if(array_key_exists('gj',$data)){
                 if(array_key_exists('city',$data['gj'])){
@@ -231,18 +225,4 @@ class CityController extends Controller
         }
     }
 
-    /*public function getAllStates(Request $request,$id){
-        try{
-            $states = States::where('country_id',$id)->get();
-            return $states;
-        }catch(\Exception $exception){
-            $data = [
-                'action' => 'listing of states',
-                'params' => $request->all(),
-                'exception' => $exception->getMessage()
-            ];
-            Log::critical(json_encode($data));
-            abort(500);
-        }
-    }*/
 }

@@ -10,16 +10,6 @@
 @section('title','Sgks|Cities')
 @include('partials.common.navbar')
 @section('css')
-    <style>
-        .thumbimage {
-            float:left;
-            width:100%;
-            height: 200px;
-            position:relative;
-            padding:5px;
-            margin-left: 50%;
-        }
-    </style>
     <link href="/assets/global/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" type="text/css" />
 @endsection
 @section('content')
@@ -70,29 +60,6 @@
                                                             </div>
                                                         </fieldset>
                                                         <fieldset>
-                                                            {{--<div class="form-group">
-                                                                <label class="col-md-3 control-label">Country
-                                                                    <span style="color: red">*</span>
-                                                                </label>
-                                                                <div class="col-md-4">
-                                                                    <select class="form-control" id="country" name="en[country]" required>
-                                                                        <option value="{{$country['id']}}">{{$country['name']}}</option>
-                                                                        @foreach($countries as $country)
-                                                                            <option value="{{$country['id']}}">{{$country['name']}}</option>
-                                                                        @endforeach
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label class="col-md-3 control-label">State
-                                                                    <span style="color: red">*</span>
-                                                                </label>
-                                                                <div class="col-md-4">
-                                                                    <select class="form-control" id="state" name="en[state]" required>
-                                                                        <option value="{{$state['id']}}">{{$state['name']}}</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>--}}
                                                             <div class="form-group">
                                                                 <label class="col-md-3 control-label">City
                                                                     <span style="color: red">*</span>
@@ -142,24 +109,5 @@
     <script src="/assets/global/scripts/datatable.js" type="text/javascript"></script>
     <script src="/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js" type="text/javascript"></script>
 
-    {{--<script>
-        $('#country').change(function(){
-            var id=this.value;
-            var route='/cities/get-all-states/'+id;
-            $.get(route,function(res){
-                if (res.length == 0)
-                {
-                    $('#state').html("no record found");
-                } else {
-                    var str='<option value="">Please select state</option>';
-                    for(var i=0; i<res.length; i++)
-                    {
-                        str+='<option value="'+res[i]['id']+'">'+res[i]['name']+'</option>';
-                    }
-                    $('#state').html(str);
-                }
-            });
-        });
-    </script>--}}
 @endsection
 

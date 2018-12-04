@@ -34,7 +34,6 @@ class CommitteeController extends Controller
 
     public function createCommitteeView(Request $request){
         try{
-            //$countries = Countries::get();
             $cities = Cities::get();
             return view('admin.committee.create')->with(compact('cities'));
         }catch(\Exception $exception){
@@ -83,36 +82,6 @@ class CommitteeController extends Controller
             abort(500);
         }
     }
-
-
-    /*public function getAllStates(Request $request,$id){
-        try{
-            $states = States::where('country_id',$id)->get();
-            return $states;
-        }catch(\Exception $exception){
-            $data = [
-                'action' => 'listing of states',
-                'params' => $request->all(),
-                'exception' => $exception->getMessage()
-            ];
-            Log::critical(json_encode($data));
-            abort(500);
-        }
-    }
-    public function getAllCities(Request $request,$id){
-        try{
-            $cities = Cities::where('state_id',$id)->get();
-            return $cities;
-        }catch(\Exception $exception){
-            $data = [
-                'action' => 'listing of Cities',
-                'params' => $request->all(),
-                'exception' => $exception->getMessage()
-            ];
-            Log::critical(json_encode($data));
-            abort(500);
-        }
-    }*/
 
     public function committeeListing(Request $request){
         try{
@@ -203,16 +172,6 @@ class CommitteeController extends Controller
             $committeeData  = Committees::where('id',$id)->first();
             $city = Cities::where('id',$committeeData['city_id'])->first();
             $cities = Cities::get();
-
-            /*$countries = Countries::get();
-            $cityName = $city['name'];
-            $stateId = $city['state_id'];
-            $state = States::where('id',$stateId)->first();
-            $stateName = $state['name'];
-            $countryId = $state['country_id'];
-            $country = Countries::where('id',$countryId)->first();
-            $countryName = $country['name'];*/
-
             $committeeDataGujarati = CommitteesTranslations::where('committee_id',$id)->first();
 
             return view('admin.committee.edit')->with(compact('committeeData','city','cities','committeeDataGujarati'));

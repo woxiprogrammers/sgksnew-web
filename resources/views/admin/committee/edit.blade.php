@@ -93,26 +93,6 @@
                                                                     <textarea id="description"  name="gj[description]" class="form-control " placeholder="Enter Committee description">{{$committeeDataGujarati['description']}}</textarea>
                                                                 </div>
                                                             </div>
-                                                            {{--<div class="form-group">
-                                                                <label class="col-md-3 control-label">Country</label>
-                                                                <div class="col-md-4">
-                                                                    <select class="form-control" id="country" name="en[country]">
-                                                                        <option>{{$countryName}}</option>
-                                                                        @foreach($countries as $country)
-                                                                            <option value="{{$country['id']}}">{{$country['name']}}</option>
-                                                                        @endforeach
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="form-group">
-                                                                <label class="col-md-3 control-label">State</label>
-                                                                <div class="col-md-4">
-                                                                    <select class="form-control" id="state" name="en[state]">
-                                                                        <option>{{$stateName}}</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>--}}
                                                             <div class="form-group">
                                                                 <label class="col-md-3 control-label">City</label>
                                                                 <div class="col-md-4">
@@ -168,42 +148,6 @@
         $(document).ready(function () {
             Create.init();
         });
-
-
-        /*$('#country').change(function(){
-            var id=this.value;
-            var route='/committee/get-all-states/'+id;
-            $.get(route,function(res){
-                if (res.length == 0)
-                {
-                    $('#state').html("no record found");
-                } else {
-                    var str='<option value="">Please select state</option>';
-                    for(var i=0; i<res.length; i++)
-                    {
-                        str+='<option value="'+res[i]['id']+'">'+res[i]['name']+'</option>';
-                    }
-                    $('#state').html(str);
-                }
-            });
-        });
-        $('#state').change(function(){
-            var id=this.value;
-            var route='/committee/get-all-cities/'+id;
-            $.get(route,function(res){
-                if (res.length == 0)
-                {
-                    $('#city').html("no record found");
-                } else {
-                    var str='<option value="">Please select city</option>';
-                    for(var i=0; i<res.length; i++)
-                    {
-                        str+='<option value="'+res[i]['id']+'">'+res[i]['name']+'</option>';
-                    }
-                    $('#city').html(str);
-                }
-            });
-        });*/
 
     </script>
 @endsection

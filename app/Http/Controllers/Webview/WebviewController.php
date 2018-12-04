@@ -40,7 +40,6 @@ class WebviewController extends Controller
             $drawerWeb = DrawerWebview::get();
             $drawerWebDetails = DrawerWebviewDetails::get();
             $cities = Cities::get();
-            //$countries = Countries::get();
             return view('admin.webview.create')->with(compact('drawerWeb', 'drawerWebDetails','cities'));
         } catch (\Exception $exception) {
             $data = [
@@ -165,11 +164,6 @@ class WebviewController extends Controller
             $cityId = $webviewDetails['city_id'];
             $city = Cities::where('id',$cityId)->first();
             $cities = Cities::get();
-            /*$stateId = $city['state_id'];
-            $state = States::where('id',$stateId)->first();
-            $countryId = $state['country_id'];
-            $country = Countries::where('id',$countryId)->first();
-            $countries = Countries::get();*/
 
             return view('admin.webview.edit')->with(compact('webviews','webview','webviewDetails','countries','city','cities','webviewDetailsInGujarati'));
         }catch(\Exception $exception){
@@ -217,34 +211,4 @@ class WebviewController extends Controller
         }
     }
 
-    /*public function getAllStates(Request $request,$id){
-        try{
-            $states = States::where('country_id',$id)->get();
-            return $states;
-        }catch(\Exception $exception){
-            $data = [
-                'action' => 'listing of states',
-                'params' => $request->all(),
-                'exception' => $exception->getMessage()
-            ];
-            Log::critical(json_encode($data));
-            abort(500);
-        }
-    }
-
-
-    public function getAllCities(Request $request,$id){
-        try{
-            $cities = Cities::where('state_id',$id)->get();
-            return $cities;
-        }catch(\Exception $exception){
-            $data = [
-                'action' => 'listing of cities',
-                'params' => $request->all(),
-                'exception' => $exception->getMessage()
-            ];
-            Log::critical(json_encode($data));
-            abort(500);
-        }
-    }*/
 }

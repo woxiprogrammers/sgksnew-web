@@ -60,29 +60,6 @@
                                                             </div>
                                                         </fieldset>
                                                         <fieldset>
-                                                            {{--<div class="form-group">
-                                                                <label class="col-md-3 control-label">Country
-                                                                    <span style="color: red">*</span>
-                                                                </label>
-                                                                <div class="col-md-4">
-                                                                    <select class="form-control" id="country" name="en[country]" required>
-                                                                        <option value="{{$country['id']}}">{{$country['name']}}</option>
-                                                                        @foreach($countries as $country)
-                                                                            <option value="{{$country['id']}}">{{$country['name']}}</option>
-                                                                        @endforeach
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label class="col-md-3 control-label">State
-                                                                    <span style="color: red">*</span>
-                                                                </label>
-                                                                <div class="col-md-4">
-                                                                    <select class="form-control" id="state" name="en[state]" required>
-                                                                        <option value="{{$state['id']}}">{{$state['name']}}</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>--}}
                                                             <div class="form-group">
                                                                 <label class="col-md-3 control-label">City
                                                                     <span style="color: red">*</span>
@@ -166,40 +143,6 @@
             $("textarea").ckeditor();
             //CreateWebview.init();
         });
-        /*$('#country').change(function(){
-            var id=this.value;
-            var route='/webview/get-all-states/'+id;
-            $.get(route,function(res){
-                if (res.length == 0)
-                {
-                    $('#state').html("no record found");
-                } else {
-                    var str='<option value="">Please select state</option>';
-                    for(var i=0; i<res.length; i++)
-                    {
-                        str+='<option value="'+res[i]['id']+'">'+res[i]['name']+'</option>';
-                    }
-                    $('#state').html(str);
-                }
-            });
-        });
-        $('#state').change(function(){
-            var id=this.value;
-            var route='/webview/get-all-cities/'+id;
-            $.get(route,function(res){
-                if (res.length == 0)
-                {
-                    $('#city').html("no record found");
-                } else {
-                    var str='<option value="">Please select city</option>';
-                    for(var i=0; i<res.length; i++)
-                    {
-                        str+='<option value="'+res[i]['id']+'">'+res[i]['name']+'</option>';
-                    }
-                    $('#city').html(str);
-                }
-            });
-        });*/
     </script>
     <script>
         $("form").submit( function(e) {
