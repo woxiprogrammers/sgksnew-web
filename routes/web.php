@@ -110,3 +110,9 @@ Route::group(['prefix' => 'webview'], function() {
     Route::get('/edit/{id}', array('uses' => 'Webview\WebviewController@editView'));
     Route::post('/edit/{id}', array('uses' => 'Webview\WebviewController@edit'));
 });
+
+Route::group(['prefix' => 'suggestion'], function() {
+    Route::get('/manage', array('uses' => 'Suggestion\SuggestionController@manage'));
+    Route::post('/listing', array('uses' => 'Suggestion\SuggestionController@listing'));
+    Route::get('/show', array('uses' => 'Suggestion\SuggestionController@show'));
+});
