@@ -130,6 +130,9 @@
                     var route= "/message/manage";
                     window.location.replace(route);
                 });
+            } else {
+                var route1= "/message/manage";
+                window.location.replace(route1);
             }
         }
     </script>

@@ -130,7 +130,7 @@
                                                                     <span style="color: red">*</span>
                                                                 </label>
                                                                 <div class="col-md-4">
-                                                                    <input type="date" id="message_date" name="en[message_date]" class="form-control " placeholder="" required>
+                                                                    <input type="date" id="message_date" name="en[message_date]" class="form-control " placeholder="dd/mm/yyyy" required>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">

@@ -249,9 +249,15 @@ class EventController extends Controller
                 }if (array_key_exists('venue',$data['gj'])){
                     $gujaratiEventData['venue'] = $data['gj']['venue'];
                 }
-                $gujaratiEventData['language_id'] = Languages::where('abbreviation','=','gj')->pluck('id')->first();
-                $gujaratiEventData['event_id'] = $id;
-                EventsTranslations::where('event_id',$id)->update($gujaratiEventData);
+                $gujaratiEventId = EventsTranslations::where('event_id',$id)->value('id');
+                dd($gujaratiEventId);
+                if($gujaratiEventId != null){
+                    EventsTranslations::where('event_id',$id)->update($gujaratiEventData);
+                } else {
+                    $gujaratiEventData['language_id'] = Languages::where('abbreviation', '=', 'gj')->pluck('id')->first();
+                    $gujaratiEventData['event_id'] = $id;
+                    EventsTranslations::create($gujaratiEventData);
+                }
             }
 
             if($request->has('event_images')){

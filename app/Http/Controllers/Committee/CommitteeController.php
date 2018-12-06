@@ -7,6 +7,7 @@ use App\Committees;
 use App\Languages;
 use App\CommitteeMembersTranslations;
 use App\CommitteesTranslations;
+use App\MemberTranslations;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Log;
@@ -193,7 +194,6 @@ class CommitteeController extends Controller
             $committeeData['description'] = $data['en']['description'];
             $committeeData['city_id'] = $data['en']['city'];
             $createCommittee = Committees::where('id',$id)->update($committeeData);
-            $committeeId = CommitteesTranslations::where('committee_id',$id)->first();
 
             if(array_key_exists('gj',$data)){
                 if(array_key_exists('committee_name',$data['gj'])){
@@ -201,11 +201,12 @@ class CommitteeController extends Controller
                 }if (array_key_exists('description',$data['gj'])){
                     $committeeDataGujarati['description'] = $data['gj']['description'];
                 }
-                $committeeDataGujarati['language_id'] = Languages::where('abbreviation','=','gj')->pluck('id')->first();
-                $committeeDataGujarati['committee_id'] = $id;
-                if($committeeId['committee_id']==$id) {
+                $committeeId = CommitteesTranslations::where('committee_id',$id)->value('id');
+                if($committeeId != null) {
                     CommitteesTranslations::where('committee_id', $id)->update($committeeDataGujarati);
                 }else{
+                    $committeeDataGujarati['language_id'] = Languages::where('abbreviation','=','gj')->pluck('id')->first();
+                    $committeeDataGujarati['committee_id'] = $id;
                     CommitteesTranslations::create($committeeDataGujarati);
                 }
 
@@ -420,9 +421,14 @@ class CommitteeController extends Controller
                 }if (array_key_exists('designation',$data['gj'])){
                     $gujaratiMemberData['designation'] = $data['gj']['designation'];
                 }
-                $gujaratiMemberData['language_id'] = Languages::where('abbreviation','=','gj')->pluck('id')->first();
-                $gujaratiMemberData['member_id'] = $id;
-                CommitteeMembersTranslations::where('member_id',$id)->update($gujaratiMemberData);
+                $gujaratiMemberId =  CommitteeMembersTranslations::where('member_id',$id)->value('id');
+                if($gujaratiMemberId != null){
+                    CommitteeMembersTranslations::where('member_id', $id)->update($gujaratiMemberData);
+                } else {
+                    $gujaratiMemberData['language_id'] = Languages::where('abbreviation', '=', 'gj')->pluck('id')->first();
+                    $gujaratiMemberData['member_id'] = $id;
+                    CommitteeMembersTranslations::create($gujaratiMemberData);
+                }
             }
 
             if ($editCommitteeMember) {

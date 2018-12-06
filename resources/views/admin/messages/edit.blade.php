@@ -130,7 +130,7 @@
                                                                     <span style="color: red">*</span>
                                                                 </label>
                                                                 <div class="col-md-4">
-                                                                    <input type="date" id="message_date" value="{{$messageDate}}" name="en[message_date]" class="form-control " required>
+                                                                    <input type="date" id="message_date" value="{{$messageDate}}" name="en[message_date]" placeholder="dd/mm/yyyy" class="form-control " required>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">

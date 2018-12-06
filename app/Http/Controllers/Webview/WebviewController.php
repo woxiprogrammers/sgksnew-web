@@ -158,14 +158,13 @@ class WebviewController extends Controller
         try{
             $webviewDetails = DrawerWebviewDetails::where('id',$id)->first();
             $webviewDetailsInGujarati = DrawerWebviewDetailsTranslations::where('drawer_webview_details_id',$id)->first();
-            $webview = DrawerWebview::where('id',$webviewDetails['drawer_web_id'])->first();
             $webviews = DrawerWebview::get();
 
             $cityId = $webviewDetails['city_id'];
             $city = Cities::where('id',$cityId)->first();
             $cities = Cities::get();
 
-            return view('admin.webview.edit')->with(compact('webviews','webview','webviewDetails','countries','city','cities','webviewDetailsInGujarati'));
+            return view('admin.webview.edit')->with(compact('webviews','webviewDetails','countries','city','cities','webviewDetailsInGujarati'));
         }catch(\Exception $exception){
             $data = [
                 'action' => 'edit webview View',
@@ -189,9 +188,14 @@ class WebviewController extends Controller
                 if (array_key_exists('description',$data['gj'])){
                     $gujaratiWebviewData['description'] = $data['gj']['description'];
                 }
-                $gujaratiWebviewData['language_id'] = Languages::where('abbreviation','=','gj')->pluck('id')->first();
-                $gujaratiWebviewData['drawer_webview_details_id'] = $id;
-                DrawerWebviewDetailsTranslations::where('drawer_webview_details_id',$id)->update($gujaratiWebviewData);
+                $webviewTranslationsId = DrawerWebviewDetailsTranslations::where('drawer_webview_details_id',$id)->value('id');
+                if($webviewTranslationsId != null) {
+                    DrawerWebviewDetailsTranslations::where('drawer_webview_details_id', $id)->update($gujaratiWebviewData);
+                } else {
+                    $gujaratiWebviewData['language_id'] = Languages::where('abbreviation', '=', 'gj')->pluck('id')->first();
+                    $gujaratiWebviewData['drawer_webview_details_id'] = $id;
+                    DrawerWebviewDetailsTranslations::create($gujaratiWebviewData);
+                }
             }
 
             if($updateWebview){

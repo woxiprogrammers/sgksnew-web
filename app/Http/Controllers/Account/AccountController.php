@@ -227,9 +227,14 @@ class AccountController extends Controller
                 }if (array_key_exists('description',$data['gj'])){
                     $gujaratiAccountData['description'] = $data['gj']['description'];
                 }
-                $gujaratiAccountData['language_id'] = Languages::where('abbreviation','=','gj')->pluck('id')->first();
-                $gujaratiAccountData['account_id'] = $id;
-                AccountsTranslations::where('account_id',$id)->update($gujaratiAccountData);
+                $gujaratiAccountId = AccountsTranslations::where('id',$id)->value('id');
+                if($gujaratiAccountId != null){
+                    AccountsTranslations::where('account_id', $id)->update($gujaratiAccountData);
+                } else {
+                    $gujaratiAccountData['language_id'] = Languages::where('abbreviation', '=', 'gj')->pluck('id')->first();
+                    $gujaratiAccountData['account_id'] = $id;
+                    AccountsTranslations::create($gujaratiAccountData);
+                }
             }
 
             if($request->has('account_images')){

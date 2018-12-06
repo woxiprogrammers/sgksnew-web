@@ -136,6 +136,9 @@
                         var route= "/event/manage";
                         window.location.replace(route);
                 });
+            } else {
+                var route1= "/event/manage";
+                window.location.replace(route1);
             }
         }
     </script>

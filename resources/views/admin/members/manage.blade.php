@@ -124,16 +124,19 @@
 
        function statusFolder(status,id){
            if(confirm("Change Status! are you sure ?")){
-                   var route='/member/change-status/'+id;
-                   $.get(route,function(res){
-                       if(res == 200){
-                           var route= "/member/manage";
-                           window.location.replace(route);
-                       }else{
-                           alert("something went wrong");
-                       }
-                   });
-               }
+               var route='/member/change-status/'+id;
+               $.get(route,function(res){
+                   if(res == 200){
+                       var route= "/member/manage";
+                       window.location.replace(route);
+                   }else{
+                       alert("something went wrong");
+                   }
+               });
+           } else {
+               var route1= "/member/manage";
+               window.location.replace(route1);
+           }
         }
     </script>
 @endsection
