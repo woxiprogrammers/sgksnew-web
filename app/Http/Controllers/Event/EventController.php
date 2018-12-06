@@ -250,7 +250,6 @@ class EventController extends Controller
                     $gujaratiEventData['venue'] = $data['gj']['venue'];
                 }
                 $gujaratiEventId = EventsTranslations::where('event_id',$id)->value('id');
-                dd($gujaratiEventId);
                 if($gujaratiEventId != null){
                     EventsTranslations::where('event_id',$id)->update($gujaratiEventData);
                 } else {
