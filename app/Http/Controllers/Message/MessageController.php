@@ -254,9 +254,15 @@ class MessageController extends Controller
                 }if (array_key_exists('description',$data['gj'])){
                     $gujaratiMessageData['description'] = $data['gj']['description'];
                 }
-                $gujaratiMessageData['language_id'] = Languages::where('abbreviation','=','gj')->pluck('id')->first();
-                $gujaratiMessageData['message_id'] = $id;
-                MessageTranslations::where('message_id',$id)->update($gujaratiMessageData);
+
+                $gujaratiMessageId = MessageTranslations::where('message_id')->value('id');
+                if($gujaratiMessageId != null) {
+                    MessageTranslations::where('message_id',$id)->update($gujaratiMessageData);
+                } else {
+                    $gujaratiMessageData['language_id'] = Languages::where('abbreviation', '=', 'gj')->pluck('id')->first();
+                    $gujaratiMessageData['message_id'] = $id;
+                    MessageTranslations::create($gujaratiMessageData);
+                }
             }
             if($request->has('message_images')){
                 $createMessageDirectoryName = sha1($id);

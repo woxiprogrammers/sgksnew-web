@@ -121,7 +121,7 @@
                                                                     <span style="color: red">*</span>
                                                                 </label>
                                                                 <div class="col-md-4">
-                                                                    <input type="date" id="start_date" name="en[start_date]" class="form-control " placeholder="" required>
+                                                                    <input type="date" id="start_date" name="en[start_date]" class="form-control " placeholder="dd/mm/yyyy" required>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
@@ -129,7 +129,7 @@
                                                                     <span style="color: red">*</span>
                                                                 </label>
                                                                 <div class="col-md-4">
-                                                                    <input type="date" id="end_date" name="en[end_date]" class="form-control " placeholder="" required>
+                                                                    <input type="date" id="end_date" name="en[end_date]" class="form-control " placeholder="dd/mm/yyyy" required>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">

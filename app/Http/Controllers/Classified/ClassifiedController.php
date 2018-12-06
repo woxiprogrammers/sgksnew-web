@@ -263,9 +263,14 @@ class ClassifiedController extends Controller
                 }if (array_key_exists('description',$data['gj'])){
                     $gujaratiClassifiedData['classified_desc'] = $data['gj']['description'];
                 }
-                $gujaratiClassifiedData['classified_id'] = $id;
-                $gujaratiClassifiedData['language_id'] = Languages::where('abbreviation','=','gj')->pluck('id')->first();
-                ClassifiedsTranslations::where('classified_id',$id)->update($gujaratiClassifiedData);;
+                $gujaratiClassifiedId = ClassifiedsTranslations::where('id',$id)->value('id');
+                if($gujaratiClassifiedId != null){
+                    ClassifiedsTranslations::where('classified_id', $id)->update($gujaratiClassifiedData);
+                } else {
+                    $gujaratiClassifiedData['classified_id'] = $id;
+                    $gujaratiClassifiedData['language_id'] = Languages::where('abbreviation', '=', 'gj')->pluck('id')->first();
+                    ClassifiedsTranslations::create($gujaratiClassifiedData);
+                }
             }
             if($request->has('classified_images')){
                 $createClassifiedDirectoryName = sha1($id);

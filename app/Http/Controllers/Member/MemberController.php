@@ -148,7 +148,7 @@ class MemberController extends Controller
                     $filterFlag = false;
                 }
             }
-            $finalMembersData = Members::whereIn('id', $membersData)->orderBy('id','asc')->get();
+            $finalMembersData = Members::whereIn('id', $membersData)->orderBy('id','desc')->get();
             {
                 $records["recordsFiltered"] = $records["recordsTotal"] = count($finalMembersData);
                 if ($request->length == -1) {

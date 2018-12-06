@@ -31,6 +31,7 @@
                                         Back
                                     </a>
                                 </div>
+                                <div class="pull-right">&nbsp</div>
                                 <div id="members_add" class="btn red-flamingo col-md-2 pull-right" style="margin-top: 1%"><a href="/committee-members/create/{{$id}}" style="color: white">
                                         Add Members
                                     </a>
@@ -130,6 +131,9 @@
                     var route= "/committee-members/manage";
                     window.location.replace(route);
                 });
+            } else {
+                var route1= '/committee-members/manage/'+'{{$id}}';
+                window.location.replace(route1);
             }
         }
     </script>

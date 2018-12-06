@@ -79,9 +79,12 @@
                                                                 </label>
                                                                 <div class="col-md-4">
                                                                     <select class="form-control" name="en[webviewType]" required>
-                                                                        <option value="{{$webview['id']}}">{{$webview['name']}}</option>
                                                                         @foreach($webviews as $drawerWeb)
-                                                                            <option value="{{$drawerWeb['id']}}">{{$drawerWeb['name']}}</option>
+                                                                            @if($drawerWeb['id'] == $webviewDetails['drawer_web_id'])
+                                                                                <option value="{{$drawerWeb['id']}}" selected>{{$drawerWeb['name']}}</option>
+                                                                                @else
+                                                                                <option value="{{$drawerWeb['id']}}">{{$drawerWeb['name']}}</option>
+                                                                            @endif
                                                                         @endforeach
                                                                     </select>
                                                                 </div>

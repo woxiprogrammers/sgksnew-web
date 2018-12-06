@@ -137,6 +137,10 @@
                     window.location.replace(route);
                 });
             }
+            else {
+                var route1= "/classified/manage";
+                window.location.replace(route1);
+            }
         }
     </script>
 @endsection
