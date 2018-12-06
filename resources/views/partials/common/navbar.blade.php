@@ -122,6 +122,13 @@
                         </a>
                     </li>
                 </ul>
+                <ul class="nav navbar-nav">
+                    <li aria-haspopup="true" class="menu-dropdown classic-menu-dropdown">
+                        <a href="/suggestion/manage"> Suggestions
+                            <span class="arrow"></span>
+                        </a>
+                    </li>
+                </ul>
             </li>
         </div>
             <!-- END MEGA MENU -->
