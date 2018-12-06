@@ -131,6 +131,9 @@
                     var route= "/committee-members/manage";
                     window.location.replace(route);
                 });
+            } else {
+                var route1= '/committee-members/manage/'+'{{$id}}';
+                window.location.replace(route1);
             }
         }
     </script>
