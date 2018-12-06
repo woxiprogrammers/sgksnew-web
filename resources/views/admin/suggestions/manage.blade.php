@@ -2,12 +2,12 @@
 /**
  * Created by PhpStorm.
  * User: vaibhav
- * Date: 13/11/18
- * Time: 3:29 PM
+ * Date: 5/12/18
+ * Time: 12:43 PM
  */
 ?>
 @extends('layout.master')
-@section('title','Sgks|Accounts')
+@section('title','Sgks|Suggestions')
 @include('partials.common.navbar')
 @section('css')
     <link href="/assets/global/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" type="text/css" />
@@ -25,11 +25,7 @@
                             <div class="container">
                                 <!-- BEGIN PAGE TITLE -->
                                 <div class="page-title col-md-2">
-                                    <h1>Account Listing</h1>
-                                </div>
-                                <div id="accounts_add" class="btn red-flamingo col-md-2 pull-right" style="margin-top: 1%"><a href="/account/create" style="color: white">
-                                        Add Account
-                                    </a>
+                                    <h1>Suggestions Listing</h1>
                                 </div>
                             </div>
                         </div>
@@ -50,25 +46,23 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <table class="table table-striped table-bordered table-hover table-checkable order-column" id="accountTable">
+                                                <table class="table table-striped table-bordered table-hover table-checkable order-column" id="suggestionTable">
                                                     <thead>
                                                     <tr>
                                                         <th> Sr.No </th>
-                                                        <th width="10%"> Name </th>
-                                                        <th> Gujarati Name </th>
-                                                        <th> Description </th>
-                                                        <th> Gujarati Description </th>
                                                         <th> City </th>
+                                                        <th> Type </th>
+                                                        <th> Category </th>
+                                                        <th> Description </th>
                                                         <th> Date </th>
                                                         <th> Actions </th>
                                                     </tr>
                                                     <tr class="filter">
                                                         <th></th>
-                                                        <th> <input type="text" class="form-control form-filter" name="search_account"> </th>
-                                                        <th></th>
-                                                        <th></th>
-                                                        <th></th>
                                                         <th> <input type="text" class="form-control form-filter" name="search_city"> </th>
+                                                        <th></th>
+                                                        <th></th>
+                                                        <th></th>
                                                         <th></th>
                                                         <th>
                                                             <button class="btn btn-xs blue filter-submit"> Search <i class="fa fa-search"></i> </button>
@@ -114,12 +108,13 @@
     <script src="/assets/custom/inventory/component-reading-manage-datatable.js" type="text/javascript"></script>
     <script src="/assets/global/plugins/bootstrap-select/js/bootstrap-select.min.js" type="text/javascript"></script>
 
-    <script src="/assets/custom/admin/accounts/account-listing.js" type="text/javascript"></script>
+    <script src="/assets/custom/admin/suggestion/suggestion-listing.js" type="text/javascript"></script>
 
     <script>
         $(document).ready(function() {
-            $('#accountTable').DataTable();
+            $('#suggestionTable').DataTable();
         });
+
     </script>
 @endsection
 

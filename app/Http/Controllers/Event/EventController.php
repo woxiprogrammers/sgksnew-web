@@ -10,8 +10,6 @@ namespace App\Http\Controllers\Event;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
-use App\Countries;
-use App\States;
 use App\Cities;
 use App\Events;
 use App\EventImages;
@@ -39,8 +37,8 @@ class EventController extends Controller
 
     public function createView(Request $request){
         try{
-            $countries = Countries::get();
-            return view('admin.events.create')->with(compact('countries'));
+            $cities = Cities::get();
+            return view('admin.events.create')->with(compact('cities'));
         }catch(\Exception $exception){
             $data = [
                 'params' => $request->all(),
@@ -175,8 +173,8 @@ class EventController extends Controller
                         $venue,
                         str_limit($gujaratiDetails['venue'],10),
                         $city,
-                        date('d/M/Y', $startDate ),
-                        date('d/M/Y', $endDate ),
+                        date('d M Y', $startDate ),
+                        date('d M Y', $endDate ),
                         $isActive,
                         $actionButton
                     ];
@@ -200,18 +198,8 @@ class EventController extends Controller
         try{
             $eventData = Events::where('id',$id)->first();
             $eventDataGujarati = EventsTranslations::where('event_id',$id)->first();
-            $countries = Countries::get();
-
-            $cityId = $eventData['city_id'];
-            $city = Cities::where('id',$cityId)->first();
-            $cityName = $city['name'];
-            $stateId = $city['state_id'];
-            $state = States::where('id',$stateId)->first();
-            $stateName = $state['name'];
-            $countryId = $state['country_id'];
-            $country = Countries::where('id',$countryId)->first();
-            $countryName = $country['name'];
-
+            $city = Cities::where('id',$eventData['city_id'])->first();
+            $cities = Cities::get();
             $createEventDirectoryName = sha1($eventData->id);
             $images = EventImages::where('event_id',$id)->select('id','url')->get();
             if (count($images)>0) {
@@ -225,7 +213,7 @@ class EventController extends Controller
                 $eventImages[] = null;
                 $eventImagesId[] = null;
             }
-            return view('admin.events.edit')->with(compact('countries','eventData','eventDataGujarati','cityName','stateName','countryName','cityId','eventImages','eventImagesId'));
+            return view('admin.events.edit')->with(compact('eventData','eventDataGujarati','city','cities','eventImages','eventImagesId'));
         }catch(\Exception $exception){
             $data = [
                 'params' => $request->all(),
@@ -261,9 +249,14 @@ class EventController extends Controller
                 }if (array_key_exists('venue',$data['gj'])){
                     $gujaratiEventData['venue'] = $data['gj']['venue'];
                 }
-                $gujaratiEventData['language_id'] = Languages::where('abbreviation','=','gj')->pluck('id')->first();
-                $gujaratiEventData['event_id'] = $id;
-                EventsTranslations::where('event_id',$id)->update($gujaratiEventData);
+                $gujaratiEventId = EventsTranslations::where('event_id',$id)->value('id');
+                if($gujaratiEventId != null){
+                    EventsTranslations::where('event_id',$id)->update($gujaratiEventData);
+                } else {
+                    $gujaratiEventData['language_id'] = Languages::where('abbreviation', '=', 'gj')->pluck('id')->first();
+                    $gujaratiEventData['event_id'] = $id;
+                    EventsTranslations::create($gujaratiEventData);
+                }
             }
 
             if($request->has('event_images')){
@@ -301,36 +294,6 @@ class EventController extends Controller
         }
     }
 
-    public function getAllStates(Request $request,$id){
-        try{
-            $states = States::where('country_id',$id)->get();
-            return $states;
-        }catch(\Exception $exception){
-            $data = [
-                'action' => 'listing of states',
-                'params' => $request->all(),
-                'exception' => $exception->getMessage()
-            ];
-            Log::critical(json_encode($data));
-            abort(500);
-        }
-    }
-
-
-    public function getAllCities(Request $request,$id){
-        try{
-            $cities = Cities::where('state_id',$id)->get();
-            return $cities;
-        }catch(\Exception $exception){
-            $data = [
-                'action' => 'listing of cities',
-                'params' => $request->all(),
-                'exception' => $exception->getMessage()
-            ];
-            Log::critical(json_encode($data));
-            abort(500);
-        }
-    }
 
     public function changeStatus(Request $request,$id){
         try{

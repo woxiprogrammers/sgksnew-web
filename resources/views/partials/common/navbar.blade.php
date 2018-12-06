@@ -59,13 +59,13 @@
             <!-- DOC: Apply "hor-menu-light" class after the "hor-menu" class below to have a horizontal menu with white background -->
             <!-- DOC: Remove data-hover="dropdown" and data-close-others="true" attributes below to disable the dropdown opening on mouse hover -->
             <div class="hor-menu">
-                <ul class="nav navbar-nav">
+                {{--<ul class="nav navbar-nav">
                     <li aria-haspopup="true" class="menu-dropdown classic-menu-dropdown">
                         <a href="/dashboard"> Dashboard
                             <span class="arrow"></span>
                         </a>
                     </li>
-                </ul>
+                </ul>--}}
                 <ul class="nav navbar-nav">
                     <li aria-haspopup="true" class="menu-dropdown classic-menu-dropdown">
                         <a href="/member/manage"> Manage Members
@@ -118,6 +118,13 @@
                 <ul class="nav navbar-nav">
                     <li aria-haspopup="true" class="menu-dropdown classic-menu-dropdown">
                         <a href="/webview/manage"> Manage Webview
+                            <span class="arrow"></span>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav">
+                    <li aria-haspopup="true" class="menu-dropdown classic-menu-dropdown">
+                        <a href="/suggestion/manage"> Suggestions
                             <span class="arrow"></span>
                         </a>
                     </li>

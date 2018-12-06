@@ -2,8 +2,8 @@
 /**
  * Created by PhpStorm.
  * User: vaibhav
- * Date: 27/11/18
- * Time: 4:06 PM
+ * Date: 5/12/18
+ * Time: 6:55 PM
  */
 ?>
 @extends('layout.master')
@@ -25,9 +25,9 @@
                             <div class="container">
                                 <!-- BEGIN PAGE TITLE -->
                                 <div class="page-title col-md-2">
-                                    <h1>Edit City</h1>
+                                    <h1>Suggestion</h1>
                                 </div>
-                                <div class="btn red-flamingo col-md-1 pull-right" style="margin-top: 1%"><a href="/cities/manage" style="color: white">
+                                <div class="btn red-flamingo col-md-1 pull-right" style="margin-top: 1%"><a href="/suggestion/manage" style="color: white">
                                         Back
                                     </a>
                                 </div>
@@ -39,43 +39,33 @@
                                     <!-- BEGIN VALIDATION STATES-->
                                     <div class="portlet light ">
                                         <div class="portlet-body form">
-                                            <form role="form" id="create-city" class="form-horizontal" action="/cities/edit/{{$city['id']}}" method="post">
+                                            <form role="form" id="create-city" class="form-horizontal">
                                                 {!! csrf_field() !!}
                                                 <div class="tab-content">
                                                     <div class="tab-pane fade in active" id="tab_general">
                                                         <fieldset>
                                                             <div class="form-group">
-                                                                <div class="row">
-                                                                    <div class="col-md-8 pull-left">
-                                                                        <h4 style="margin-left: 500px">
-                                                                            English
-                                                                        </h4>
-                                                                    </div>
-                                                                    <div class="col-md-4">
-                                                                        <h4>
-                                                                            Gujarati
-                                                                        </h4>
-                                                                    </div>
+                                                                <label class="col-md-3 control-label">City</label>
+                                                                <div class="col-md-8">
+                                                                    <input type="text" class="form-control" value="{{$city}}"  disabled="">
                                                                 </div>
                                                             </div>
-                                                        </fieldset>
-                                                        <fieldset>
                                                             <div class="form-group">
-                                                                <label class="col-md-3 control-label">City
-                                                                    <span style="color: red">*</span>
-                                                                </label>
-                                                                <div class="col-md-4">
-                                                                    <input type="text" name="en[city]" class="form-control" value="{{$city['name']}}" placeholder="Enter City Name" required>
-                                                                </div>
-                                                                <div class="col-md-4">
-                                                                    <input type="text" name="gj[city]" class="form-control" value="{{$gujaratiCityData['name']}}" placeholder="Enter City Name" required>
+                                                                <label class="col-md-3 control-label">Suggestion Type</label>
+                                                                <div class="col-md-8">
+                                                                    <input type="text" class="form-control" value="{{$suggestionType}}"  disabled="">
                                                                 </div>
                                                             </div>
-                                                        </fieldset>
-                                                        <fieldset>
                                                             <div class="form-group">
-                                                                <div class="col-md-3 col-md-offset-7" >
-                                                                    <button type="submit" class="btn btn-circle"><i class="fa fa-check"></i> Submit </button>
+                                                                <label class="col-md-3 control-label">Category</label>
+                                                                <div class="col-md-8">
+                                                                    <input type="text" class="form-control" value="{{$suggestionCategory}}"  disabled="">
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="col-md-3 control-label">Message</label>
+                                                                <div class="col-md-8">
+                                                                    <textarea class="form-control" disabled="">{{$suggestionData['description']}}</textarea>
                                                                 </div>
                                                             </div>
                                                         </fieldset>

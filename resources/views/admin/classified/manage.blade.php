@@ -74,7 +74,7 @@
                                                         <th></th>
                                                         <th></th>
                                                         <th></th>
-                                                        <th></th>
+                                                        <th><input type="text" class="form-control form-filter" name="search_city"></th>
                                                         <th></th>
                                                         <th></th>
                                                         <th></th>
@@ -136,6 +136,10 @@
                     var route= "/classified/manage";
                     window.location.replace(route);
                 });
+            }
+            else {
+                var route1= "/classified/manage";
+                window.location.replace(route1);
             }
         }
     </script>

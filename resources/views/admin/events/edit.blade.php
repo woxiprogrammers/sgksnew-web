@@ -104,35 +104,15 @@
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
-                                                                <label class="col-md-3 control-label">Country
-                                                                    <span style="color: red">*</span>
-                                                                </label>
-                                                                <div class="col-md-4">
-                                                                    <select class="form-control" id="country" name="en[country]" required>
-                                                                        <option>{{$countryName}}</option>
-                                                                        @foreach($countries as $country)
-                                                                            <option value="{{$country['id']}}">{{$country['name']}}</option>
-                                                                        @endforeach
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label class="col-md-3 control-label">State
-                                                                    <span style="color: red">*</span>
-                                                                </label>
-                                                                <div class="col-md-4">
-                                                                    <select class="form-control" id="state" name="en[state]" required>
-                                                                        <option>{{$stateName}}</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group">
                                                                 <label class="col-md-3 control-label">City
                                                                     <span style="color: red">*</span>
                                                                 </label>
                                                                 <div class="col-md-4">
                                                                     <select class="form-control " id="city" value="" name="en[city]" required>
-                                                                        <option value="{{$cityId}}">{{$cityName}}</option>
+                                                                        <option value="{{$city['id']}}">{{$city['name']}}</option>
+                                                                        @foreach($cities as $city)
+                                                                            <option value="{{$city['id']}}">{{$city['name']}}</option>
+                                                                        @endforeach
                                                                     </select>
                                                                 </div>
                                                             </div>
@@ -141,7 +121,7 @@
                                                                     <span style="color: red">*</span>
                                                                 </label>
                                                                 <div class="col-md-4">
-                                                                    <input type="date" id="start_date" value="{{$eventData['start_date']}}" name="en[start_date]" class="form-control " placeholder="" required>
+                                                                    <input type="date" id="start_date" value="{{$eventData['start_date']}}" name="en[start_date]" class="form-control " placeholder="dd/mm/yyyy" required>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
@@ -149,7 +129,7 @@
                                                                     <span style="color: red">*</span>
                                                                 </label>
                                                                 <div class="col-md-4">
-                                                                    <input type="date" id="end_date" value="{{$eventData['end_date']}}" name="en[end_date]" class="form-control " placeholder="" required>
+                                                                    <input type="date" id="end_date" value="{{$eventData['end_date']}}" name="en[end_date]" class="form-control " placeholder="dd/mm/yyyy" required>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
@@ -220,41 +200,6 @@
             CreateEvents.init();
         });
 
-
-        $('#country').change(function(){
-            var id=this.value;
-            var route='/event/get-all-states/'+id;
-            $.get(route,function(res){
-                if (res.length == 0)
-                {
-                    $('#state').html("no record found");
-                } else {
-                    var str='<option value="">Please select state</option>';
-                    for(var i=0; i<res.length; i++)
-                    {
-                        str+='<option value="'+res[i]['id']+'">'+res[i]['name']+'</option>';
-                    }
-                    $('#state').html(str);
-                }
-            });
-        });
-        $('#state').change(function(){
-            var id=this.value;
-            var route='/event/get-all-cities/'+id;
-            $.get(route,function(res){
-                if (res.length == 0)
-                {
-                    $('#city').html("no record found");
-                } else {
-                    var str='<option value="">Please select city</option>';
-                    for(var i=0; i<res.length; i++)
-                    {
-                        str+='<option value="'+res[i]['id']+'">'+res[i]['name']+'</option>';
-                    }
-                    $('#city').html(str);
-                }
-            });
-        });
         $("#imageupload").on('change', function () {
             var countFiles = $(this)[0].files.length;
             var imgPath = $(this)[0].value;

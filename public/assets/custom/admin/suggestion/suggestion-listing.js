@@ -1,12 +1,12 @@
 /**
- * Created by vaibhav on 28/11/18.
+ * Created by vaibhav on 5/12/18.
  */
 
-var WebviewListing = function () {
+var SuggestionListing = function () {
     var handleOrders = function () {
         var grid = new Datatable();
         grid.init({
-            src: $("#webviewTable"),
+            src: $("#suggestionTable"),
             onSuccess: function (grid) {
                 // execute some code after table records loaded
             },
@@ -28,7 +28,7 @@ var WebviewListing = function () {
                 "pageLength": 50, // default record count per page
 
                 "ajax": {
-                    "url": "/webview/listing" // ajax source
+                    "url": "/suggestion/listing" // ajax source
                 },
                 "order": [
                     [1, "asc"]
@@ -76,11 +76,9 @@ var WebviewListing = function () {
 
 
 jQuery(document).ready(function() {
-    WebviewListing.init();
-    $("input[name='search_webview']").on('keyup',function(){
-        $(".filter-submit").trigger('click');
-    });
+    SuggestionListing.init();
     $("input[name='search_city']").on('keyup',function(){
         $(".filter-submit").trigger('click');
     });
+
 });
