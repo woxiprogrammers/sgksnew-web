@@ -114,5 +114,5 @@ Route::group(['prefix' => 'webview'], function() {
 Route::group(['prefix' => 'suggestion'], function() {
     Route::get('/manage', array('uses' => 'Suggestion\SuggestionController@manage'));
     Route::post('/listing', array('uses' => 'Suggestion\SuggestionController@listing'));
-    Route::get('/show', array('uses' => 'Suggestion\SuggestionController@show'));
+    Route::get('/view/{id}', array('uses' => 'Suggestion\SuggestionController@view'));
 });
