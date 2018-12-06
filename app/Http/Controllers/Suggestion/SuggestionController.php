@@ -39,10 +39,10 @@ class SuggestionController extends Controller
             $records["draw"] = intval($request->draw);
             $suggestionData = Suggestion::orderBy('created_at','desc')->pluck('id')->toArray();
             $filterFlag = true;
-            if($request->has('search_message') /*&& $request->search_name != ''*/){
-                $suggestionData = Suggestion::join('cities','cities.id','=','messages.city_id')
+            if($request->has('search_city') /*&& $request->search_name != ''*/){
+                $suggestionData = Suggestion::join('cities','cities.id','=','suggestions.city_id')
                     ->where('cities.name','ilike','%'.$request->search_city.'%')
-                    ->pluck('messages.id')
+                    ->pluck('suggestions.id')
                     ->toArray();
                 if(count($suggestionData) < 0){
                     $filterFlag = false;
@@ -65,7 +65,7 @@ class SuggestionController extends Controller
                     $suggestionCategory = SuggestionCategory::where('id',$finalSuggestionData[$pagination]->suggestion_category_id)->pluck('name')->first();
                     $date = strtotime($finalSuggestionData[$pagination]->created_at);
                     $actionButton = '<div id="sample_editable_1_new" class="btn btn-small blue" >
-                        <a href="/suggestion/manage" style="color: white"> Show
+                        <a href="/suggestion/view/' . $finalSuggestionData[$pagination]['id'] . '" style="color: white"> View
                     </div>';
                     $records['data'][$iterator] = [
                         $srNo,
@@ -90,5 +90,22 @@ class SuggestionController extends Controller
             abort(500);
         }
         return response()->json($records,$status);
+    }
+    public function view(Request $request, $id){
+        try{
+            $suggestionData = Suggestion::where('id',$id)->first();
+            $city = Cities::where('id',$suggestionData['city_id'])->value('name');
+            $suggestionType = SuggestionType::where('id',$suggestionData['suggestion_type_id'])->value('name');
+            $suggestionCategory = SuggestionCategory::where('id',$suggestionData['suggestion_category_id'])->value('name');
+            return view('admin.suggestions.view')->with(compact('city','suggestionType','suggestionCategory','suggestionData'));
+        }catch(\Exception $exception){
+            $data = [
+                'params' => $request->all(),
+                'action' => 'Suggestion View page',
+                'exception' => $exception->getMessage()
+            ];
+            Log::critical(json_encode($data));
+            abort(500);
+        }
     }
 }
