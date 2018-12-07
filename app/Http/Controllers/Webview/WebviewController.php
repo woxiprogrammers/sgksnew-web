@@ -96,8 +96,8 @@ class WebviewController extends Controller
             $records["draw"] = intval($request->draw);
             $webviewData = DrawerWebviewDetails::orderBy('created_at', 'desc')->pluck('id')->toArray();
             $filterFlag = true;
-            if ($request->has('search_webview')) {
-                $webviewDataId = DrawerWebview::where('name', 'ilike', '%' . $request->search_webview . '%')->first();
+            if ($request->has('search_webview') && $request->search_webview != "") {
+                $webviewDataId = DrawerWebview::where('name', 'ilike', '%'.$request->search_webview.'%')->first();
                 $webviewData = DrawerWebviewDetails::where('drawer_web_id', $webviewDataId['id'])
                     ->pluck('id')->toArray();
                 if (count($webviewData) < 0) {
