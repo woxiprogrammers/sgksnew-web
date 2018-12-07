@@ -255,7 +255,7 @@ class MessageController extends Controller
                     $gujaratiMessageData['description'] = $data['gj']['description'];
                 }
 
-                $gujaratiMessageId = MessageTranslations::where('message_id')->value('id');
+                $gujaratiMessageId = MessageTranslations::where('message_id',$id)->value('id');
                 if($gujaratiMessageId != null) {
                     MessageTranslations::where('message_id',$id)->update($gujaratiMessageData);
                 } else {
