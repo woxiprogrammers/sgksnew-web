@@ -57,8 +57,9 @@ class MessageController extends Controller
             $data = $request->all();
             //while creating new buzz deactivate all previous buzz
             if($data['en']['message_type'] == 1){
-                $buzzMessages = Messages::where('message_type_id',1)->
-                                      where('is_active',true)->get();
+                $buzzMessages = Messages::where('message_type_id',1)
+                                        ->where('city_id',$data['en']['city'])
+                                        ->where('is_active',true)->get();
                 foreach ($buzzMessages as $buzzMessage){
                     $buzzMessage->update([
                         'is_active' => false,
