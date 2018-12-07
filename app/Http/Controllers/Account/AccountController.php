@@ -115,7 +115,7 @@ class AccountController extends Controller
             $accountsData = Accounts::orderBy('created_at','desc')->pluck('id')->toArray();
             $filterFlag = true;
             if($request->has('search_account') /*&& $request->search_name != ''*/){
-                $accountsData = Accounts::where('name','like','%'.$request->search_account.'%')
+                $accountsData = Accounts::where('name','ilike','%'.$request->search_account.'%')
                     ->whereIn('id',$accountsData)
                     ->pluck('id')->toArray();
                 if(count($accountsData) < 0){
@@ -179,7 +179,6 @@ class AccountController extends Controller
         try{
             $accountData = Accounts::where('id',$id)->first();
             $accountDataGujarati = AccountsTranslations::where('account_id',$id)->first();
-            $city = Cities::where('id',$accountData['city_id'])->first();
             $cities = Cities::get();
 
 
@@ -196,7 +195,7 @@ class AccountController extends Controller
                 $accountImages[] = null;
                 $accountImagesId[] = null;
             }
-            return view('admin.accounts.edit')->with(compact('accountData','accountDataGujarati','city','cities','accountImages','accountImagesId'));
+            return view('admin.accounts.edit')->with(compact('accountData','accountDataGujarati','cities','accountImages','accountImagesId'));
         }catch(\Exception $exception){
             $data = [
                 'params' => $request->all(),

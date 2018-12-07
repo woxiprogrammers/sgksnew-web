@@ -120,7 +120,7 @@ class EventController extends Controller
             $eventsData = Events::orderBy('created_at','desc')->pluck('id')->toArray();
             $filterFlag = true;
             if($request->has('search_event')){
-                $eventsData = Events::where('event_name','like','%'.$request->search_event.'%')
+                $eventsData = Events::where('event_name','ilike','%'.$request->search_event.'%')
                     ->whereIn('id',$eventsData)
                     ->pluck('id')->toArray();
                 if(count($eventsData) < 0){
@@ -198,7 +198,6 @@ class EventController extends Controller
         try{
             $eventData = Events::where('id',$id)->first();
             $eventDataGujarati = EventsTranslations::where('event_id',$id)->first();
-            $city = Cities::where('id',$eventData['city_id'])->first();
             $cities = Cities::get();
             $createEventDirectoryName = sha1($eventData->id);
             $images = EventImages::where('event_id',$id)->select('id','url')->get();
@@ -213,7 +212,7 @@ class EventController extends Controller
                 $eventImages[] = null;
                 $eventImagesId[] = null;
             }
-            return view('admin.events.edit')->with(compact('eventData','eventDataGujarati','city','cities','eventImages','eventImagesId'));
+            return view('admin.events.edit')->with(compact('eventData','eventDataGujarati','cities','eventImages','eventImagesId'));
         }catch(\Exception $exception){
             $data = [
                 'params' => $request->all(),

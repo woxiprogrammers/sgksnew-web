@@ -109,9 +109,12 @@
                                                                 </label>
                                                                 <div class="col-md-4">
                                                                     <select class="form-control " id="city" value="" name="en[city]" required>
-                                                                        <option value="{{$city['id']}}">{{$city['name']}}</option>
                                                                         @foreach($cities as $city)
-                                                                            <option value="{{$city['id']}}">{{$city['name']}}</option>
+                                                                            @if($city['id'] == $eventData['city_id'])
+                                                                                <option value="{{$city['id']}}" selected>{{$city['name']}}</option>
+                                                                            @else
+                                                                                <option value="{{$city['id']}}">{{$city['name']}}</option>
+                                                                            @endif
                                                                         @endforeach
                                                                     </select>
                                                                 </div>

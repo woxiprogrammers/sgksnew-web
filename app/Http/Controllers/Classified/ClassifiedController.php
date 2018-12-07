@@ -120,7 +120,7 @@ class ClassifiedController extends Controller
             $classifiedsData = Classifieds::orderBy('created_at','desc')->pluck('id')->toArray();
             $filterFlag = true;
             if($request->has('search_classified')){
-                $classifiedsData = Classifieds::where('title','like','%'.$request->search_classified.'%')
+                $classifiedsData = Classifieds::where('title','ilike','%'.$request->search_classified.'%')
                     ->whereIn('id',$classifiedsData)
                     ->pluck('id')->toArray();
                 if(count($classifiedsData) < 0){
@@ -212,7 +212,6 @@ class ClassifiedController extends Controller
             $packages = ClassifiedPackages::get();
             $classifiedData = Classifieds::where('id',$id)->first();
             $classifiedGujaratiData = ClassifiedsTranslations::where('classified_id',$id)->first();
-            $city = Cities::where('id',$classifiedData['city_id'])->first();
             $cities = Cities::get();
 
             $classifiedPackage = ClassifiedPackages::where('id',$classifiedData['package_id'])->first();
@@ -232,7 +231,7 @@ class ClassifiedController extends Controller
                 $classifiedImagesId[] = null;
             }
 
-            return view('admin.classified.edit')->with(compact('countries','packages','classifiedData','classifiedGujaratiData','city','cities','classifiedPackage','classifiedPackageType','classifiedImages','classifiedImagesId'));
+            return view('admin.classified.edit')->with(compact('countries','packages','classifiedData','classifiedGujaratiData','cities','classifiedPackage','classifiedPackageType','classifiedImages','classifiedImagesId'));
         }catch(\Exception $exception){
             $data = [
                 'params' => $request->all(),

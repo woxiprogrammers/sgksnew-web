@@ -57,8 +57,9 @@ class MessageController extends Controller
             $data = $request->all();
             //while creating new buzz deactivate all previous buzz
             if($data['en']['message_type'] == 1){
-                $buzzMessages = Messages::where('message_type_id',1)->
-                                      where('is_active',true)->get();
+                $buzzMessages = Messages::where('message_type_id',1)
+                                        ->where('city_id',$data['en']['city'])
+                                        ->where('is_active',true)->get();
                 foreach ($buzzMessages as $buzzMessage){
                     $buzzMessage->update([
                         'is_active' => false,
@@ -125,7 +126,7 @@ class MessageController extends Controller
             $messageData = Messages::orderBy('created_at','desc')->pluck('id')->toArray();
             $filterFlag = true;
             if($request->has('search_message') /*&& $request->search_name != ''*/){
-                $messageData = Messages::where('title','like','%'.$request->search_message.'%')
+                $messageData = Messages::where('title','ilike','%'.$request->search_message.'%')
                     ->whereIn('id',$messageData)
                     ->pluck('id')->toArray();
                 if(count($messageData) < 0){
@@ -199,7 +200,6 @@ class MessageController extends Controller
             $messageData = Messages::where('id',$id)->first();
             $messageDataGujarati = MessageTranslations::where('message_id',$id)->first();
             $png = '.png';
-            $city = Cities::where('id',$messageData['city_id'])->first();
             $cities = Cities::get();
             $messageDate =  date('Y-m-d',strtotime($messageData['message_date']));
 
@@ -213,7 +213,7 @@ class MessageController extends Controller
             }else{
                 $messageImage = env('MESSAGE_TYPE_IMAGES').DIRECTORY_SEPARATOR.$message_Type.$png;
             }
-            return view('admin.messages.edit')->with(compact('cities','messageData','messageDataGujarati','city','messageImage','message_Types','messageDate'));
+            return view('admin.messages.edit')->with(compact('cities','messageData','messageDataGujarati','messageImage','message_Types','messageDate'));
         }catch(\Exception $exception){
             $data = [
                 'params' => $request->all(),
@@ -255,7 +255,7 @@ class MessageController extends Controller
                     $gujaratiMessageData['description'] = $data['gj']['description'];
                 }
 
-                $gujaratiMessageId = MessageTranslations::where('message_id')->value('id');
+                $gujaratiMessageId = MessageTranslations::where('message_id',$id)->value('id');
                 if($gujaratiMessageId != null) {
                     MessageTranslations::where('message_id',$id)->update($gujaratiMessageData);
                 } else {
