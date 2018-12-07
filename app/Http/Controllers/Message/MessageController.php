@@ -125,7 +125,7 @@ class MessageController extends Controller
             $messageData = Messages::orderBy('created_at','desc')->pluck('id')->toArray();
             $filterFlag = true;
             if($request->has('search_message') /*&& $request->search_name != ''*/){
-                $messageData = Messages::where('title','like','%'.$request->search_message.'%')
+                $messageData = Messages::where('title','ilike','%'.$request->search_message.'%')
                     ->whereIn('id',$messageData)
                     ->pluck('id')->toArray();
                 if(count($messageData) < 0){
@@ -199,7 +199,6 @@ class MessageController extends Controller
             $messageData = Messages::where('id',$id)->first();
             $messageDataGujarati = MessageTranslations::where('message_id',$id)->first();
             $png = '.png';
-            $city = Cities::where('id',$messageData['city_id'])->first();
             $cities = Cities::get();
             $messageDate =  date('Y-m-d',strtotime($messageData['message_date']));
 
@@ -213,7 +212,7 @@ class MessageController extends Controller
             }else{
                 $messageImage = env('MESSAGE_TYPE_IMAGES').DIRECTORY_SEPARATOR.$message_Type.$png;
             }
-            return view('admin.messages.edit')->with(compact('cities','messageData','messageDataGujarati','city','messageImage','message_Types','messageDate'));
+            return view('admin.messages.edit')->with(compact('cities','messageData','messageDataGujarati','messageImage','message_Types','messageDate'));
         }catch(\Exception $exception){
             $data = [
                 'params' => $request->all(),

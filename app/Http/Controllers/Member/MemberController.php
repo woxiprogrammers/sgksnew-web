@@ -210,8 +210,7 @@ class MemberController extends Controller
             $memberTranslation = MemberTranslations::where('member_id',$memberData['id'])->first();
             $bloodGroups = BloodGroupType::get()->toArray();
             $cities = Cities::get();
-            $city  = Cities::where('id',$memberData['city_id'])->first();
-            return view('admin.members.edit')->with(compact('memberData','bloodGroups','states','city','cities','memberTranslation'));
+            return view('admin.members.edit')->with(compact('memberData','bloodGroups','cities','memberTranslation'));
         }catch(\Exception $exception){
             $data = [
                 'params' => $request->all(),

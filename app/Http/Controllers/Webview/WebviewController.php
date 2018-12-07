@@ -97,7 +97,7 @@ class WebviewController extends Controller
             $webviewData = DrawerWebviewDetails::orderBy('created_at', 'desc')->pluck('id')->toArray();
             $filterFlag = true;
             if ($request->has('search_webview')) {
-                $webviewDataId = DrawerWebview::where('name', 'like', '%' . $request->search_webview . '%')->first();
+                $webviewDataId = DrawerWebview::where('name', 'ilike', '%' . $request->search_webview . '%')->first();
                 $webviewData = DrawerWebviewDetails::where('drawer_web_id', $webviewDataId['id'])
                     ->pluck('id')->toArray();
                 if (count($webviewData) < 0) {
@@ -159,12 +159,9 @@ class WebviewController extends Controller
             $webviewDetails = DrawerWebviewDetails::where('id',$id)->first();
             $webviewDetailsInGujarati = DrawerWebviewDetailsTranslations::where('drawer_webview_details_id',$id)->first();
             $webviews = DrawerWebview::get();
-
-            $cityId = $webviewDetails['city_id'];
-            $city = Cities::where('id',$cityId)->first();
             $cities = Cities::get();
 
-            return view('admin.webview.edit')->with(compact('webviews','webviewDetails','countries','city','cities','webviewDetailsInGujarati'));
+            return view('admin.webview.edit')->with(compact('webviews','webviewDetails','cities','webviewDetailsInGujarati'));
         }catch(\Exception $exception){
             $data = [
                 'action' => 'edit webview View',

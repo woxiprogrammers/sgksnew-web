@@ -93,7 +93,7 @@ class CommitteeController extends Controller
             $committeesData = Committees::orderBy('created_at','desc')->pluck('id')->toArray();
             $filterFlag = true;
             if($request->has('search_committee') /*&& $request->search_name != ''*/){
-                $committeesData = Committees::where('committee_name','like','%'.$request->search_committee.'%')
+                $committeesData = Committees::where('committee_name','ilike','%'.$request->search_committee.'%')
                     ->whereIn('id',$committeesData)
                     ->pluck('id')->toArray();
                 if(count($committeesData) < 0){
@@ -171,11 +171,10 @@ class CommitteeController extends Controller
     public function editCommitteeView(Request $request,$id){
         try{
             $committeeData  = Committees::where('id',$id)->first();
-            $city = Cities::where('id',$committeeData['city_id'])->first();
             $cities = Cities::get();
             $committeeDataGujarati = CommitteesTranslations::where('committee_id',$id)->first();
 
-            return view('admin.committee.edit')->with(compact('committeeData','city','cities','committeeDataGujarati'));
+            return view('admin.committee.edit')->with(compact('committeeData','cities','committeeDataGujarati'));
         }catch(\Exception $exception){
             $data = [
                 'action' => 'Committee Edit View',
@@ -321,7 +320,7 @@ class CommitteeController extends Controller
             $membersData = CommitteeMembers::where('committee_id',$id)->orderBy('created_at','desc')->pluck('id')->toArray();
             $filterFlag = true;
             if($request->has('search_name') /*&& $request->search_name != ''*/){
-                $membersData = CommitteeMembers::where('full_name','like','%'.$request->search_name.'%')
+                $membersData = CommitteeMembers::where('full_name','ilike','%'.$request->search_name.'%')
                     ->whereIn('id',$membersData)
                     ->pluck('id')->toArray();
                 if(count($membersData) > 0){
