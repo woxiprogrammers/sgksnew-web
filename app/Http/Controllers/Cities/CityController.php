@@ -137,7 +137,7 @@ class CityController extends Controller
             $citiesData = Cities::orderBy('created_at','desc')->pluck('id')->toArray();
             $filterFlag = true;
             if($request->has('search_city')){
-                $citiesData = Cities::where('name','like','%'.$request->search_city.'%')
+                $citiesData = Cities::where('name','ilike','%'.$request->search_city.'%')
                     ->whereIn('id',$citiesData)
                     ->pluck('id')->toArray();
                 if(count($citiesData) < 0){
