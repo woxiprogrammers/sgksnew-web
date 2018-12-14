@@ -17,12 +17,6 @@ var  CreateMessages = function () {
                 "en[description]": {
                     required: true
                 },
-                "en[country]":{
-                    required : true
-                },
-                "en[state]":{
-                    required : true
-                },
                 "en[city]":{
                     required : true
                 }
@@ -33,12 +27,6 @@ var  CreateMessages = function () {
                 },
                 "en[description]": {
                     required: "Description is required."
-                },
-                "en[country]":{
-                    required : "please select the country"
-                },
-                "en[state]":{
-                    required : "please select the state"
                 },
                 "en[city]":{
                     required : "please select the city"

@@ -59,6 +59,7 @@ class EventController extends Controller
             $eventData['start_date'] = $data['en']['start_date'];
             $eventData['end_date'] = $data['en']['end_date'];
             $eventData['city_id'] = $data['en']['city'];
+            $eventData['is_active'] = false;
             $createEvent = Events::create($eventData);
             if($createEvent){
                 $request->session()->flash('success','Committee Created Successfully');
@@ -161,6 +162,14 @@ class EventController extends Controller
                     }else{
                         $isActive = "<input type='checkbox' class='js-switch' onchange='return statusFolder(this.checked,$id)' id='status$id' value='$id'/>";
                     }
+                    $createEventDirectoryName = sha1($id);
+                    $image = EventImages::where('event_id',$id)->first();
+                    if ($image != null) {
+                        $eventImage = env('EVENT_IMAGES_UPLOAD') . DIRECTORY_SEPARATOR . $createEventDirectoryName . DIRECTORY_SEPARATOR . $image['url'];
+                        $img = '<img src="'.$eventImage.'" class="avatar">';
+                    }else{
+                        $img = '<img src="'.env('DEFAULT_IMAGE').DIRECTORY_SEPARATOR."event.png".'" class="avatar">';
+                    }
                     $actionButton = '<div id="sample_editable_1_new" class="btn btn-small blue">
                         <a href="/event/edit/' . $finalEventsData[$pagination]['id'] . '" style="color: white">Edit
                     </div>';
@@ -176,6 +185,7 @@ class EventController extends Controller
                         date('d M Y', $startDate ),
                         date('d M Y', $endDate ),
                         $isActive,
+                        $img,
                         $actionButton
                     ];
                 }

@@ -1,6 +1,10 @@
-var  CreateMembers = function () {
+/**
+ * Created by vaibhav on 14/12/18.
+ */
+
+var  CreateCity = function () {
     var handleCreate = function() {
-        var form = $('#create-members');
+        var form = $('#create-city');
         var error = $('.alert-danger', form);
         var success = $('.alert-success', form);
         form.validate({
@@ -8,51 +12,13 @@ var  CreateMembers = function () {
             errorClass: 'help-block', // default input error message class
             focusInvalid: false, // do not focus the last invalid input
             rules: {
-                "en[first_name]": {
+                "en[city]": {
                     required: true
-                },
-                "en[middle_name]": {
-                    required: true
-                },
-                "en[last_name]": {
-                    required: true
-                },
-                "en[mobile_number]":{
-                    required: true,
-                    maxlength : 10
-                },
-                "en[city]":{
-                    required : true
-                },
-                "en[address]":{
-                    required : true
                 }
             },
             messages: {
-                "en[first_name]": {
-                    required: "first name is required.",
-                },
-                "en[middle_name]": {
-                    required: "middle name is required."
-                },
-                "en[last_name]": {
-                    required: "last name is required."
-                },
-                "en[mobile_number]": {
-                    required: "mobile number required",
-                    maxlength: "Please enter valid mobile number "
-                },
-                "en[country]":{
-                    required : "please select the country"
-                },
-                "en[state]":{
-                    required : "please select the state"
-                },
-                "en[city]":{
-                    required : "please select the city"
-                },
-                "en[address]": {
-                    required : "please enter the address"
+                "en[city]": {
+                    required: "City name is required."
                 }
             },
             invalidHandler: function (event, validator) { //display error alert on form submit

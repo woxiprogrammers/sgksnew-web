@@ -49,7 +49,7 @@
                                     <!-- BEGIN VALIDATION STATES-->
                                     <div class="portlet light ">
                                         <div class="portlet-body form">
-                                            <form role="form" id="create-classified" class="form-horizontal" action="/classified/edit/{{$classifiedData['id']}}" method="post">
+                                            <form role="form" id="edit-classified" class="form-horizontal" action="/classified/edit/{{$classifiedData['id']}}" method="post">
                                                 {!! csrf_field() !!}
                                                 <div class="tab-content">
                                                     <div class="tab-pane fade in active" id="tab_general">
@@ -192,11 +192,11 @@
     <script  src="/assets/global/plugins/datatables/datatables.min.js"></script>
     <script src="/assets/global/scripts/datatable.js" type="text/javascript"></script>
     <script src="/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js" type="text/javascript"></script>
-    <script src="/assets/custom/admin/classified/create-classified-validation.js" type="text/javascript"></script>
+    <script src="/assets/custom/admin/classified/edit-classified-validation.js" type="text/javascript"></script>
 
     <script>
         $(document).ready(function () {
-            CreateClassified.init();
+            EditClassified.init();
         });
 
         $('#package').change(function(){

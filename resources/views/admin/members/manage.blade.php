@@ -9,6 +9,14 @@
 @section('title','Sgks')
 @include('partials.common.navbar')
 @section('css')
+    <style>
+        .avatar {
+            vertical-align: middle;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+        }
+    </style>
     <link href="/assets/global/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" type="text/css" />
 @endsection
 @section('content')
@@ -38,14 +46,11 @@
                                     <div class="col-md-12">
                                         <!-- BEGIN EXAMPLE TABLE PORTLET-->
                                         <div class="portlet light ">
-                                            {!! csrf_field() !!}
+                                            {{--{!! csrf_field() !!}--}}
                                             <div class="portlet-body">
                                                 <div class="table-toolbar">
                                                     <div class="row" style="text-align: right">
-                                                        <div class="col-md-12">
-                                                            <div class="btn-group">
-
-                                                            </div>
+                                                        <div class="form-filter pull-right">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -53,6 +58,7 @@
                                                     <thead>
                                                     <tr>
                                                         <th> Sr.No </th>
+                                                        <th> Profile </th>
                                                         <th width="10%"> Name </th>
                                                         <th> Gujarati Name </th>
                                                         <th> Address </th>
@@ -60,9 +66,16 @@
                                                         <th> Mobile </th>
                                                         <th> City </th>
                                                         <th> Status <i class="fa fa-check-square"> Enable</i></th>
-                                                        <th> Actions </th>
+                                                        <th> Actions
+                                                            <select class="form-control form-filter" name="filter_data">
+                                                                @foreach($edit as $key=>$edi)
+                                                                    <option value="{{$key}}">{{$edi}}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </th>
                                                     </tr>
                                                     <tr class="filter">
+                                                        <th></th>
                                                         <th></th>
                                                         <th> <input type="text" class="form-control form-filter" name="search_name"> </th>
                                                         <th></th>

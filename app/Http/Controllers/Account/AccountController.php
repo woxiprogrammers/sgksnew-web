@@ -144,8 +144,23 @@ class AccountController extends Controller
                     $accountName = str_limit($finalAccountsData[$pagination]->name,20);
                     $description = str_limit($finalAccountsData[$pagination]->description,20);
                     $date = $finalAccountsData[$pagination]->created_at;
+                    $isActiveStatus = $finalAccountsData[$pagination]->is_active;
                     $city = Cities::where('id',$finalAccountsData[$pagination]->city_id)->pluck('name')->first();
                     $gujaratiDetails = AccountsTranslations::where('account_id',$finalAccountsData[$pagination]->id)->first();
+                    $id = $finalAccountsData[$pagination]->id;
+                    $createAccountDirectoryName = sha1($id);
+                    $image = AccountImages::where('account_id',$id)->first();
+                    if ($image != null) {
+                        $accountImage = env('ACCOUNT_IMAGES_UPLOAD') . DIRECTORY_SEPARATOR . $createAccountDirectoryName . DIRECTORY_SEPARATOR . $image['url'];
+                        $img = '<img src="'.$accountImage.'" class="avatar">';
+                    }else{
+                        $img = '<img src="'.env('DEFAULT_IMAGE').DIRECTORY_SEPARATOR."accounts.png".'" class="avatar">';
+                    }
+                    if($isActiveStatus){
+                        $isActive = "<input type='checkbox' class='js-switch' onchange='return statusFolder(this.checked,$id)' id='status$id' value='$id' checked/>";
+                    }else{
+                        $isActive = "<input type='checkbox' class='js-switch' onchange='return statusFolder(this.checked,$id)' id='status$id' value='$id'/>";
+                    }
                     $actionButton = '<div id="sample_editable_1_new" class="btn btn-small blue">
                         <a href="/account/edit/' . $finalAccountsData[$pagination]['id'] . '" style="color: white">Edit
                     </div>';
@@ -157,6 +172,8 @@ class AccountController extends Controller
                         str_limit($gujaratiDetails['description'],20),
                         $city,
                         $date->format('d M Y'),
+                        $img,
+                        $isActive,
                         $actionButton
                     ];
                 }
@@ -290,6 +307,39 @@ class AccountController extends Controller
         }catch(\Exception $exception){
             $data = [
                 'action' => 'delete account image',
+                'params' => $request->all(),
+                'exception' => $exception->getMessage()
+            ];
+            Log::critical(json_encode($data));
+            abort(500);
+        }
+    }
+
+    public function changeStatus(Request $request,$id){
+        try{
+            $accountData  =Accounts::where('id',$id)->first();
+            $status = $accountData['is_active'];
+            if($status){
+                $changeStatus['is_active'] = false;
+                $updateStatus = Accounts::where('id',$id)->update($changeStatus);
+                if ($updateStatus) {
+                    $request->session()->flash('success', 'Status changes Successfully');
+                } else {
+                    $request->session()->flash('error', 'Something went wrong');
+                }
+            }else{
+                $changeStatus['is_active'] = true;
+                $updateStatus = Accounts::where('id',$id)->update($changeStatus);
+                if ($updateStatus) {
+                    $request->session()->flash('success', 'Status changes Successfully');
+                } else {
+                    $request->session()->flash('error', 'Something went wrong');
+                }
+            }
+            return redirect('/account/manage');
+        }catch(\Exception $exception){
+            $data = [
+                'action' => 'Account Change Status',
                 'params' => $request->all(),
                 'exception' => $exception->getMessage()
             ];

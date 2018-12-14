@@ -1,6 +1,9 @@
-var  CreateMembers = function () {
+/**
+ * Created by vaibhav on 14/12/18.
+ */
+var  EditMembers = function () {
     var handleCreate = function() {
-        var form = $('#create-members');
+        var form = $('#edit-members');
         var error = $('.alert-danger', form);
         var success = $('.alert-success', form);
         form.validate({
