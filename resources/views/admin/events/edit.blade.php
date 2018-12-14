@@ -214,13 +214,13 @@
     <script  src="/assets/global/plugins/datatables/datatables.min.js"></script>
     <script src="/assets/global/scripts/datatable.js" type="text/javascript"></script>
     <script src="/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js" type="text/javascript"></script>
-    <script src="/assets/custom/admin/events/create-event-validation.js" type="text/javascript"></script>
     <script src="/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
     <script src="/assets/pages/scripts/components-date-time-pickers.min.js" type="text/javascript"></script>
 
+    <script src="/assets/custom/admin/events/edit-event-validation.js" type="text/javascript"></script>
     <script>
         $(document).ready(function () {
-            CreateEvents.init();
+            EditEvents.init();
         });
 
         $("#imageupload").on('change', function () {

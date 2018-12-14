@@ -1,9 +1,10 @@
 /**
- * Created by vaibhav on 5/11/18.
+ * Created by vaibhav on 14/12/18.
  */
-var  CreateEvents = function () {
+
+var  EditCity = function () {
     var handleCreate = function() {
-        var form = $('#create-events');
+        var form = $('#edit-city');
         var error = $('.alert-danger', form);
         var success = $('.alert-success', form);
         form.validate({
@@ -11,31 +12,13 @@ var  CreateEvents = function () {
             errorClass: 'help-block', // default input error message class
             focusInvalid: false, // do not focus the last invalid input
             rules: {
-                "en[event_name]": {
+                "en[city]": {
                     required: true
-                },
-                "en[description]": {
-                    required: true
-                },
-                "en[city]":{
-                    required : true
-                },
-                "en[venue]":{
-                    required : true
                 }
             },
             messages: {
-                "en[event_name]": {
-                    required: "Event name is required."
-                },
-                "en[description]": {
-                    required: "Description is required."
-                },
-                "en[city]":{
-                    required : "please select the city"
-                },
-                "en[venue]":{
-                    required : "Event venue is required"
+                "en[city]": {
+                    required: "City name is required."
                 }
             },
             invalidHandler: function (event, validator) { //display error alert on form submit

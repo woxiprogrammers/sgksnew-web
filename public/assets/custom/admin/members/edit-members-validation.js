@@ -1,9 +1,9 @@
 /**
- * Created by vaibhav on 5/11/18.
+ * Created by vaibhav on 14/12/18.
  */
-var  CreateEvents = function () {
+var  EditMembers = function () {
     var handleCreate = function() {
-        var form = $('#create-events');
+        var form = $('#edit-members');
         var error = $('.alert-danger', form);
         var success = $('.alert-success', form);
         form.validate({
@@ -11,31 +11,51 @@ var  CreateEvents = function () {
             errorClass: 'help-block', // default input error message class
             focusInvalid: false, // do not focus the last invalid input
             rules: {
-                "en[event_name]": {
+                "en[first_name]": {
                     required: true
                 },
-                "en[description]": {
+                "en[middle_name]": {
                     required: true
+                },
+                "en[last_name]": {
+                    required: true
+                },
+                "en[mobile_number]":{
+                    required: true,
+                    maxlength : 10
                 },
                 "en[city]":{
                     required : true
                 },
-                "en[venue]":{
+                "en[address]":{
                     required : true
                 }
             },
             messages: {
-                "en[event_name]": {
-                    required: "Event name is required."
+                "en[first_name]": {
+                    required: "first name is required.",
                 },
-                "en[description]": {
-                    required: "Description is required."
+                "en[middle_name]": {
+                    required: "middle name is required."
+                },
+                "en[last_name]": {
+                    required: "last name is required."
+                },
+                "en[mobile_number]": {
+                    required: "mobile number required",
+                    maxlength: "Please enter valid mobile number "
+                },
+                "en[country]":{
+                    required : "please select the country"
+                },
+                "en[state]":{
+                    required : "please select the state"
                 },
                 "en[city]":{
                     required : "please select the city"
                 },
-                "en[venue]":{
-                    required : "Event venue is required"
+                "en[address]": {
+                    required : "please enter the address"
                 }
             },
             invalidHandler: function (event, validator) { //display error alert on form submit

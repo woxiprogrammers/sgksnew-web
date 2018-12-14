@@ -49,7 +49,7 @@
                                     <!-- BEGIN VALIDATION STATES-->
                                     <div class="portlet light ">
                                         <div class="portlet-body form">
-                                            <form role="form" id="create-accounts" class="form-horizontal" action="/account/edit/{{$accountData['id']}}" method="post">
+                                            <form role="form" id="edit-accounts" class="form-horizontal" action="/account/edit/{{$accountData['id']}}" method="post">
                                                 {!! csrf_field() !!}
                                                 <div class="tab-content">
                                                     <div class="tab-pane fade in active" id="tab_general">
@@ -170,11 +170,11 @@
     <script  src="/assets/global/plugins/datatables/datatables.min.js"></script>
     <script src="/assets/global/scripts/datatable.js" type="text/javascript"></script>
     <script src="/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js" type="text/javascript"></script>
-    <script src="/assets/custom/admin/accounts/create-account-validation.js" type="text/javascript"></script>
+    <script src="/assets/custom/admin/accounts/edit-account-validation.js" type="text/javascript"></script>
 
     <script>
         $(document).ready(function () {
-            CreateAccount.init();
+            EditAccount.init();
         });
 
         $("#imageupload").on('change', function () {

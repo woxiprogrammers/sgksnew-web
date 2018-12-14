@@ -1,9 +1,10 @@
 /**
- * Created by vaibhav on 5/11/18.
+ * Created by vaibhav on 14/12/18.
  */
-var  CreateEvents = function () {
+
+var  EditEvents = function () {
     var handleCreate = function() {
-        var form = $('#create-events');
+        var form = $('#edit-events');
         var error = $('.alert-danger', form);
         var success = $('.alert-success', form);
         form.validate({

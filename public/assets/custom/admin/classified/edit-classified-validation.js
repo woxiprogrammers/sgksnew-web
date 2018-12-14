@@ -1,9 +1,10 @@
 /**
- * Created by vaibhav on 5/11/18.
+ * Created by vaibhav on 14/12/18.
  */
-var  CreateEvents = function () {
+
+var  EditClassified = function () {
     var handleCreate = function() {
-        var form = $('#create-events');
+        var form = $('#edit-classified');
         var error = $('.alert-danger', form);
         var success = $('.alert-success', form);
         form.validate({
@@ -11,31 +12,37 @@ var  CreateEvents = function () {
             errorClass: 'help-block', // default input error message class
             focusInvalid: false, // do not focus the last invalid input
             rules: {
-                "en[event_name]": {
+                "en[title]": {
                     required: true
                 },
                 "en[description]": {
                     required: true
                 },
-                "en[city]":{
+                "en[class_package_type]":{
                     required : true
                 },
-                "en[venue]":{
+                "en[class_type]":{
+                    required : true
+                },
+                "en[city]":{
                     required : true
                 }
             },
             messages: {
-                "en[event_name]": {
-                    required: "Event name is required."
+                "en[title]": {
+                    required: "Title is required."
                 },
                 "en[description]": {
                     required: "Description is required."
                 },
+                "en[class_package_type]":{
+                    required : "please select the classified package"
+                },
+                "en[class_type]":{
+                    required : "please select the classified type"
+                },
                 "en[city]":{
                     required : "please select the city"
-                },
-                "en[venue]":{
-                    required : "Event venue is required"
                 }
             },
             invalidHandler: function (event, validator) { //display error alert on form submit
