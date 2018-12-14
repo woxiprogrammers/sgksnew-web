@@ -10,6 +10,14 @@
 @section('title','Sgks|Events')
 @include('partials.common.navbar')
 @section('css')
+    <style>
+        .avatar {
+            vertical-align: middle;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+        }
+    </style>
     <link href="/assets/global/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" type="text/css" />
 @endsection
 @section('content')
@@ -64,6 +72,7 @@
                                                         <th>Start date</th>
                                                         <th>End date</th>
                                                         <th>Status<i class="fa fa-check-square"> Enable</i></th>
+                                                        <th> Image </th>
                                                         <th>Actions</th>
                                                     </tr>
                                                     <tr class="filter">
@@ -75,6 +84,7 @@
                                                         <th></th>
                                                         <th></th>
                                                         <th> <input type="text" class="form-control form-filter" name="search_city"> </th>
+                                                        <th></th>
                                                         <th></th>
                                                         <th></th>
                                                         <th></th>

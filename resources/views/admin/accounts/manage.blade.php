@@ -10,6 +10,14 @@
 @section('title','Sgks|Accounts')
 @include('partials.common.navbar')
 @section('css')
+    <style>
+        .avatar {
+            vertical-align: middle;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+        }
+    </style>
     <link href="/assets/global/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" type="text/css" />
 @endsection
 @section('content')
@@ -60,6 +68,8 @@
                                                         <th> Gujarati Description </th>
                                                         <th> City </th>
                                                         <th> Date </th>
+                                                        <th> Image </th>
+                                                        <th> Status <i class="fa fa-check-square"> Enable </i></th>
                                                         <th> Actions </th>
                                                     </tr>
                                                     <tr class="filter">
@@ -69,6 +79,8 @@
                                                         <th></th>
                                                         <th></th>
                                                         <th> <input type="text" class="form-control form-filter" name="search_city"> </th>
+                                                        <th></th>
+                                                        <th></th>
                                                         <th></th>
                                                         <th>
                                                             <button class="btn btn-xs blue filter-submit"> Search <i class="fa fa-search"></i> </button>
@@ -120,6 +132,19 @@
         $(document).ready(function() {
             $('#accountTable').DataTable();
         });
+
+        function statusFolder(status,id){
+            if(confirm("Change Status! are you sure ?")){
+                var route='/account/change-status/'+id;
+                $.get(route,function(res){
+                    var route= "/account/manage";
+                    window.location.replace(route);
+                });
+            } else {
+                var route1= "/account/manage";
+                window.location.replace(route1);
+            }
+        }
     </script>
 @endsection
 

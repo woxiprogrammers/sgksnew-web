@@ -18,7 +18,51 @@ class MemberController extends Controller
 {
     public function manageMembers(Request $request){
         try{
-            return view('admin.members.manage');
+            $new = 0;
+            $edited = 0;
+            $not_edited = 0;
+            $membersTranslations = MemberTranslations::whereNotNull('first_name')
+                ->orWhereNotNull('middle_name')
+                ->orWhereNotNull('last_name')
+                ->orWhereNotNull('address')
+                ->orwhereColumn('updated_at','>','created_at')
+                ->pluck('member_id')
+                ->toArray();
+            $membersData = Members::whereNotIn('id',$membersTranslations)
+                ->pluck('id')
+                ->toArray();
+            if(count($membersData) > 0){
+                $new = count($membersData);
+            }
+
+            $membersTranslations = MemberTranslations::where('first_name',null)
+                ->orWhere('middle_name',null)
+                ->orWhere('last_name',null)
+                ->orWhere('address',null)
+                ->pluck('member_id')
+                ->toArray();
+            $membersData = Members::whereIn('id',$membersTranslations)
+                ->pluck('id')
+                ->toArray();
+            if(count($membersData) > 0){
+                $not_edited = count($membersData);
+            }
+            $membersTranslations = MemberTranslations::whereNotNull('first_name')
+                ->whereNotNull('middle_name')
+                ->whereNotNull('last_name')
+                ->whereNotNull('address')
+                ->pluck('member_id')
+                ->toArray();
+            $membersData = Members::whereIn('id',$membersTranslations)
+                ->pluck('id')
+                ->toArray();
+            if(count($membersData) > 0){
+                $edited = count($membersData);
+            }
+            $members = Members::get();
+            $total = count($members);
+            $edit = array("All ($total)","New ($new)","Not Edited ($not_edited)","Edited ($edited)");
+            return view('admin.members.manage')->with(compact('edit'));
         }catch(\Exception $exception){
             $data = [
                 'params' => $request->all(),
@@ -121,9 +165,7 @@ class MemberController extends Controller
             $membersData = Members::orderBy('created_at','desc')->pluck('id')->toArray();
             $filterFlag = true;
             if($request->has('search_name') && $request->search_name != ''){
-                $membersData = Members::where('first_name','ilike','%'.$request->search_name.'%')
-                    ->orWhere('middle_name','ilike','%'.$request->search_name.'%')
-                    ->orWhere('last_name','ilike','%'.$request->search_name.'%')
+                $membersData = Members::whereRaw("CONCAT(first_name,' ',middle_name,' ',last_name) ilike '%".$request->search_name."%'")
                     ->whereIn('id',$membersData)
                     ->pluck('id')->toArray();
                 if(count($membersData) > 0){
@@ -146,6 +188,51 @@ class MemberController extends Controller
                                 ->toArray();
                 if(count($membersData) > 0){
                     $filterFlag = false;
+                }
+            }
+            if($filterFlag == true && $request->has('filter_data')){
+                if($request->filter_data == 1) {
+                    $membersTranslations = MemberTranslations::whereNotNull('first_name')
+                        ->orWhereNotNull('middle_name')
+                        ->orWhereNotNull('last_name')
+                        ->orWhereNotNull('address')
+                        ->orwhereColumn('updated_at','>','created_at')
+                        ->pluck('member_id')
+                        ->toArray();
+                    $membersData = Members::whereNotIn('id',$membersTranslations)
+                        ->pluck('id')
+                        ->toArray();
+                    if(count($membersData) > 0){
+                        $filterFlag = false;
+                    }
+                }
+                if($request->filter_data == 2) {
+                    $membersTranslations = MemberTranslations::where('first_name',null)
+                        ->orWhere('middle_name',null)
+                        ->orWhere('last_name',null)
+                        ->orWhere('address',null)
+                        ->pluck('member_id')
+                        ->toArray();
+                    $membersData = Members::whereIn('id',$membersTranslations)
+                        ->pluck('id')
+                        ->toArray();
+                    if(count($membersData) > 0){
+                        $filterFlag = false;
+                    }
+                }
+                if($request->filter_data == 3) {
+                    $membersTranslations = MemberTranslations::whereNotNull('first_name')
+                        ->whereNotNull('middle_name')
+                        ->whereNotNull('last_name')
+                        ->whereNotNull('address')
+                        ->pluck('member_id')
+                        ->toArray();
+                    $membersData = Members::whereIn('id',$membersTranslations)
+                        ->pluck('id')
+                        ->toArray();
+                    if(count($membersData) > 0){
+                        $filterFlag = false;
+                    }
                 }
             }
             $finalMembersData = Members::whereIn('id', $membersData)->orderBy('id','desc')->get();
@@ -175,12 +262,21 @@ class MemberController extends Controller
                     }else{
                         $memberStatus = "<input type='checkbox' class='js-switch' onchange='return statusFolder(this.checked,$memberId)' id='status$memberId' value='$memberId'/>";
                     }
+                    $createMemberDirectoryName = sha1($memberId);
+                    $image = $finalMembersData[$pagination]->profile_image;
+                    if ($image != null) {
+                        $memberImage = env('MEMBER_IMAGES_UPLOAD') . DIRECTORY_SEPARATOR . $createMemberDirectoryName . DIRECTORY_SEPARATOR . $image;
+                        $img = '<img src="'.$memberImage.'" class="avatar">';
+                    } else {
+                        $img = '<img src="'.env('DEFAULT_IMAGE').DIRECTORY_SEPARATOR."member.jpeg".'" class="avatar">';
+                    }
                         $actionButton = '<div id="sample_editable_1_new" class="btn btn-small blue" >
                         <a href="/member/edit/' . $finalMembersData[$pagination]['id'] . '" style="color: white"> Edit
                     </div>';
 
                     $records['data'][$iterator] = [
                         $srNo,
+                        $img,
                         $firstName ." ".$middleName ." ".$lastName,
                         $gujaratiDetails['first_name']." ".$gujaratiDetails['middle_name']." ".$gujaratiDetails['last_name'],
                         $address,
@@ -210,7 +306,8 @@ class MemberController extends Controller
             $memberTranslation = MemberTranslations::where('member_id',$memberData['id'])->first();
             $bloodGroups = BloodGroupType::get()->toArray();
             $cities = Cities::get();
-            return view('admin.members.edit')->with(compact('memberData','bloodGroups','cities','memberTranslation'));
+            $defaultImage = env('DEFAULT_IMAGE').DIRECTORY_SEPARATOR."member.jpeg";
+            return view('admin.members.edit')->with(compact('memberData','bloodGroups','cities','memberTranslation','defaultImage'));
         }catch(\Exception $exception){
             $data = [
                 'params' => $request->all(),

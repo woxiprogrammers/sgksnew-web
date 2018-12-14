@@ -69,8 +69,14 @@
                                                                     <input type="text" name="en[city]" class="form-control " placeholder="Enter City Name" required>
                                                                 </div>
                                                                 <div class="col-md-4">
-                                                                    <input type="text" name="gj[city]" class="form-control " placeholder="Enter City Name in Gujarati" required>
+                                                                    <input type="text" name="gj[city]" class="form-control " placeholder="Enter City Name in Gujarati">
                                                                 </div>
+                                                            </div>
+                                                            <div>
+                                                                <div class="col-md-3"></div>
+                                                                @if($message != null)
+                                                                    <span style="color: red">{{$message}}</span>
+                                                                @endif
                                                             </div>
                                                         </fieldset>
                                                         <fieldset>
@@ -109,6 +115,5 @@
     <script  src="/assets/global/plugins/datatables/datatables.min.js"></script>
     <script src="/assets/global/scripts/datatable.js" type="text/javascript"></script>
     <script src="/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js" type="text/javascript"></script>
-
 @endsection
 

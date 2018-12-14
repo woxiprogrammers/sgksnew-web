@@ -145,11 +145,11 @@
     <script  src="/assets/global/plugins/datatables/datatables.min.js"></script>
     <script src="/assets/global/scripts/datatable.js" type="text/javascript"></script>
     <script src="/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js" type="text/javascript"></script>
-    <script src="/assets/custom/admin/members/create-members-validation.js" type="text/javascript"></script>
+    <script src="/assets/custom/admin/committees/create-committee-validation.js" type="text/javascript"></script>
 
     <script>
         $(document).ready(function () {
-            Create.init();
+            CreateCommittees.init();
         });
 
     </script>

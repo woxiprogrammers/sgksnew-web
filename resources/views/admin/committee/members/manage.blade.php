@@ -10,6 +10,14 @@
 @section('title','Sgks|Committee-member')
 @include('partials.common.navbar')
 @section('css')
+    <style>
+        .avatar {
+            vertical-align: middle;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+        }
+    </style>
     <link href="/assets/global/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" type="text/css" />
 @endsection
 @section('content')
@@ -24,8 +32,8 @@
                         <div class="page-head">
                             <div class="container">
                                 <!-- BEGIN PAGE TITLE -->
-                                <div class="page-title col-md-2">
-                                    <h1>Members Listing</h1>
+                                <div class="page-title col-md-6">
+                                    <h1>Members Listing - {{$committeeName}}</h1>
                                 </div>
                                 <div class="btn red-flamingo col-md-1 pull-right" style="margin-top: 1%"><a href="/committee/manage" style="color: white">
                                         Back
@@ -58,6 +66,7 @@
                                                     <thead>
                                                     <tr>
                                                         <th>Sr.No</th>
+                                                        <th> Profile </th>
                                                         <th style="width: 20%"> Name </th>
                                                         <th> Gujarati Name </th>
                                                         <th> Designation </th>
@@ -71,6 +80,7 @@
                                                     </tr>
                                                     <tr class="filter">
                                                         <th><input type="hidden" id="committee-id" value="{{$id}}" /></th>
+                                                        <th></th>
                                                         <th style="width: 20%"> <input type="text" class="form-control form-filter" name="search_name"> </th>
                                                         <th></th>
                                                         <th></th>

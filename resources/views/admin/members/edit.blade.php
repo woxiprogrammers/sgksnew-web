@@ -3,6 +3,14 @@
 @include('partials.common.navbar')
 @section('css')
     <style>
+        .avatar {
+            vertical-align: middle;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+        }
+    </style>
+    <style>
         .thumbimage {
             float:left;
             width:100%;
@@ -41,7 +49,7 @@
                                     <!-- BEGIN VALIDATION STATES-->
                                     <div class="portlet light ">
                                         <div class="portlet-body form">
-                                            <form role="form" id="edit-members" class="form-horizontal" action="/member/edit/{{$memberData['id']}}" method="post">
+                                            <form role="form" id="create-members" class="form-horizontal" action="/member/edit/{{$memberData['id']}}" method="post">
                                                 {!! csrf_field() !!}
                                                 <div class="tab-content">
                                                     <div class="tab-pane fade in active" id="tab_general">
@@ -54,9 +62,15 @@
                                                                                 Member Profile Picture :
                                                                             </label>
                                                                         </div>
-                                                                        <div class="col-md-6 ">
-                                                                            <img src="{{env('MEMBER_IMAGES_UPLOAD')."/".sha1($memberData['id'])."/".$memberData['profile_image']}}" height="150px"; width="200px;">
-                                                                        </div>
+                                                                        @if($memberData['profile_image'] != null)
+                                                                            <div class="col-md-6 ">
+                                                                                <img src="{{env('MEMBER_IMAGES_UPLOAD')."/".sha1($memberData['id'])."/".$memberData['profile_image']}}" class="avatar">
+                                                                            </div>
+                                                                        @else
+                                                                            <div class="col-md-6 ">
+                                                                                <img src="{{$defaultImage}}" class="avatar">
+                                                                            </div>
+                                                                        @endif
                                                                     </div>
                                                                 </div>
 
@@ -88,9 +102,9 @@
                                                                 </div>
                                                                 <div class="col-md-4" >
                                                                     @if($memberTranslation['first_name'] == null)
-                                                                    <input type="text" id="first_name_gj" name="gj[first_name]" class="form-control " placeholder="Enter First Name in gujarati" >
+                                                                    <input type="text" id="first_name" name="gj[first_name]" class="form-control " placeholder="Enter First Name in gujarati" >
                                                                         @else
-                                                                        <input type="text" id="first_name_gj" value="{{$memberTranslation['first_name']}}" name="gj[first_name]" class="form-control " placeholder="Enter First Name in gujarati">
+                                                                        <input type="text" id="first_name" value="{{$memberTranslation['first_name']}}" name="gj[first_name]" class="form-control " placeholder="Enter First Name in gujarati">
                                                                     @endif
                                                                 </div>
                                                             </div>
@@ -103,9 +117,9 @@
                                                                 </div>
                                                                 <div class="col-md-4">
                                                                     @if($memberTranslation['middle_name'] == null)
-                                                                        <input type="text" id="middle_name_gj" name="gj[middle_name]" class="form-control " placeholder="Enter Middle Name in gujarati" >
+                                                                        <input type="text" id="middle_name" name="gj[middle_name]" class="form-control " placeholder="Enter Middle Name in gujarati" >
                                                                         @else
-                                                                        <input type="text" id="middle_name_gj" value="{{$memberTranslation['middle_name']}}" name="gj[middle_name]" class="form-control " placeholder="Enter Middle Name in gujarati">
+                                                                        <input type="text" id="middle_name" value="{{$memberTranslation['middle_name']}}" name="gj[middle_name]" class="form-control " placeholder="Enter Middle Name in gujarati">
                                                                     @endif
                                                                 </div>
                                                             </div>
@@ -118,9 +132,9 @@
                                                                 </div>
                                                                 <div class="col-md-4">
                                                                     @if($memberTranslation['last_name'] == null)
-                                                                        <input type="text" id="last_name_gj" name="gj[last_name]" class="form-control " placeholder="Enter Last Name in gujarati" >
+                                                                        <input type="text" id="last_name" name="gj[last_name]" class="form-control " placeholder="Enter Last Name in gujarati" >
                                                                         @else
-                                                                        <input type="text" id="last_name_gj" value="{{$memberTranslation['last_name']}}" name="gj[last_name]" class="form-control" placeholder="Enter Last Name in gujarati" >
+                                                                        <input type="text" id="last_name" value="{{$memberTranslation['last_name']}}" name="gj[last_name]" class="form-control" placeholder="Enter Last Name in gujarati" >
                                                                     @endif
                                                                 </div>
                                                             </div>
@@ -137,9 +151,9 @@
                                                                 </div>
                                                                 <div class="col-md-4">
                                                                     @if($memberData['address'] == null)
-                                                                        <textarea id="address_gj" name="gj[address]" class="form-control" placeholder="Enter Address in gujarati"></textarea>
+                                                                        <textarea id="address" name="gj[address]" class="form-control" placeholder="Enter Address in gujarati"></textarea>
                                                                     @else
-                                                                        <textarea id="address_gj" name="gj[address]" class="form-control"  placeholder="Enter Address in gujarati">{{$memberTranslation['address']}}</textarea>
+                                                                        <textarea id="address" name="gj[address]" class="form-control"  placeholder="Enter Address in gujarati">{{$memberTranslation['address']}}</textarea>
                                                                     @endif
                                                                 </div>
                                                             </div>
@@ -276,12 +290,12 @@
     <script  src="/assets/global/plugins/datatables/datatables.min.js"></script>
     <script src="/assets/global/scripts/datatable.js" type="text/javascript"></script>
     <script src="/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js" type="text/javascript"></script>
-    <script src="/assets/custom/admin/members/create-members-validation.js" type="text/javascript"></script>
     <script src="/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.js" type="text/javascript"></script>
     <script src="/assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
     <script src="/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
     <script src="/assets/pages/scripts/components-date-time-pickers.min.js" type="text/javascript"></script>
 
+    <script src="/assets/custom/admin/members/create-members-validation.js" type="text/javascript"></script>
     <script>
         $(document).ready(function () {
             CreateMembers.init();

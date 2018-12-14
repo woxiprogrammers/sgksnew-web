@@ -71,6 +71,7 @@ class MessageController extends Controller
             $messageData['message_type_id'] = $data['en']['message_type'];
             $messageData['city_id'] = $data['en']['city'];
             $messageData['message_date'] = $data['en']['message_date'];
+            $messageData['is_active'] = false;
             $createMessage = Messages::create($messageData);
             if(array_key_exists('gj',$data)){
                 if(array_key_exists('title',$data['gj'])){
@@ -159,11 +160,20 @@ class MessageController extends Controller
                     $messageDate = strtotime($finalMessagesData[$pagination]->message_date);
                     $isActiveStatus = $finalMessagesData[$pagination]->is_active;
                     $id = $finalMessagesData[$pagination]->id;
+                    $message_Type = MessageTypes::where('id',$finalMessagesData[$pagination]->message_type_id)->value('slug');
                     $gujaratiDetails = MessageTranslations::where('message_id',$finalMessagesData[$pagination]->id)->first();
                     if ($isActiveStatus) {
                         $isActive = "<input type='checkbox' class='js-switch' onchange='return statusFolder(this.checked,$id)' id='status$id' value='$id' checked/>";
                     } else {
                         $isActive = "<input type='checkbox' class='js-switch' onchange='return statusFolder(this.checked,$id)' id='status$id' value='$id'/>";
+                    }
+                    $createMessageDirectoryName = sha1($id);
+                    $image = $finalMessagesData[$pagination]->image_url;
+                    if ($image != null) {
+                        $messageImage = env('MESSAGE_IMAGES_UPLOAD') . DIRECTORY_SEPARATOR . $createMessageDirectoryName . DIRECTORY_SEPARATOR . $image;
+                        $img = '<img src="'.$messageImage.'" class="avatar">';
+                    }else{
+                        $img = '<img src="'.env('MESSAGE_TYPE_IMAGES').DIRECTORY_SEPARATOR.$message_Type.".png".'" class="avatar">';
                     }
                     $actionButton = '<div id="sample_editable_1_new" class="btn btn-small blue" >
                         <a href="/message/edit/' . $finalMessagesData[$pagination]['id'] . '" style="color: white"> Edit
@@ -177,6 +187,7 @@ class MessageController extends Controller
                         $city,
                         date('d M Y', $messageDate ),
                         $isActive,
+                        $img,
                         $actionButton
                     ];
                 }
@@ -201,7 +212,6 @@ class MessageController extends Controller
             $messageDataGujarati = MessageTranslations::where('message_id',$id)->first();
             $png = '.png';
             $cities = Cities::get();
-            $messageDate =  date('Y-m-d',strtotime($messageData['message_date']));
 
             $messageTypes = new MessageTypes();
             $message_Types = $messageTypes->get();
@@ -213,7 +223,7 @@ class MessageController extends Controller
             }else{
                 $messageImage = env('MESSAGE_TYPE_IMAGES').DIRECTORY_SEPARATOR.$message_Type.$png;
             }
-            return view('admin.messages.edit')->with(compact('cities','messageData','messageDataGujarati','messageImage','message_Types','messageDate'));
+            return view('admin.messages.edit')->with(compact('cities','messageData','messageDataGujarati','messageImage','message_Types'));
         }catch(\Exception $exception){
             $data = [
                 'params' => $request->all(),

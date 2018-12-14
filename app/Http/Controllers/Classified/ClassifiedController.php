@@ -62,6 +62,9 @@ class ClassifiedController extends Controller
             $classifiedData['city_id'] = $data['en']['city'];
             $classifiedData['package_id'] = $data['en']['class_package_type'];
             $createClassified = Classifieds::create($classifiedData);
+            $classifiedId = Classifieds::orderBy('created_at', 'desc')->value('id');
+            $setIsActive['is_active'] = false;
+            Classifieds::where('id',$classifiedId)->update($setIsActive);
             if($createClassified){
                 $request->session()->flash('success','Classified Created Successfully');
             }else{
@@ -163,9 +166,9 @@ class ClassifiedController extends Controller
                     $image = ClassifiedImages::where('classified_id',$id)->first();
                     if ($image != null) {
                         $classifiedImage = env('CLASSIFIED_IMAGES_UPLOAD') . DIRECTORY_SEPARATOR . $createClassifiedDirectoryName . DIRECTORY_SEPARATOR . $image['image_url'];
-                        $img = '<img src="'.$classifiedImage.'" style="height: 50px; width: 50px">';
+                        $img = '<img src="'.$classifiedImage.'" class="avatar">';
                     }else{
-                        $img = null;
+                        $img = '<img src="'.env('DEFAULT_IMAGE').DIRECTORY_SEPARATOR."classified.png".'" class="avatar">';
                     }
 
                     if($isActiveStatus){

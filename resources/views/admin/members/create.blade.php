@@ -77,7 +77,7 @@
                                                                     <input type="text" id="first_name" name="en[first_name]" class="form-control " placeholder="Enter First Name" required>
                                                                 </div>
                                                                 <div class="col-md-4" >
-                                                                    <input type="text" id="first_name_gj" name="gj[first_name]" class="form-control " placeholder="Enter First Name in gujarati" >
+                                                                    <input type="text" id="first_name" name="gj[first_name]" class="form-control " placeholder="Enter First Name in gujarati" >
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
@@ -88,7 +88,7 @@
                                                                     <input type="text" id="middle_name" name="en[middle_name]" class="form-control " placeholder="Enter Middle Name" required>
                                                                 </div>
                                                                 <div class="col-md-4">
-                                                                    <input type="text" id="middle_name_gj" name="gj[middle_name]" class="form-control " placeholder="Enter Middle Name in gujarati" >
+                                                                    <input type="text" id="middle_name" name="gj[middle_name]" class="form-control " placeholder="Enter Middle Name in gujarati" >
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
@@ -99,7 +99,7 @@
                                                                     <input type="text" id="last_name" name="en[last_name]" class="form-control " placeholder="Enter Last Name" required>
                                                                 </div>
                                                                 <div class="col-md-4">
-                                                                    <input type="text" id="last_name_gj" name="gj[last_name]" class="form-control " placeholder="Enter Last Name in gujarati" >
+                                                                    <input type="text" id="last_name" name="gj[last_name]" class="form-control " placeholder="Enter Last Name in gujarati" >
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
@@ -110,7 +110,7 @@
                                                                     <textarea id="address" name="en[address]" class="form-control" placeholder="Enter Address" required> </textarea>
                                                                 </div>
                                                                 <div class="col-md-4">
-                                                                    <textarea id="address_gj" name="gj[address]" class="form-control" placeholder="Enter Address in gujarati" > </textarea>
+                                                                    <textarea id="address" name="gj[address]" class="form-control" placeholder="Enter Address in gujarati" > </textarea>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
@@ -122,8 +122,11 @@
                                                             </div>
                                                             <div class="form-group">
                                                                 <label class="col-md-3 control-label">Date of birth</label>
-                                                                <div class="col-md-4">
-                                                                    <input type="date" id="dob" name="en[dob]" class="form-control">
+                                                                <div class="col-md-4 date date-picker">
+                                                                    <input type="text" class="form-control" id="dob" name="en[dob]" placeholder="mm/dd/yyyy" required="required">
+                                                                    <button class="btn btn-sm default" type="button">
+                                                                        <i class="fa fa-calendar"></i>
+                                                                    </button>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
@@ -223,6 +226,9 @@
     <script  src="/assets/global/plugins/datatables/datatables.min.js"></script>
     <script src="/assets/global/scripts/datatable.js" type="text/javascript"></script>
     <script src="/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js" type="text/javascript"></script>
+    <script src="/assets/pages/scripts/components-date-time-pickers.min.js" type="text/javascript"></script>
+    <script src="/assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+    <script src="/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
     <script src="/assets/custom/admin/members/create-members-validation.js" type="text/javascript"></script>
 
     <script>

@@ -11,10 +11,18 @@
 @include('partials.common.navbar')
 @section('css')
     <style>
+        .avatar {
+            vertical-align: middle;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+        }
+    </style>
+    <style>
         .thumbimage {
             float:left;
-            width: 150px;
-            height: 150px;
+            width:100%;
+            height: 200px;
             position:relative;
             padding:5px;
             margin-left: 50%;
@@ -34,8 +42,8 @@
                         <div class="page-head">
                             <div class="container">
                                 <!-- BEGIN PAGE TITLE -->
-                                <div class="page-title col-md-2">
-                                    <h1>Edit Member</h1>
+                                <div class="page-title col-md-6">
+                                    <h1>Edit Member - {{$committeeName}}</h1>
                                 </div>
                                 <div class="btn red-flamingo col-md-1 pull-right" style="margin-top: 1%"><a href="/committee-members/manage/{{$memberData['committee_id']}}" style="color: white">
                                         Back
@@ -49,7 +57,7 @@
                                     <!-- BEGIN VALIDATION STATES-->
                                     <div class="portlet light ">
                                         <div class="portlet-body form">
-                                            <form role="form" id="edit-member" class="form-horizontal" action="/committee-members/edit/{{$memberData['id']}}" method="post">
+                                            <form role="form" id="create-members" class="form-horizontal" action="/committee-members/edit/{{$memberData['id']}}" method="post">
                                                 {!! csrf_field() !!}
                                                 <div class="tab-content">
                                                     <div class="tab-pane fade in active" id="tab_general">
@@ -74,7 +82,7 @@
                                                                 <div class="col-md-2" style="text-align: center">
                                                                     <div class="col-md-12">
                                                                         @if($memberImg != null)
-                                                                            <img src="{{$memberImg}}" style="height: 150px; width: 150px">
+                                                                            <img src="{{$memberImg}}" class="avatar">
                                                                             <h4 style="font-weight: 400">{{$memberData['full_name']}}</h4>
                                                                         @endif
                                                                     </div>

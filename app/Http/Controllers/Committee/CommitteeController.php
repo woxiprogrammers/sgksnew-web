@@ -56,6 +56,7 @@ class CommitteeController extends Controller
             $committeeData['committee_name'] = $data['en']['committee_name'];
             $committeeData['description'] = $data['en']['description'];
             $committeeData['city_id'] = $data['en']['city'];
+            $committeeData['is_active'] = false;
             $createCommittee = Committees::create($committeeData);
             if($createCommittee){
                 $request->session()->flash('success','Committee Created Successfully');
@@ -230,7 +231,8 @@ class CommitteeController extends Controller
 
     public function manageMembers(Request $request,$id){
         try{
-            return view('admin.committee.members.manage')->with(compact('id'));
+            $committeeName = Committees::where('id',$id)->value('committee_name');
+            return view('admin.committee.members.manage')->with(compact('id','committeeName'));
         }catch(\Exception $exception){
             $data = [
                 'action' => 'Committee Member View page',
@@ -245,7 +247,8 @@ class CommitteeController extends Controller
 
     public function createMemberView(Request $request,$id){
         try{
-            return view('admin.committee.members.create')->with(compact('id'));
+            $committeeName = Committees::where('id',$id)->value('committee_name');
+            return view('admin.committee.members.create')->with(compact('id','committeeName'));
         }catch(\Exception $exception){
             $data = [
                 'action' => 'Create Member View',
@@ -265,6 +268,7 @@ class CommitteeController extends Controller
             $committeeMemberData['designation'] = $data['en']['designation'];
             $committeeMemberData['mobile_number'] = $data['en']['mobile_number'];
             $committeeMemberData['email_id'] = $data['en']['email_id'];
+            $committeeMemberData['is_active'] = false;
             $createMember = CommitteeMembers::create($committeeMemberData);
             if(array_key_exists('gj',$data)){
                 if(array_key_exists('full_name',$data['gj'])){
@@ -351,11 +355,20 @@ class CommitteeController extends Controller
                     }else{
                         $isActive = "<input type='checkbox' class='js-switch' onchange='return statusFolder(this.checked,$committeeMemberId)' id='status$committeeMemberId' value='$committeeMemberId'/>";
                     }
+                    $createMemberDirectoryName = sha1($committeeMemberId);
+                    $image = $finalMembersData[$pagination]->profile_image;
+                    if ($image != null) {
+                        $memberImage = env('COMMITTEE_MEMBER_IMAGES_UPLOAD') . DIRECTORY_SEPARATOR . $createMemberDirectoryName . DIRECTORY_SEPARATOR . $image;
+                        $img = '<img src="'.$memberImage.'" class="avatar">';
+                    } else {
+                        $img = '<img src="'.env('DEFAULT_IMAGE').DIRECTORY_SEPARATOR."member.jpeg".'" class="avatar">';
+                    }
                     $actionButton = '<div id="sample_editable_1_new" class="btn btn-small blue" >
                         <a href="/committee-members/edit/' . $finalMembersData[$pagination]['id'] . '" style="color: white"> Edit
                     </div>';
                     $records['data'][$iterator] = [
                         $srNo,
+                        $img,
                         $memberName,
                         $gujaratiDetails['full_name'],
                         $designation,
@@ -384,14 +397,15 @@ class CommitteeController extends Controller
     public function editMemberView(Request $request,$id){
         try{
             $memberData  = CommitteeMembers::where('id',$id)->first();
+            $committeeName = Committees::where('id',$memberData['committee_id'])->value('committee_name');
             $memberDataGujarati = CommitteeMembersTranslations::where('member_id',$id)->first();
             if($memberData['profile_image'] != null) {
                 $createMemberDirectoryName = sha1($memberData->id);
                 $memberImg = env('COMMITTEE_MEMBER_IMAGES_UPLOAD') . DIRECTORY_SEPARATOR . $createMemberDirectoryName . DIRECTORY_SEPARATOR . $memberData['profile_image'];
-            }else{
-                $memberImg = null;
+            } else {
+                $memberImg = env('DEFAULT_IMAGE').DIRECTORY_SEPARATOR."member.jpeg";
             }
-            return view('admin.committee.members.edit')->with(compact('memberData','memberImg','memberDataGujarati'));
+            return view('admin.committee.members.edit')->with(compact('memberData','memberImg','memberDataGujarati','committeeName'));
         }catch(\Exception $exception){
             $data = [
                 'action' => 'Committee Member Edit View',

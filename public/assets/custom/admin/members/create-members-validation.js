@@ -21,12 +21,6 @@ var  CreateMembers = function () {
                     required: true,
                     maxlength : 10
                 },
-                "en[country]":{
-                  required : true
-                },
-                "en[state]":{
-                    required : true
-                },
                 "en[city]":{
                     required : true
                 },
@@ -46,7 +40,7 @@ var  CreateMembers = function () {
                 },
                 "en[mobile_number]": {
                     required: "mobile number required",
-                    maxlength: "number should not be greater than 10"
+                    maxlength: "Please enter valid mobile number "
                 },
                 "en[country]":{
                     required : "please select the country"

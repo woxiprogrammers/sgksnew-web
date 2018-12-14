@@ -27,7 +27,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/dashboard';
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -44,7 +44,7 @@ class LoginController extends Controller
         if(Auth::attempt($credentials)){
             $user = Auth::user();
             if($user->is_active == true){
-                return redirect('/dashboard');
+                return redirect('/member/manage');
             }else{
                 Auth::logout();
                 $request->session()->flash('error','User is not activated yet. Please activate user first.');

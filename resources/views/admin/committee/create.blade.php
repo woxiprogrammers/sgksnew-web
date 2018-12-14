@@ -148,7 +148,7 @@
 
     <script>
         $(document).ready(function () {
-            Create.init();
+            CreateCommittees.init();
         });
 
     </script>
