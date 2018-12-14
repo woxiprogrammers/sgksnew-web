@@ -66,6 +66,7 @@ Route::group(['prefix' => 'account'], function() {
     Route::get('/edit/{id}', array('uses' => 'Account\AccountController@editView'));
     Route::post('/edit/{id}', array('uses' => 'Account\AccountController@edit'));
     Route::get('/delete-image/{id}',array('uses' => 'Account\AccountController@deleteAccountImage'));
+    Route::get('/change-status/{id}',array('uses' => 'Account\AccountController@changeStatus'));
 });
 
 Route::group(['prefix' => 'message'], function() {

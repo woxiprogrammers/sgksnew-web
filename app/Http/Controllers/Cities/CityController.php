@@ -31,7 +31,8 @@ class CityController extends Controller
 
     public function createView(Request $request){
         try{
-            return view('admin.cities.create');
+            $message = null;
+            return view('admin.cities.create')->with(compact('message'));
         }catch(\Exception $exception){
             $data = [
                 'action' => 'Create City View',
@@ -48,7 +49,13 @@ class CityController extends Controller
             $data = $request->all();
             $cityData['name'] = $data['en']['city'];
             $cityData['state_id'] =1;
-            $createCity = Cities::create($cityData);
+            $cityName = Cities::where('name','ilike',$data['en']['city'])->value('name');
+            if($cityName != null){
+                $message = 'City with name '.$data['en']['city'].' already exist';
+                return view('admin.cities.create')->with(compact('message'));
+            } else {
+                $createCity = Cities::create($cityData);
+            }
             if(array_key_exists('gj',$data)){
                 if(array_key_exists('city',$data['gj'])){
                     $gujaratiCityData['name'] = $data['gj']['city'];

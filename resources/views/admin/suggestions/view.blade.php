@@ -7,7 +7,7 @@
  */
 ?>
 @extends('layout.master')
-@section('title','Sgks|Cities')
+@section('title','Sgks|Suggestions')
 @include('partials.common.navbar')
 @section('css')
     <link href="/assets/global/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" type="text/css" />

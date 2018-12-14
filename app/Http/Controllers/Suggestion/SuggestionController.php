@@ -19,7 +19,9 @@ class SuggestionController extends Controller
 {
     public function manage(Request $request){
         try{
-            return view('admin.suggestions.manage');
+            $suggestionTypes = SuggestionType::get();
+            $suggestionCategories = SuggestionCategory::get();
+            return view('admin.suggestions.manage')->with(compact('suggestionTypes','suggestionCategories'));
         }catch(\Exception $exception){
             $data = [
                 'params' => $request->all(),
@@ -44,6 +46,36 @@ class SuggestionController extends Controller
                     ->where('cities.name','ilike','%'.$request->search_city.'%')
                     ->pluck('suggestions.id')
                     ->toArray();
+                if(count($suggestionData) < 0){
+                    $filterFlag = false;
+                }
+            }
+            if($request->has('sugg_type') && $filterFlag==true){
+                if($request->sugg_type == 'all'){
+                    $suggestionData = Suggestion::whereIn('id',$suggestionData)
+                        ->pluck('id')
+                        ->toArray();
+                } else {
+                    $suggestionData = Suggestion::whereIn('id', $suggestionData)
+                        ->where('suggestion_type_id', $request->sugg_type)
+                        ->pluck('id')
+                        ->toArray();
+                }
+                if(count($suggestionData) < 0){
+                    $filterFlag = false;
+                }
+            }
+            if($request->has('sugg_cat') && $filterFlag == true){
+                if($request->sugg_cat == 'all'){
+                    $suggestionData = Suggestion::whereIn('id',$suggestionData)
+                        ->pluck('id')
+                        ->toArray();
+                } else {
+                    $suggestionData = Suggestion::whereIn('id', $suggestionData)
+                        ->where('suggestion_category_id', $request->sugg_cat)
+                        ->pluck('id')
+                        ->toArray();
+                }
                 if(count($suggestionData) < 0){
                     $filterFlag = false;
                 }

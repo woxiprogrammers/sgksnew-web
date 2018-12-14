@@ -49,7 +49,7 @@
                                     <!-- BEGIN VALIDATION STATES-->
                                     <div class="portlet light ">
                                         <div class="portlet-body form">
-                                            <form role="form" id="create-messages" class="form-horizontal" action="/message/edit/{{$messageData['id']}}" method="post">
+                                            <form role="form" id="edit-messages" class="form-horizontal" action="/message/edit/{{$messageData['id']}}" method="post">
                                                 {!! csrf_field() !!}
                                                 <div class="tab-content">
                                                     <div class="tab-pane fade in active" id="tab_general">
@@ -78,7 +78,7 @@
                                                                     @foreach($message_Types as $message_Type)
                                                                         @if($message_Type['id'] == $messageData['message_type_id'])
                                                                             <div class="form-check form-check-inline">
-                                                                              <input class="form-check-input" type="radio" name="en[message_type]" id="message_type" value="{{$message_Type['id']}}" checked required>
+                                                                              <input class="form-check-input" type="radio" name="en[message_type]" id="message_type" value="{{$message_Type['id']}}" checked>
                                                                                <label class="form-check-label" for="message_type">{{$message_Type['name']}}</label>
                                                                             </div>
                                                                         @else
@@ -132,9 +132,18 @@
                                                                 <label class="col-md-3 control-label">Message Date
                                                                     <span style="color: red">*</span>
                                                                 </label>
-                                                                <div class="col-md-4">
-                                                                    <input type="date" id="message_date" value="{{$messageDate}}" name="en[message_date]" placeholder="dd/mm/yyyy" class="form-control " required>
-                                                                </div>
+                                                                @if($messageData['message_date'] == null)
+                                                                    <div class="col-md-4">
+                                                                        <input type="date" id="message_date" name="en[message_date]" class="form-control">
+                                                                    </div>
+                                                                @else
+                                                                    <div class="col-md-4 date date-picker">
+                                                                        <input type="text" class="form-control" id="message_date" name="en[message_date]" value="{{date('m/d/Y',strtotime($messageData['message_date']))}}" required="required">
+                                                                        <button class="btn btn-sm default" type="button">
+                                                                            <i class="fa fa-calendar"></i>
+                                                                        </button>
+                                                                    </div>
+                                                                @endif
                                                             </div>
                                                             <div class="form-group">
                                                                 <label class="control-label col-md-3">Select Images :</label>
@@ -151,10 +160,12 @@
                                                                             <div class="content">
                                                                                 <img src="{{$messageImage}}" style="height: 150px; width: 150px" />
                                                                             </div>
-                                                                            <div>
-                                                                                <span>Delete Image</span>
-                                                                                <input type='checkbox' class='js-switch' name="images" onchange='return deleteImage(this.checked,"{{$messageData['id']}}")' value='{{$messageImage}}'/>
-                                                                            </div>
+                                                                            @if($messageData['image_url'] != null)
+                                                                                <div>
+                                                                                    <span>Delete Image</span>
+                                                                                    <input type='checkbox' class='js-switch' name="images" onchange='return deleteImage(this.checked,"{{$messageData['id']}}")' value='{{$messageImage}}'/>
+                                                                                </div>
+                                                                            @endif
                                                                         </div>
                                                                         </div>
                                                                     @endif
@@ -196,11 +207,13 @@
     <script  src="/assets/global/plugins/datatables/datatables.min.js"></script>
     <script src="/assets/global/scripts/datatable.js" type="text/javascript"></script>
     <script src="/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js" type="text/javascript"></script>
-    <script src="/assets/custom/admin/messages/create-message-validation.js" type="text/javascript"></script>
+    <script src="/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
+    <script src="/assets/pages/scripts/components-date-time-pickers.min.js" type="text/javascript"></script>
 
+    <script src="/assets/custom/admin/messages/edit-message-validation.js" type="text/javascript"></script>
     <script>
         $(document).ready(function () {
-            CreateMessages.init();
+            EditMessages.init();
         });
 
 

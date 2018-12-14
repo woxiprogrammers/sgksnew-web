@@ -60,8 +60,22 @@
                                                     <tr class="filter">
                                                         <th></th>
                                                         <th> <input type="text" class="form-control form-filter" name="search_city"> </th>
-                                                        <th></th>
-                                                        <th></th>
+                                                        <th>
+                                                            <select class="form-control form-filter" name="sugg_type">
+                                                                <option value="all">All</option>
+                                                            @foreach($suggestionTypes as $suggestionType)
+                                                                <option value="{{$suggestionType['id']}}">{{$suggestionType['name']}}</option>
+                                                            @endforeach
+                                                            </select>
+                                                        </th>
+                                                        <th>
+                                                            <select class="form-control form-filter" name="sugg_cat">
+                                                                <option value="all">All</option>
+                                                                @foreach($suggestionCategories as $suggestionCategory)
+                                                                    <option value="{{$suggestionCategory['id']}}">{{$suggestionCategory['name']}}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </th>
                                                         <th></th>
                                                         <th></th>
                                                         <th>

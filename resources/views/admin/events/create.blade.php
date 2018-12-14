@@ -120,16 +120,22 @@
                                                                 <label class="col-md-3 control-label">Start Date
                                                                     <span style="color: red">*</span>
                                                                 </label>
-                                                                <div class="col-md-4">
-                                                                    <input type="date" id="start_date" name="en[start_date]" class="form-control " placeholder="dd/mm/yyyy" required>
+                                                                <div class="col-md-4 date date-picker">
+                                                                    <input type="text" class="form-control" id="start_date" name="en[start_date]" placeholder="mm/dd/yyyy" required="required">
+                                                                    <button class="btn btn-sm default" type="button">
+                                                                        <i class="fa fa-calendar"></i>
+                                                                    </button>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label class="col-md-3 control-label">End Date
                                                                     <span style="color: red">*</span>
                                                                 </label>
-                                                                <div class="col-md-4">
-                                                                    <input type="date" id="end_date" name="en[end_date]" class="form-control " placeholder="dd/mm/yyyy" required>
+                                                                <div class="col-md-4 date date-picker">
+                                                                    <input type="text" class="form-control" id="end_date" name="en[end_date]" placeholder="mm/dd/yyyy" required="required">
+                                                                    <button class="btn btn-sm default" type="button">
+                                                                        <i class="fa fa-calendar"></i>
+                                                                    </button>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
@@ -179,6 +185,8 @@
     <script src="/assets/global/scripts/datatable.js" type="text/javascript"></script>
     <script src="/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js" type="text/javascript"></script>
     <script src="/assets/custom/admin/events/create-event-validation.js" type="text/javascript"></script>
+    <script src="/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
+    <script src="/assets/pages/scripts/components-date-time-pickers.min.js" type="text/javascript"></script>
 
     <script>
         $(document).ready(function () {

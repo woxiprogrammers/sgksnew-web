@@ -74,16 +74,17 @@
                                                                 <label class="col-md-3 control-label">Select Message Type
                                                                     <span style="color: red">*</span>
                                                                 </label>
+                                                                <div></div>
                                                                 <div class="col-md-4">
                                                                     @foreach($message_Types as $message_Type)
                                                                         @if($message_Type['name'] == "General")
                                                                             <div class="form-check form-check-inline">
-                                                                                 <input class="form-check-input" type="radio" name="en[message_type]" id="message_type" value="{{$message_Type['id']}}" checked required>
+                                                                                 <input class="form-check-input" type="radio" name="en[message_type]" id="message_type" value="{{$message_Type['id']}}" checked>
                                                                                  <label class="form-check-label" for="message_type">{{$message_Type['name']}}</label>
                                                                              </div>
                                                                         @else
                                                                             <div class="form-check form-check-inline">
-                                                                                <input class="form-check-input" type="radio" name="en[message_type]" id="message_type" value="{{$message_Type['id']}}" required>
+                                                                                <input class="form-check-input" type="radio" name="en[message_type]" id="message_type" value="{{$message_Type['id']}}">
                                                                                 <label class="form-check-label" for="message_type">{{$message_Type['name']}}</label>
                                                                             </div>
                                                                         @endif
@@ -129,13 +130,20 @@
                                                                 <label class="col-md-3 control-label">Message Date
                                                                     <span style="color: red">*</span>
                                                                 </label>
-                                                                <div class="col-md-4">
-                                                                    <input type="date" id="message_date" name="en[message_date]" class="form-control " placeholder="dd/mm/yyyy" required>
+                                                                <div class="col-md-4 date date-picker">
+                                                                    <input type="text" class="form-control" id="message_date" name="en[message_date]" placeholder="mm/dd/yyyy" required="required">
+                                                                    <button class="btn btn-sm default" type="button">
+                                                                        <i class="fa fa-calendar"></i>
+                                                                    </button>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
-                                                                <label class="control-label col-md-3">Select Images :</label>
-                                                                <input id="imageupload" type="file" class="btn blue"/>
+                                                                <label class="control-label col-md-3">Select Images :
+                                                                    <span style="color: red">*</span>
+                                                                </label>
+                                                                <div class="col-md-2">
+                                                                    <input id="imageupload" type="file" class="btn blue" required>
+                                                                </div>
                                                                 <br />
                                                                 <div class="row" >
                                                                     <div id="preview-image" class="row">
@@ -181,6 +189,10 @@
     <script src="/assets/global/scripts/datatable.js" type="text/javascript"></script>
     <script src="/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js" type="text/javascript"></script>
     <script src="/assets/custom/admin/messages/create-message-validation.js" type="text/javascript"></script>
+    <script src="/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
+    <script src="/assets/pages/scripts/components-date-time-pickers.min.js" type="text/javascript"></script>
+    <script src="/assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+    <script src="/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
 
     <script>
         $(document).ready(function () {
