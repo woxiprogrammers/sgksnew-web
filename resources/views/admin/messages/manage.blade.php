@@ -15,7 +15,6 @@
             vertical-align: middle;
             width: 60px;
             height: 60px;
-            border-radius: 50%;
         }
     </style>
     <link href="/assets/global/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" type="text/css" />
