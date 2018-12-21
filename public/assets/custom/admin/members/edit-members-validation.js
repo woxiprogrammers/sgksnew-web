@@ -26,9 +26,6 @@ var  EditMembers = function () {
                 },
                 "en[city]":{
                     required : true
-                },
-                "en[address]":{
-                    required : true
                 }
             },
             messages: {
@@ -53,9 +50,6 @@ var  EditMembers = function () {
                 },
                 "en[city]":{
                     required : "please select the city"
-                },
-                "en[address]": {
-                    required : "please enter the address"
                 }
             },
             invalidHandler: function (event, validator) { //display error alert on form submit
