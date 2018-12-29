@@ -7,7 +7,9 @@ use App\Cities;
 use App\Languages;
 use App\Members;
 use App\MemberTranslations;
+use App\UserCities;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -21,6 +23,12 @@ class MemberController extends Controller
             $new = 0;
             $edited = 0;
             $not_edited = 0;
+            if(Session::has('city')){
+                $city = Session::get('city');
+                $memberIds = Members::where('city_id',$city)->pluck('id')->toArray();
+            } else{
+                $memberIds = Members::pluck('id')->toArray();
+            }
             $membersTranslations = MemberTranslations::whereNotNull('first_name')
                 ->orWhereNotNull('middle_name')
                 ->orWhereNotNull('last_name')
@@ -28,7 +36,7 @@ class MemberController extends Controller
                 ->orwhereColumn('updated_at','>','created_at')
                 ->pluck('member_id')
                 ->toArray();
-            $membersData = Members::whereNotIn('id',$membersTranslations)
+            $membersData = Members::whereIn('id',$memberIds)->whereNotIn('id',$membersTranslations)
                 ->pluck('id')
                 ->toArray();
             if(count($membersData) > 0){
@@ -41,7 +49,7 @@ class MemberController extends Controller
                 ->orWhere('address',null)
                 ->pluck('member_id')
                 ->toArray();
-            $membersData = Members::whereIn('id',$membersTranslations)
+            $membersData = Members::whereIn('id',$memberIds)->whereIn('id',$membersTranslations)
                 ->pluck('id')
                 ->toArray();
             if(count($membersData) > 0){
@@ -53,13 +61,13 @@ class MemberController extends Controller
                 ->whereNotNull('address')
                 ->pluck('member_id')
                 ->toArray();
-            $membersData = Members::whereIn('id',$membersTranslations)
+            $membersData = Members::whereIn('id',$memberIds)->whereIn('id',$membersTranslations)
                 ->pluck('id')
                 ->toArray();
             if(count($membersData) > 0){
                 $edited = count($membersData);
             }
-            $members = Members::get();
+            $members = Members::whereIn('id',$memberIds)->pluck('id')->toArray();
             $total = count($members);
             $edit = array("All ($total)","New ($new)","Not Edited ($not_edited)","Edited ($edited)");
             return view('admin.members.manage')->with(compact('edit'));
@@ -77,7 +85,9 @@ class MemberController extends Controller
         try{
             $bloodGroupType = new BloodGroupType();
             $blood_group_types = $bloodGroupType->get();
-            $cities = Cities::get();
+            $userId = Auth::user()->id;
+            $cityIds = UserCities::where('user_id',$userId)->pluck('city_id')->toArray();
+            $cities = Cities::whereIn('id',$cityIds)->get()->toArray();
             return view('admin.members.create')->with(compact('blood_group_types','cities'));
         }catch(\Exception $exception){
             $data = [
@@ -160,9 +170,18 @@ class MemberController extends Controller
         try{
             $records = array();
             $status = 200;
+            $cities = array();
             $records['data'] = array();
             $records["draw"] = intval($request->draw);
-            $membersData = Members::orderBy('created_at','desc')->pluck('id')->toArray();
+            $userId = Auth::user()->id;
+            $cities = UserCities::where('user_id',$userId)->pluck('city_id')->toArray();
+            $membersData = Members::whereIn('city_id',$cities)
+                ->orderBy('created_at','desc')->pluck('id')->toArray();
+            if(Session::has('city')){
+                $cities = Session::get('city');
+                $membersData = Members::where('city_id',$cities)
+                    ->orderBy('created_at','desc')->pluck('id')->toArray();
+            }
             $filterFlag = true;
             if($request->has('search_name') && $request->search_name != ''){
                 $membersData = Members::whereRaw("CONCAT(first_name,' ',middle_name,' ',last_name) ilike '%".$request->search_name."%'")
@@ -183,12 +202,19 @@ class MemberController extends Controller
             }
             if($filterFlag == true && $request->has('search_city') && $request->search_city != ''){
                 $membersData = Members::join('cities','cities.id','=','members.city_id')
+                                ->whereIn('member.id',$membersData)
                                 ->where('cities.name','ilike','%'.$request->search_city.'%')
                                 ->pluck('members.id')
                                 ->toArray();
                 if(count($membersData) > 0){
                     $filterFlag = false;
                 }
+            }
+            if(Session::has('city')){
+                $city = Session::get('city');
+                $memberIds = Members::where('city_id',$city)->pluck('id')->toArray();
+            } else{
+                $memberIds = Members::pluck('id')->toArray();
             }
             if($filterFlag == true && $request->has('filter_data')){
                 if($request->filter_data == 1) {
@@ -199,7 +225,7 @@ class MemberController extends Controller
                         ->orwhereColumn('updated_at','>','created_at')
                         ->pluck('member_id')
                         ->toArray();
-                    $membersData = Members::whereNotIn('id',$membersTranslations)
+                    $membersData = Members::whereIn('id',$memberIds)->whereNotIn('id',$membersTranslations)
                         ->pluck('id')
                         ->toArray();
                     if(count($membersData) > 0){
@@ -213,7 +239,7 @@ class MemberController extends Controller
                         ->orWhere('address',null)
                         ->pluck('member_id')
                         ->toArray();
-                    $membersData = Members::whereIn('id',$membersTranslations)
+                    $membersData = Members::whereIn('id',$memberIds)->whereIn('id',$membersTranslations)
                         ->pluck('id')
                         ->toArray();
                     if(count($membersData) > 0){
@@ -227,7 +253,7 @@ class MemberController extends Controller
                         ->whereNotNull('address')
                         ->pluck('member_id')
                         ->toArray();
-                    $membersData = Members::whereIn('id',$membersTranslations)
+                    $membersData = Members::whereIn('id',$memberIds)->whereIn('id',$membersTranslations)
                         ->pluck('id')
                         ->toArray();
                     if(count($membersData) > 0){
@@ -305,7 +331,9 @@ class MemberController extends Controller
         try{
             $memberTranslation = MemberTranslations::where('member_id',$memberData['id'])->first();
             $bloodGroups = BloodGroupType::get()->toArray();
-            $cities = Cities::get();
+            $userId = Auth::user()->id;
+            $cityIds = UserCities::where('user_id',$userId)->pluck('city_id')->toArray();
+            $cities = Cities::whereIn('id',$cityIds)->get()->toArray();
             $defaultImage = env('DEFAULT_IMAGE').DIRECTORY_SEPARATOR."member.jpeg";
             return view('admin.members.edit')->with(compact('memberData','bloodGroups','cities','memberTranslation','defaultImage'));
         }catch(\Exception $exception){

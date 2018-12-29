@@ -8,6 +8,8 @@
  */
 namespace App\Http\Controllers\Message;
 use App\Http\Controllers\Controller;
+use App\UserCities;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use App\Cities;
@@ -17,6 +19,7 @@ use App\Messages;
 use App\Languages;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Session;
 
 class MessageController extends Controller
 {
@@ -39,7 +42,9 @@ class MessageController extends Controller
         try{
             $messageTypes = new MessageTypes();
             $message_Types = $messageTypes->get();
-            $cities = Cities::get();
+            $userId = Auth::user()->id;
+            $cityIds = UserCities::where('user_id',$userId)->pluck('city_id')->toArray();
+            $cities = Cities::whereIn('id',$cityIds)->get()->toArray();
             return view('admin.messages.create')->with(compact('cities','message_Types'));
         }catch(\Exception $exception){
             $data = [
@@ -124,7 +129,15 @@ class MessageController extends Controller
             $status = 200;
             $records['data'] = array();
             $records["draw"] = intval($request->draw);
-            $messageData = Messages::orderBy('created_at','desc')->pluck('id')->toArray();
+            $userId = Auth::user()->id;
+            $cities = UserCities::where('user_id',$userId)->pluck('city_id')->toArray();
+            $messageData = Messages::whereIn('city_id',$cities)
+                ->orderBy('created_at','desc')->pluck('id')->toArray();
+            if(Session::has('city')){
+                $cities = Session::get('city');
+                $messageData = Messages::where('city_id',$cities)
+                    ->orderBy('created_at','desc')->pluck('id')->toArray();
+            }
             $filterFlag = true;
             if($request->has('search_message') /*&& $request->search_name != ''*/){
                 $messageData = Messages::where('title','ilike','%'.$request->search_message.'%')
@@ -136,6 +149,7 @@ class MessageController extends Controller
             }
             if($filterFlag == true && $request->has('search_city') && $request->search_city != ''){
                 $messageData = Messages::join('cities','cities.id','=','messages.city_id')
+                    ->whereIn('messages.id',$messageData)
                     ->where('cities.name','ilike','%'.$request->search_city.'%')
                     ->pluck('messages.id')
                     ->toArray();
@@ -211,7 +225,9 @@ class MessageController extends Controller
             $messageData = Messages::where('id',$id)->first();
             $messageDataGujarati = MessageTranslations::where('message_id',$id)->first();
             $png = '.png';
-            $cities = Cities::get();
+            $userId = Auth::user()->id;
+            $cityIds = UserCities::where('user_id',$userId)->pluck('city_id')->toArray();
+            $cities = Cities::whereIn('id',$cityIds)->get()->toArray();
 
             $messageTypes = new MessageTypes();
             $message_Types = $messageTypes->get();

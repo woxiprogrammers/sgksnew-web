@@ -14,6 +14,7 @@
 Route::get('/',array('uses' => 'Admin\AdminController@viewLogin'));
 Route::post('/authenticate',array('uses' => 'Auth\LoginController@login'));
 Route::get('/logout',array('uses' => 'Auth\LoginController@logout'));
+Route::post('/change-city',array('uses' => 'Auth\LoginController@changeCity'));
 
 Route::get('/dashboard',array('uses' => 'Admin\DashboardController@index'));
 

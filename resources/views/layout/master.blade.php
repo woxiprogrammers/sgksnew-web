@@ -12,6 +12,7 @@
     <meta content="width=device-width, initial-scale=1" name="viewport" />
     <meta content="Preview page of Metronic Admin Theme #3 for " name="description" />
     <meta content="" name="author" />
+    <meta name="csrf-token" content="{{csrf_token()}}">
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
     <link href="/assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
@@ -97,12 +98,42 @@
 <script  src="/assets/global/plugins/datatables/datatables.min.js"></script>
         <!-- END THEME LAYOUT SCRIPTS -->
 <script>
+
     $(document).ready(function() {
         $('#clickmewow').click(function () {
             $('#radio1003').attr('checked', 'checked');
         });
-    })
 
+        $("#globalCityChange").on('change', function(){
+            var cityId = $(this).val();
+            $.ajax({
+                url: "/change-city",
+                type: 'POST',
+                data: {
+                    city : cityId,
+                    _token : $('#csrf_token').val()
+                },
+                success: function(data,textStatus,xhr){
+                    location.reload();
+                },
+                error: function(errorData){
+                    console.log(errorData);
+
+                }
+            });
+        });
+    })
+    $(document).ajaxStart(function(){
+        $.LoadingOverlay("show",{
+            color:"rgba(255, 255, 255, 0.6)"
+        });
+    });
+    $(document).ajaxStop(function(){
+        setTimeout(function(){
+            $.LoadingOverlay("hide");
+        },1);
+
+    });
 </script>
 @yield('javascript')
 </body>

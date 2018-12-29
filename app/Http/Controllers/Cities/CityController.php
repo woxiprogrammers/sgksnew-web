@@ -9,6 +9,8 @@ namespace App\Http\Controllers\Cities;
 use App\Cities;
 use App\CitiesTranslation;
 use App\Http\Controllers\Controller;
+use App\UserCities;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use App\Languages;
@@ -141,7 +143,10 @@ class CityController extends Controller
             $status = 200;
             $records['data'] = array();
             $records["draw"] = intval($request->draw);
-            $citiesData = Cities::orderBy('created_at','desc')->pluck('id')->toArray();
+            $userId = Auth::user()->id;
+            $cities = UserCities::where('user_id',$userId)->pluck('city_id')->toArray();
+            $citiesData = Cities::whereIn('id',$cities)
+                ->orderBy('created_at','desc')->pluck('id')->toArray();
             $filterFlag = true;
             if($request->has('search_city')){
                 $citiesData = Cities::where('name','ilike','%'.$request->search_city.'%')

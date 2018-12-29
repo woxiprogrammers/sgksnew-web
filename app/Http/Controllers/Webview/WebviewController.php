@@ -15,8 +15,12 @@ use App\States;
 use App\Cities;
 use App\Languages;
 use App\Http\Controllers\Controller;
+use App\UserCities;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
+
 class WebviewController extends Controller
 {
     public function manage(Request $request)
@@ -39,7 +43,9 @@ class WebviewController extends Controller
         try {
             $drawerWeb = DrawerWebview::get();
             $drawerWebDetails = DrawerWebviewDetails::get();
-            $cities = Cities::get();
+            $userId = Auth::user()->id;
+            $cityIds = UserCities::where('user_id',$userId)->pluck('city_id')->toArray();
+            $cities = Cities::whereIn('id',$cityIds)->get()->toArray();
             return view('admin.webview.create')->with(compact('drawerWeb', 'drawerWebDetails','cities'));
         } catch (\Exception $exception) {
             $data = [
@@ -94,10 +100,23 @@ class WebviewController extends Controller
             $status = 200;
             $records['data'] = array();
             $records["draw"] = intval($request->draw);
-            $webviewData = DrawerWebviewDetails::orderBy('created_at', 'desc')->pluck('id')->toArray();
+            $userId = Auth::user()->id;
+            $cities = UserCities::where('user_id',$userId)->pluck('city_id')->toArray();
+            $drawerWebIds = DrawerWebviewDetails::whereIn('city_id',$cities)
+                ->distinct()->pluck('drawer_web_id')->toArray();
+            $webviewData = DrawerWebviewDetails::whereIn('city_id',$cities)
+                ->orderBy('created_at', 'desc')->pluck('id')->toArray();
+            if(Session::has('city')){
+                $cities = Session::get('city');
+                $webviewData = DrawerWebviewDetails::where('city_id',$cities)
+                    ->orderBy('created_at', 'desc')->pluck('id')->toArray();
+                $drawerWebIds = DrawerWebviewDetails::where('city_id',$cities)
+                    ->distinct()->pluck('drawer_web_id')->toArray();
+            }
             $filterFlag = true;
             if ($request->has('search_webview') && $request->search_webview != "") {
-                $webviewDataId = DrawerWebview::where('name', 'ilike', '%'.$request->search_webview.'%')->first();
+                $webviewDataId = DrawerWebview::whereIn('id',$drawerWebIds)
+                    ->where('name', 'ilike', '%'.$request->search_webview.'%')->first();
                 $webviewData = DrawerWebviewDetails::where('drawer_web_id', $webviewDataId['id'])
                     ->pluck('id')->toArray();
                 if (count($webviewData) < 0) {
@@ -106,6 +125,7 @@ class WebviewController extends Controller
             }
             if($filterFlag == true && $request->has('search_city') && $request->search_city != ''){
                 $webviewData = DrawerWebviewDetails::join('cities','cities.id','=','drawer_web_view_details.city_id')
+                    ->whereIn('drawer_web_view_details.id',$webviewData)
                     ->where('cities.name','ilike','%'.$request->search_city.'%')
                     ->pluck('drawer_web_view_details.id')
                     ->toArray();
@@ -159,8 +179,9 @@ class WebviewController extends Controller
             $webviewDetails = DrawerWebviewDetails::where('id',$id)->first();
             $webviewDetailsInGujarati = DrawerWebviewDetailsTranslations::where('drawer_webview_details_id',$id)->first();
             $webviews = DrawerWebview::get();
-            $cities = Cities::get();
-
+            $userId = Auth::user()->id;
+            $cityIds = UserCities::where('user_id',$userId)->pluck('city_id')->toArray();
+            $cities = Cities::whereIn('id',$cityIds)->get()->toArray();
             return view('admin.webview.edit')->with(compact('webviews','webviewDetails','cities','webviewDetailsInGujarati'));
         }catch(\Exception $exception){
             $data = [

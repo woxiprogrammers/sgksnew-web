@@ -8,6 +8,8 @@
  */
 namespace App\Http\Controllers\Account;
 use App\Http\Controllers\Controller;
+use App\UserCities;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use App\Countries;
@@ -18,6 +20,7 @@ use App\AccountImages;
 use App\Languages;
 use App\AccountsTranslations;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Session;
 
 
 class AccountController extends Controller
@@ -38,7 +41,9 @@ class AccountController extends Controller
 
     public function createView(Request $request){
         try{
-            $cities = Cities::get();
+            $userId = Auth::user()->id;
+            $cityIds = UserCities::where('user_id',$userId)->pluck('city_id')->toArray();
+            $cities = Cities::whereIn('id',$cityIds)->get()->toArray();
             return view('admin.accounts.create')->with(compact('cities'));
         }catch(\Exception $exception){
             $data = [
@@ -112,7 +117,15 @@ class AccountController extends Controller
             $status = 200;
             $records['data'] = array();
             $records["draw"] = intval($request->draw);
-            $accountsData = Accounts::orderBy('created_at','desc')->pluck('id')->toArray();
+            $userId = Auth::user()->id;
+            $cities = UserCities::where('user_id',$userId)->pluck('city_id')->toArray();
+            $accountsData = Accounts::whereIn('city_id',$cities)->orderBy('created_at','desc')->pluck('id')->toArray();
+            if(Session::has('city')){
+                $cities = Session::get('city');
+                $accountsData = Accounts::where('city_id',$cities)
+                    ->orderBy('created_at','desc')
+                    ->pluck('id')->toArray();
+            }
             $filterFlag = true;
             if($request->has('search_account') /*&& $request->search_name != ''*/){
                 $accountsData = Accounts::where('name','ilike','%'.$request->search_account.'%')
@@ -124,6 +137,7 @@ class AccountController extends Controller
             }
             if($filterFlag == true && $request->has('search_city') && $request->search_city != ''){
                 $accountsData = Accounts::join('cities','cities.id','=','accounts.city_id')
+                    ->whereIn('accounts.id',$accountsData)
                     ->where('cities.name','ilike','%'.$request->search_city.'%')
                     ->pluck('accounts.id')
                     ->toArray();
@@ -196,9 +210,9 @@ class AccountController extends Controller
         try{
             $accountData = Accounts::where('id',$id)->first();
             $accountDataGujarati = AccountsTranslations::where('account_id',$id)->first();
-            $cities = Cities::get();
-
-
+            $userId = Auth::user()->id;
+            $cityIds = UserCities::where('user_id',$userId)->pluck('city_id')->toArray();
+            $cities = Cities::whereIn('id',$cityIds)->get()->toArray();
             $createAccountDirectoryName = sha1($accountData->id);
             $images = AccountImages::where('account_id',$id)->select('id','url')->get();
             if (count($images)>0) {
