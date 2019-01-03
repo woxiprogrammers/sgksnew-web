@@ -11,6 +11,7 @@ namespace App\Http\Controllers\Classified;
 use App\ClassifiedPackages;
 use App\Http\Controllers\Controller;
 use App\PackageRules;
+use App\UserCities;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use App\ClassifiedImages;
@@ -18,9 +19,11 @@ use App\Classifieds;
 use App\ClassifiedsTranslations;
 use App\Languages;
 use App\Cities;
-use App\States;
 use App\Countries;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
+
 
 class ClassifiedController extends Controller
 {
@@ -40,7 +43,13 @@ class ClassifiedController extends Controller
 
     public function createView(Request $request){
         try{
-            $cities = Cities::get();
+            if(Auth::user()->role_id == 1){
+                $cities = Cities::orderBy('name', 'asc')->get()->toArray();
+            }else {
+                $userId = Auth::user()->id;
+                $cityIds = UserCities::where('user_id', $userId)->pluck('city_id')->toArray();
+                $cities = Cities::whereIn('id', $cityIds)->orderBy('name', 'asc')->get()->toArray();
+            }
             $packages = ClassifiedPackages::get();
             return view('admin.classified.create')->with(compact('cities','packages'));
         }catch(\Exception $exception){
@@ -120,7 +129,15 @@ class ClassifiedController extends Controller
             $status = 200;
             $records['data'] = array();
             $records["draw"] = intval($request->draw);
-            $classifiedsData = Classifieds::orderBy('created_at','desc')->pluck('id')->toArray();
+            $userId = Auth::user()->id;
+            $cities = UserCities::where('user_id',$userId)->pluck('city_id')->toArray();
+            $classifiedsData = Classifieds::whereIn('city_id',$cities)
+                ->orderBy('created_at','desc')->pluck('id')->toArray();
+            if(Session::has('city')){
+                $cities = Session::get('city');
+                $classifiedsData = Classifieds::where('city_id',$cities)
+                    ->orderBy('created_at','desc')->pluck('id')->toArray();
+            }
             $filterFlag = true;
             if($request->has('search_classified')){
                 $classifiedsData = Classifieds::where('title','ilike','%'.$request->search_classified.'%')
@@ -132,6 +149,7 @@ class ClassifiedController extends Controller
             }
             if($filterFlag == true && $request->has('search_city') && $request->search_city != ''){
                 $classifiedsData = Classifieds::join('cities','cities.id','=','classifieds.city_id')
+                    ->whereIn('classifieds.id',$classifiedsData)
                     ->where('cities.name','ilike','%'.$request->search_city.'%')
                     ->pluck('classifieds.id')
                     ->toArray();
@@ -215,8 +233,13 @@ class ClassifiedController extends Controller
             $packages = ClassifiedPackages::get();
             $classifiedData = Classifieds::where('id',$id)->first();
             $classifiedGujaratiData = ClassifiedsTranslations::where('classified_id',$id)->first();
-            $cities = Cities::get();
-
+            if(Auth::user()->role_id == 1){
+                $cities = Cities::orderBy('name', 'asc')->get()->toArray();
+            } else {
+                $userId = Auth::user()->id;
+                $cityIds = UserCities::where('user_id', $userId)->pluck('city_id')->toArray();
+                $cities = Cities::whereIn('id', $cityIds)->orderBy('name', 'asc')->get()->toArray();
+            }
             $classifiedPackage = ClassifiedPackages::where('id',$classifiedData['package_id'])->first();
             $classifiedPackageType = PackageRules::where('package_id',$classifiedPackage['id'])->first();
 

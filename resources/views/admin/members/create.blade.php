@@ -103,11 +103,9 @@
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
-                                                                <label class="col-md-3 control-label">Address
-                                                                    <span style="color: red">*</span>
-                                                                </label>
+                                                                <label class="col-md-3 control-label">Address</label>
                                                                 <div class="col-md-4">
-                                                                    <textarea id="address" name="en[address]" class="form-control" placeholder="Enter Address" required> </textarea>
+                                                                    <textarea id="address" name="en[address]" class="form-control" placeholder="Enter Address"> </textarea>
                                                                 </div>
                                                                 <div class="col-md-4">
                                                                     <textarea id="address" name="gj[address]" class="form-control" placeholder="Enter Address in gujarati" > </textarea>
@@ -123,7 +121,7 @@
                                                             <div class="form-group">
                                                                 <label class="col-md-3 control-label">Date of birth</label>
                                                                 <div class="col-md-4 date date-picker">
-                                                                    <input type="text" class="form-control" id="dob" name="en[dob]" placeholder="mm/dd/yyyy" required="required">
+                                                                    <input type="text" class="form-control" id="dob" name="en[dob]" placeholder="mm/dd/yyyy">
                                                                     <button class="btn btn-sm default" type="button">
                                                                         <i class="fa fa-calendar"></i>
                                                                     </button>
