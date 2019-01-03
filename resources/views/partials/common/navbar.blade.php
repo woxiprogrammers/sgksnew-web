@@ -174,24 +174,4 @@
     <!-- END HEADER MENU -->
 </div>
 </div>
-{{--<script>
-    $(document).ready(function()
-    {
-        $("#globalCitySelect").on('changed.bs.select', function(){
-            var city = $(this).val();
-            $.ajax({
-                url: '/change-city',
-                type: 'POST',
-                data: {
-                    cityId : city
-                },
-                success: function(data,textStatus,xhr){
-                    location.reload();
-                },
-                error: function(errorData){
-                }
-            });
-        });
-    });
-</script>--}}
 @endsection
