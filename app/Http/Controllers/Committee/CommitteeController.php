@@ -38,9 +38,13 @@ class CommitteeController extends Controller
 
     public function createCommitteeView(Request $request){
         try{
-            $userId = Auth::user()->id;
-            $cityIds = UserCities::where('user_id',$userId)->pluck('city_id')->toArray();
-            $cities = Cities::whereIn('id',$cityIds)->get()->toArray();
+            if(Auth::user()->role_id == 1){
+                $cities = Cities::orderBy('name', 'asc')->get()->toArray();
+            }else {
+                $userId = Auth::user()->id;
+                $cityIds = UserCities::where('user_id', $userId)->pluck('city_id')->toArray();
+                $cities = Cities::whereIn('id', $cityIds)->orderBy('name', 'asc')->get()->toArray();
+            }
             return view('admin.committee.create')->with(compact('cities'));
         }catch(\Exception $exception){
             $data = [
@@ -186,9 +190,13 @@ class CommitteeController extends Controller
     public function editCommitteeView(Request $request,$id){
         try{
             $committeeData  = Committees::where('id',$id)->first();
-            $userId = Auth::user()->id;
-            $cityIds = UserCities::where('user_id',$userId)->pluck('city_id')->toArray();
-            $cities = Cities::whereIn('id',$cityIds)->get()->toArray();
+            if(Auth::user()->role_id == 1){
+                $cities = Cities::orderBy('name', 'asc')->get()->toArray();
+            } else {
+                $userId = Auth::user()->id;
+                $cityIds = UserCities::where('user_id', $userId)->pluck('city_id')->toArray();
+                $cities = Cities::whereIn('id', $cityIds)->orderBy('name', 'asc')->get()->toArray();
+            }
             $committeeDataGujarati = CommitteesTranslations::where('committee_id',$id)->first();
 
             return view('admin.committee.edit')->with(compact('committeeData','cities','committeeDataGujarati'));

@@ -85,9 +85,13 @@ class MemberController extends Controller
         try{
             $bloodGroupType = new BloodGroupType();
             $blood_group_types = $bloodGroupType->get();
-            $userId = Auth::user()->id;
-            $cityIds = UserCities::where('user_id',$userId)->pluck('city_id')->toArray();
-            $cities = Cities::whereIn('id',$cityIds)->get()->toArray();
+            if(Auth::user()->role_id == 1){
+                $cities = Cities::orderBy('name', 'asc')->get()->toArray();
+            }else {
+                $userId = Auth::user()->id;
+                $cityIds = UserCities::where('user_id', $userId)->pluck('city_id')->toArray();
+                $cities = Cities::whereIn('id', $cityIds)->orderBy('name', 'asc')->get()->toArray();
+            }
             return view('admin.members.create')->with(compact('blood_group_types','cities'));
         }catch(\Exception $exception){
             $data = [
@@ -331,9 +335,13 @@ class MemberController extends Controller
         try{
             $memberTranslation = MemberTranslations::where('member_id',$memberData['id'])->first();
             $bloodGroups = BloodGroupType::get()->toArray();
-            $userId = Auth::user()->id;
-            $cityIds = UserCities::where('user_id',$userId)->pluck('city_id')->toArray();
-            $cities = Cities::whereIn('id',$cityIds)->get()->toArray();
+            if(Auth::user()->role_id == 1){
+                $cities = Cities::orderBy('name', 'asc')->get()->toArray();
+            } else {
+                $userId = Auth::user()->id;
+                $cityIds = UserCities::where('user_id', $userId)->pluck('city_id')->toArray();
+                $cities = Cities::whereIn('id', $cityIds)->orderBy('name', 'asc')->get()->toArray();
+            }
             $defaultImage = env('DEFAULT_IMAGE').DIRECTORY_SEPARATOR."member.jpeg";
             return view('admin.members.edit')->with(compact('memberData','bloodGroups','cities','memberTranslation','defaultImage'));
         }catch(\Exception $exception){

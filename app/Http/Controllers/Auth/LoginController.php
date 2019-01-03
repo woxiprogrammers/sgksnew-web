@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Cities;
 use App\Http\Controllers\Controller;
 use App\UserCities;
 use \Illuminate\Http\Request;
@@ -49,15 +50,21 @@ class LoginController extends Controller
         if(Auth::attempt($credentials)){
             $user = Auth::user();
             if($user->is_active == true){
-                $userCities = UserCities::where('user_id',$user->id)->get()->toArray();
-                if(count($userCities) > 0){
-                    Session::put('city',(int)$userCities[0]['city_id']);
+                if(Auth::user()->role_id == 1){
+                    $city = Cities::first();
+                    Session::put('city',(int)$city['id']);
                     return redirect('/member/manage');
-                }else{
-                    Auth::logout();
-                    $request->session()->flush();
-                    $request->session()->flash('error','Cities are not assigned. Please contact to administrator to get login access');
-                    return redirect('/');
+                } else {
+                    $userCities = UserCities::where('user_id', $user->id)->get()->toArray();
+                    if (count($userCities) > 0) {
+                        Session::put('city', (int)$userCities[0]['city_id']);
+                        return redirect('/member/manage');
+                    } else {
+                        Auth::logout();
+                        $request->session()->flush();
+                        $request->session()->flash('error', 'Cities are not assigned. Please contact to administrator to get login access');
+                        return redirect('/');
+                    }
                 }
             }else{
                 Auth::logout();

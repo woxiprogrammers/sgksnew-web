@@ -41,9 +41,13 @@ class AccountController extends Controller
 
     public function createView(Request $request){
         try{
-            $userId = Auth::user()->id;
-            $cityIds = UserCities::where('user_id',$userId)->pluck('city_id')->toArray();
-            $cities = Cities::whereIn('id',$cityIds)->get()->toArray();
+            if(Auth::user()->role_id == 1){
+                $cities = Cities::orderBy('name', 'asc')->get()->toArray();
+            }else {
+                $userId = Auth::user()->id;
+                $cityIds = UserCities::where('user_id', $userId)->pluck('city_id')->toArray();
+                $cities = Cities::whereIn('id', $cityIds)->orderBy('name', 'asc')->get()->toArray();
+            }
             return view('admin.accounts.create')->with(compact('cities'));
         }catch(\Exception $exception){
             $data = [
@@ -210,9 +214,13 @@ class AccountController extends Controller
         try{
             $accountData = Accounts::where('id',$id)->first();
             $accountDataGujarati = AccountsTranslations::where('account_id',$id)->first();
-            $userId = Auth::user()->id;
-            $cityIds = UserCities::where('user_id',$userId)->pluck('city_id')->toArray();
-            $cities = Cities::whereIn('id',$cityIds)->get()->toArray();
+            if(Auth::user()->role_id == 1){
+                $cities = Cities::orderBy('name', 'asc')->get()->toArray();
+            }else {
+                $userId = Auth::user()->id;
+                $cityIds = UserCities::where('user_id', $userId)->pluck('city_id')->toArray();
+                $cities = Cities::whereIn('id', $cityIds)->orderBy('name', 'asc')->get()->toArray();
+            }
             $createAccountDirectoryName = sha1($accountData->id);
             $images = AccountImages::where('account_id',$id)->select('id','url')->get();
             if (count($images)>0) {

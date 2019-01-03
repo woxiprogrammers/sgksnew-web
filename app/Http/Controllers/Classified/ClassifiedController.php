@@ -43,9 +43,13 @@ class ClassifiedController extends Controller
 
     public function createView(Request $request){
         try{
-            $userId = Auth::user()->id;
-            $cityIds = UserCities::where('user_id',$userId)->pluck('city_id')->toArray();
-            $cities = Cities::whereIn('id',$cityIds)->get()->toArray();
+            if(Auth::user()->role_id == 1){
+                $cities = Cities::orderBy('name', 'asc')->get()->toArray();
+            }else {
+                $userId = Auth::user()->id;
+                $cityIds = UserCities::where('user_id', $userId)->pluck('city_id')->toArray();
+                $cities = Cities::whereIn('id', $cityIds)->orderBy('name', 'asc')->get()->toArray();
+            }
             $packages = ClassifiedPackages::get();
             return view('admin.classified.create')->with(compact('cities','packages'));
         }catch(\Exception $exception){
@@ -229,10 +233,13 @@ class ClassifiedController extends Controller
             $packages = ClassifiedPackages::get();
             $classifiedData = Classifieds::where('id',$id)->first();
             $classifiedGujaratiData = ClassifiedsTranslations::where('classified_id',$id)->first();
-            $userId = Auth::user()->id;
-            $cityIds = UserCities::where('user_id',$userId)->pluck('city_id')->toArray();
-            $cities = Cities::whereIn('id',$cityIds)->get()->toArray();
-
+            if(Auth::user()->role_id == 1){
+                $cities = Cities::orderBy('name', 'asc')->get()->toArray();
+            } else {
+                $userId = Auth::user()->id;
+                $cityIds = UserCities::where('user_id', $userId)->pluck('city_id')->toArray();
+                $cities = Cities::whereIn('id', $cityIds)->orderBy('name', 'asc')->get()->toArray();
+            }
             $classifiedPackage = ClassifiedPackages::where('id',$classifiedData['package_id'])->first();
             $classifiedPackageType = PackageRules::where('package_id',$classifiedPackage['id'])->first();
 

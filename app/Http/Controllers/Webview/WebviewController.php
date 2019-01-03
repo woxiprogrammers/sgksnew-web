@@ -43,9 +43,13 @@ class WebviewController extends Controller
         try {
             $drawerWeb = DrawerWebview::get();
             $drawerWebDetails = DrawerWebviewDetails::get();
-            $userId = Auth::user()->id;
-            $cityIds = UserCities::where('user_id',$userId)->pluck('city_id')->toArray();
-            $cities = Cities::whereIn('id',$cityIds)->get()->toArray();
+            if(Auth::user()->role_id == 1){
+                $cities = Cities::orderBy('name', 'asc')->get()->toArray();
+            } else {
+                $userId = Auth::user()->id;
+                $cityIds = UserCities::where('user_id', $userId)->pluck('city_id')->toArray();
+                $cities = Cities::whereIn('id', $cityIds)->orderBy('name', 'asc')->get()->toArray();
+            }
             return view('admin.webview.create')->with(compact('drawerWeb', 'drawerWebDetails','cities'));
         } catch (\Exception $exception) {
             $data = [
@@ -179,9 +183,13 @@ class WebviewController extends Controller
             $webviewDetails = DrawerWebviewDetails::where('id',$id)->first();
             $webviewDetailsInGujarati = DrawerWebviewDetailsTranslations::where('drawer_webview_details_id',$id)->first();
             $webviews = DrawerWebview::get();
-            $userId = Auth::user()->id;
-            $cityIds = UserCities::where('user_id',$userId)->pluck('city_id')->toArray();
-            $cities = Cities::whereIn('id',$cityIds)->get()->toArray();
+            if(Auth::user()->role_id == 1){
+                $cities = Cities::orderBy('name', 'asc')->get()->toArray();
+            } else {
+                $userId = Auth::user()->id;
+                $cityIds = UserCities::where('user_id', $userId)->pluck('city_id')->toArray();
+                $cities = Cities::whereIn('id', $cityIds)->orderBy('name', 'asc')->get()->toArray();
+            }
             return view('admin.webview.edit')->with(compact('webviews','webviewDetails','cities','webviewDetailsInGujarati'));
         }catch(\Exception $exception){
             $data = [

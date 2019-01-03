@@ -143,10 +143,7 @@ class CityController extends Controller
             $status = 200;
             $records['data'] = array();
             $records["draw"] = intval($request->draw);
-            $userId = Auth::user()->id;
-            $cities = UserCities::where('user_id',$userId)->pluck('city_id')->toArray();
-            $citiesData = Cities::whereIn('id',$cities)
-                ->orderBy('created_at','desc')->pluck('id')->toArray();
+            $citiesData = Cities::orderBy('name','asc')->pluck('id')->toArray();
             $filterFlag = true;
             if($request->has('search_city')){
                 $citiesData = Cities::where('name','ilike','%'.$request->search_city.'%')
@@ -157,7 +154,7 @@ class CityController extends Controller
                 }
             }
 
-            $finalCitiesData = Cities::whereIn('id', $citiesData)->orderBy('created_at','desc')->get();
+            $finalCitiesData = Cities::whereIn('id', $citiesData)->orderBy('name','asc')->get();
             {
                 $records["recordsFiltered"] = $records["recordsTotal"] = count($finalCitiesData);
                 if ($request->length == -1) {

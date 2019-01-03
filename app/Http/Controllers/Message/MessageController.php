@@ -42,9 +42,13 @@ class MessageController extends Controller
         try{
             $messageTypes = new MessageTypes();
             $message_Types = $messageTypes->get();
-            $userId = Auth::user()->id;
-            $cityIds = UserCities::where('user_id',$userId)->pluck('city_id')->toArray();
-            $cities = Cities::whereIn('id',$cityIds)->get()->toArray();
+            if(Auth::user()->role_id == 1){
+                $cities = Cities::orderBy('name', 'asc')->get()->toArray();
+            } else {
+                $userId = Auth::user()->id;
+                $cityIds = UserCities::where('user_id', $userId)->pluck('city_id')->toArray();
+                $cities = Cities::whereIn('id', $cityIds)->orderBy('name', 'asc')->get()->toArray();
+            }
             return view('admin.messages.create')->with(compact('cities','message_Types'));
         }catch(\Exception $exception){
             $data = [
@@ -225,10 +229,13 @@ class MessageController extends Controller
             $messageData = Messages::where('id',$id)->first();
             $messageDataGujarati = MessageTranslations::where('message_id',$id)->first();
             $png = '.png';
-            $userId = Auth::user()->id;
-            $cityIds = UserCities::where('user_id',$userId)->pluck('city_id')->toArray();
-            $cities = Cities::whereIn('id',$cityIds)->get()->toArray();
-
+            if(Auth::user()->role_id == 1){
+                $cities = Cities::orderBy('name', 'asc')->get()->toArray();
+            } else {
+                $userId = Auth::user()->id;
+                $cityIds = UserCities::where('user_id', $userId)->pluck('city_id')->toArray();
+                $cities = Cities::whereIn('id', $cityIds)->orderBy('name', 'asc')->get()->toArray();
+            }
             $messageTypes = new MessageTypes();
             $message_Types = $messageTypes->get();
             $message_Type = MessageTypes::where('id',$messageData['message_type_id'])->value('slug');

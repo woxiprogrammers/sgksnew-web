@@ -40,9 +40,13 @@ class EventController extends Controller
 
     public function createView(Request $request){
         try{
-            $userId = Auth::user()->id;
-            $cityIds = UserCities::where('user_id',$userId)->pluck('city_id')->toArray();
-            $cities = Cities::whereIn('id',$cityIds)->get()->toArray();
+            if(Auth::user()->role_id == 1){
+                $cities = Cities::orderBy('name', 'asc')->get()->toArray();
+            }else {
+                $userId = Auth::user()->id;
+                $cityIds = UserCities::where('user_id', $userId)->pluck('city_id')->toArray();
+                $cities = Cities::whereIn('id', $cityIds)->orderBy('name', 'asc')->get()->toArray();
+            }
             return view('admin.events.create')->with(compact('cities'));
         }catch(\Exception $exception){
             $data = [
@@ -222,9 +226,13 @@ class EventController extends Controller
         try{
             $eventData = Events::where('id',$id)->first();
             $eventDataGujarati = EventsTranslations::where('event_id',$id)->first();
-            $userId = Auth::user()->id;
-            $cityIds = UserCities::where('user_id',$userId)->pluck('city_id')->toArray();
-            $cities = Cities::whereIn('id',$cityIds)->get()->toArray();
+            if(Auth::user()->role_id == 1){
+                $cities = Cities::orderBy('name', 'asc')->get()->toArray();
+            } else {
+                $userId = Auth::user()->id;
+                $cityIds = UserCities::where('user_id', $userId)->pluck('city_id')->toArray();
+                $cities = Cities::whereIn('id', $cityIds)->orderBy('name', 'asc')->get()->toArray();
+            }
             $createEventDirectoryName = sha1($eventData->id);
             $images = EventImages::where('event_id',$id)->select('id','url')->get();
             if (count($images)>0) {

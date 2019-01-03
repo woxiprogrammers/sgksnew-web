@@ -14,9 +14,13 @@
                 <label>Select City</label>
                 <select class="form-control form-filter bs-select" id="globalCityChange">
                 <?php
+                    if(\Illuminate\Support\Facades\Auth::user()->role_id == 1){
+                        $cities = \App\Cities::orderBy('name','asc')->get()->toArray();
+                    } else {
                     $userId = \Illuminate\Support\Facades\Auth::user()->id;
                     $cityIds = \App\UserCities::where('user_id',$userId)->pluck('city_id')->toArray();
-                    $cities = \App\Cities::whereIn('id',$cityIds)->get()->toArray();
+                    $cities = \App\Cities::whereIn('id',$cityIds)->orderBy('name','asc')->get()->toArray();
+                    }
                     if (\Illuminate\Support\Facades\Session::has('city')){
                         $sessionCity = \Illuminate\Support\Facades\Session::get('city');
                     }
@@ -133,13 +137,6 @@
                 </ul>
                 <ul class="nav navbar-nav">
                     <li aria-haspopup="true" class="menu-dropdown classic-menu-dropdown">
-                        <a href="/cities/manage"> Manage Cities
-                            <span class="arrow"></span>
-                        </a>
-                    </li>
-                </ul>
-                <ul class="nav navbar-nav">
-                    <li aria-haspopup="true" class="menu-dropdown classic-menu-dropdown">
                         <a href="/webview/manage"> Manage Webview
                             <span class="arrow"></span>
                         </a>
@@ -152,7 +149,22 @@
                         </a>
                     </li>
                 </ul>
-            </li>
+                @if(\Illuminate\Support\Facades\Auth::user()->role_id == 1)
+                    <ul class="nav navbar-nav">
+                        <li aria-haspopup="true" class="menu-dropdown classic-menu-dropdown">
+                            <a href="/cities/manage"> Manage Cities
+                                <span class="arrow"></span>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav">
+                        <li aria-haspopup="true" class="menu-dropdown classic-menu-dropdown">
+                            <a href="/admin/manage"> Manage Admin
+                                <span class="arrow"></span>
+                            </a>
+                        </li>
+                    </ul>
+                @endif
         </div>
             <!-- END MEGA MENU -->
     </li>

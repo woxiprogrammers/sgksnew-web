@@ -118,3 +118,13 @@ Route::group(['prefix' => 'suggestion'], function() {
     Route::post('/listing', array('uses' => 'Suggestion\SuggestionController@listing'));
     Route::get('/view/{id}', array('uses' => 'Suggestion\SuggestionController@view'));
 });
+
+Route::group(['prefix' => 'admin'], function() {
+    Route::get('/manage', array('uses' => 'ManageAdmins\ManageAdminController@manageAdmins'));
+    Route::get('/create', array('uses' => 'ManageAdmins\ManageAdminController@createView'));
+    Route::post('/create', array('uses' => 'ManageAdmins\ManageAdminController@create'));
+    Route::post('/listing', array('uses' => 'ManageAdmins\ManageAdminController@listing'));
+    Route::get('/edit/{id}', array('uses' => 'ManageAdmins\ManageAdminController@editView'));
+    Route::post('/edit/{id}', array('uses' => 'ManageAdmins\ManageAdminController@edit'));
+    Route::get('/change-status/{id}', array('uses' => 'ManageAdmins\ManageAdminController@changeStatus'));
+});
