@@ -51,6 +51,7 @@ class CityController extends Controller
             $data = $request->all();
             $cityData['name'] = $data['en']['city'];
             $cityData['state_id'] =1;
+            $cityData['is_active'] = false;
             $cityName = Cities::where('name','ilike',$data['en']['city'])->value('name');
             if($cityName != null){
                 $message = 'City with name '.$data['en']['city'].' already exist';

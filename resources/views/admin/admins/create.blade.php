@@ -85,7 +85,7 @@
                                                                     <span style="color: red">*</span>
                                                                 </label>
                                                                 <div class="col-md-6">
-                                                                    <input type="text" id="password" name="password" class="form-control " placeholder="Enter Password" required>
+                                                                    <input type="password" id="password" name="password" class="form-control " placeholder="Enter Password" required>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
