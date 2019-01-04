@@ -66,6 +66,7 @@ class AccountController extends Controller
             $accountData['name'] = $data['en']['account_name'];
             $accountData['description'] = $data['en']['description'];
             $accountData['city_id'] = $data['en']['city'];
+            $accountData['is_active'] = false;
             $createAccount = Accounts::create($accountData);
             if($createAccount){
                 $request->session()->flash('success','Account Created Successfully');
