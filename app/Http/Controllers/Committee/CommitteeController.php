@@ -65,7 +65,6 @@ class CommitteeController extends Controller
             $committeeData['committee_name'] = $data['en']['committee_name'];
             $committeeData['description'] = $data['en']['description'];
             $committeeData['city_id'] = $data['en']['city'];
-            $committeeData['is_active'] = false;
             $createCommittee = Committees::create($committeeData);
             if($createCommittee){
                 $request->session()->flash('success','Committee Created Successfully');
@@ -292,7 +291,6 @@ class CommitteeController extends Controller
             $committeeMemberData['designation'] = $data['en']['designation'];
             $committeeMemberData['mobile_number'] = $data['en']['mobile_number'];
             $committeeMemberData['email_id'] = $data['en']['email_id'];
-            $committeeMemberData['is_active'] = false;
             $createMember = CommitteeMembers::create($committeeMemberData);
             if(array_key_exists('gj',$data)){
                 if(array_key_exists('full_name',$data['gj'])){

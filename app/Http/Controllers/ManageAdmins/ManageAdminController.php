@@ -68,7 +68,7 @@ class ManageAdminController extends Controller
             $user->password = Hash::make($data['password']);
             $user->dob =  $data['dob'];
             $user->gender = $data['gender'];
-            $user->is_active = false;
+            $user->is_active = true;
             $user->role_id = (int)$data['user-role'];
             $user->save();
             $userId = Users::orderBy('created_at','desc')->first();

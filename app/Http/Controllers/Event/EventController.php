@@ -68,7 +68,6 @@ class EventController extends Controller
             $eventData['start_date'] = $data['en']['start_date'];
             $eventData['end_date'] = $data['en']['end_date'];
             $eventData['city_id'] = $data['en']['city'];
-            $eventData['is_active'] = false;
             $createEvent = Events::create($eventData);
             if($createEvent){
                 $request->session()->flash('success','Committee Created Successfully');
