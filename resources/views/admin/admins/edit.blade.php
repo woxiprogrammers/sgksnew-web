@@ -26,7 +26,7 @@
                             <div class="container">
                                 <!-- BEGIN PAGE TITLE -->
                                 <div class="page-title col-md-2">
-                                    <h1>Create Admin</h1>
+                                    <h1>Edit Admin</h1>
                                 </div>
                                 <div class="btn red-flamingo col-md-1 pull-right" style="margin-top: 1%"><a href="/admin/manage" style="color: white">
                                         Back
