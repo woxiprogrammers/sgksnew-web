@@ -8,13 +8,16 @@ use App\Languages;
 use App\CommitteeMembersTranslations;
 use App\CommitteesTranslations;
 use App\MemberTranslations;
+use App\UserCities;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use App\Cities;
 use App\Countries;
 use App\States;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Session;
 
 
 class CommitteeController extends Controller
@@ -35,7 +38,13 @@ class CommitteeController extends Controller
 
     public function createCommitteeView(Request $request){
         try{
-            $cities = Cities::get();
+            if(Auth::user()->role_id == 1){
+                $cities = Cities::orderBy('name', 'asc')->get()->toArray();
+            }else {
+                $userId = Auth::user()->id;
+                $cityIds = UserCities::where('user_id', $userId)->pluck('city_id')->toArray();
+                $cities = Cities::whereIn('id', $cityIds)->orderBy('name', 'asc')->get()->toArray();
+            }
             return view('admin.committee.create')->with(compact('cities'));
         }catch(\Exception $exception){
             $data = [
@@ -56,7 +65,6 @@ class CommitteeController extends Controller
             $committeeData['committee_name'] = $data['en']['committee_name'];
             $committeeData['description'] = $data['en']['description'];
             $committeeData['city_id'] = $data['en']['city'];
-            $committeeData['is_active'] = false;
             $createCommittee = Committees::create($committeeData);
             if($createCommittee){
                 $request->session()->flash('success','Committee Created Successfully');
@@ -91,7 +99,15 @@ class CommitteeController extends Controller
             $status = 200;
             $records['data'] = array();
             $records["draw"] = intval($request->draw);
-            $committeesData = Committees::orderBy('created_at','desc')->pluck('id')->toArray();
+            $userId = Auth::user()->id;
+            $cities = UserCities::where('user_id',$userId)->pluck('city_id')->toArray();
+            $committeesData = Committees::whereIn('city_id',$cities)
+                ->orderBy('created_at','desc')->pluck('id')->toArray();
+            if(Session::has('city')){
+                $cities = Session::get('city');
+                $committeesData = Committees::where('city_id',$cities)
+                    ->orderBy('created_at','desc')->pluck('id')->toArray();
+            }
             $filterFlag = true;
             if($request->has('search_committee') /*&& $request->search_name != ''*/){
                 $committeesData = Committees::where('committee_name','ilike','%'.$request->search_committee.'%')
@@ -104,6 +120,7 @@ class CommitteeController extends Controller
 
             if($filterFlag == true && $request->has('search_city') && $request->search_city != ''){
                 $committeesData = Committees::join('cities','cities.id','=','committees.city_id')
+                    ->whereIn('committees.id',$committeesData)
                     ->where('cities.name','ilike','%'.$request->search_city.'%')
                     ->pluck('committees.id')
                     ->toArray();
@@ -172,7 +189,13 @@ class CommitteeController extends Controller
     public function editCommitteeView(Request $request,$id){
         try{
             $committeeData  = Committees::where('id',$id)->first();
-            $cities = Cities::get();
+            if(Auth::user()->role_id == 1){
+                $cities = Cities::orderBy('name', 'asc')->get()->toArray();
+            } else {
+                $userId = Auth::user()->id;
+                $cityIds = UserCities::where('user_id', $userId)->pluck('city_id')->toArray();
+                $cities = Cities::whereIn('id', $cityIds)->orderBy('name', 'asc')->get()->toArray();
+            }
             $committeeDataGujarati = CommitteesTranslations::where('committee_id',$id)->first();
 
             return view('admin.committee.edit')->with(compact('committeeData','cities','committeeDataGujarati'));
@@ -268,7 +291,6 @@ class CommitteeController extends Controller
             $committeeMemberData['designation'] = $data['en']['designation'];
             $committeeMemberData['mobile_number'] = $data['en']['mobile_number'];
             $committeeMemberData['email_id'] = $data['en']['email_id'];
-            $committeeMemberData['is_active'] = false;
             $createMember = CommitteeMembers::create($committeeMemberData);
             if(array_key_exists('gj',$data)){
                 if(array_key_exists('full_name',$data['gj'])){

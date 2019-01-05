@@ -12,8 +12,11 @@ use App\Suggestion;
 use App\Cities;
 use App\SuggestionCategory;
 use App\SuggestionType;
+use App\UserCities;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class SuggestionController extends Controller
 {
@@ -39,10 +42,19 @@ class SuggestionController extends Controller
             $status = 200;
             $records['data'] = array();
             $records["draw"] = intval($request->draw);
-            $suggestionData = Suggestion::orderBy('created_at','desc')->pluck('id')->toArray();
+            $userId = Auth::user()->id;
+            $cities = UserCities::where('user_id',$userId)->pluck('city_id')->toArray();
+            $suggestionData = Suggestion::whereIn('city_id',$cities)
+                ->orderBy('created_at','desc')->pluck('id')->toArray();
+            if(Session::has('city')){
+                $cities = Session::get('city');
+                $suggestionData = Suggestion::where('city_id',$cities)
+                    ->orderBy('created_at','desc')->pluck('id')->toArray();
+            }
             $filterFlag = true;
             if($request->has('search_city') /*&& $request->search_name != ''*/){
                 $suggestionData = Suggestion::join('cities','cities.id','=','suggestions.city_id')
+                    ->whereIn('suggestions.id',$suggestionData)
                     ->where('cities.name','ilike','%'.$request->search_city.'%')
                     ->pluck('suggestions.id')
                     ->toArray();

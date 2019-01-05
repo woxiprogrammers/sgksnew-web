@@ -139,14 +139,12 @@
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
-                                                                <label class="col-md-3 control-label">Address
-                                                                    <span style="color: red">*</span>
-                                                                </label>
+                                                                <label class="col-md-3 control-label">Address</label>
                                                                 <div class="col-md-4">
                                                                     @if($memberData['address'] == null)
-                                                                        <textarea id="address" name="en[address]" class="form-control" placeholder="Enter Address" required></textarea>
+                                                                        <textarea id="address" name="en[address]" class="form-control" placeholder="Enter Address"></textarea>
                                                                     @else
-                                                                        <textarea id="address" name="en[address]" class="form-control" placeholder="Enter Address" required>{{$memberData['address']}}</textarea>
+                                                                        <textarea id="address" name="en[address]" class="form-control" placeholder="Enter Address">{{$memberData['address']}}</textarea>
                                                                     @endif
                                                                 </div>
                                                                 <div class="col-md-4">
@@ -180,7 +178,7 @@
                                                                     </div>
                                                                 @else
                                                                     <div class="col-md-4 date date-picker">
-                                                                        <input type="text" class="form-control" id="dob" name="en[dob]" value="{{date('m/d/Y',strtotime($memberData['date_of_birth']))}}" required="required">
+                                                                        <input type="text" class="form-control" id="dob" name="en[dob]" value="{{date('m/d/Y',strtotime($memberData['date_of_birth']))}}">
                                                                         <button class="btn btn-sm default" type="button">
                                                                             <i class="fa fa-calendar"></i>
                                                                         </button>

@@ -3,11 +3,38 @@
     <div class="page-header-top">
         <div class="container">
             <!-- BEGIN LOGO -->
-            <div class="page-logo">
+            <div class="page-logo col-md-2 pull-left">
                 <a href="/">
                     <img src="/assets/global/img/sgkks_logo.png" alt="logo" class="logo-default">
                 </a>
             </div>
+            <form>
+                <input type="hidden" name="_csrf_token" id="csrf_token" value="{{ csrf_token() }}" />
+            <div class="dropdown col-md-3 form-group globalSiteSelect" style="margin-top: 10px;" >
+                <label>Select City</label>
+                <select class="form-control form-filter bs-select" id="globalCityChange">
+                <?php
+                    if(\Illuminate\Support\Facades\Auth::user()->role_id == 1){
+                        $cities = \App\Cities::orderBy('name','asc')->get()->toArray();
+                    } else {
+                    $userId = \Illuminate\Support\Facades\Auth::user()->id;
+                    $cityIds = \App\UserCities::where('user_id',$userId)->pluck('city_id')->toArray();
+                    $cities = \App\Cities::whereIn('id',$cityIds)->orderBy('name','asc')->get()->toArray();
+                    }
+                    if (\Illuminate\Support\Facades\Session::has('city')){
+                        $sessionCity = \Illuminate\Support\Facades\Session::get('city');
+                    }
+                    ?>
+                    @foreach($cities as $city)
+                        @if($city['id'] == $sessionCity)
+                            <option value="{{$city['id']}}" id="cityId" selected>{{$city['name']}}</option>
+                            @else
+                            <option value="{{$city['id']}}" id="cityId">{{$city['name']}}</option>
+                        @endif
+                    @endforeach
+                </select>
+            </div>
+            </form>
             <!-- END LOGO -->
             <!-- BEGIN RESPONSIVE MENU TOGGLER -->
             <a href="javascript:;" class="menu-toggler"></a>
@@ -27,7 +54,7 @@
                     <!-- BEGIN INBOX DROPDOWN -->
                     <!-- END INBOX DROPDOWN -->
                     <!-- BEGIN USER LOGIN DROPDOWN -->
-                    <li class="dropdown dropdown-user dropdown-dark">
+                    <li class="dropdown dropdown-user dropdown-dark pull-right">
                         <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
                             <img alt="" class="img-circle" src="/assets/layouts/layout3/img/no-user.jpg">
                             <span class="username username-hide-mobile">{{ \Illuminate\Support\Facades\Auth::user()->first_name }}</span>
@@ -110,13 +137,6 @@
                 </ul>
                 <ul class="nav navbar-nav">
                     <li aria-haspopup="true" class="menu-dropdown classic-menu-dropdown">
-                        <a href="/cities/manage"> Manage Cities
-                            <span class="arrow"></span>
-                        </a>
-                    </li>
-                </ul>
-                <ul class="nav navbar-nav">
-                    <li aria-haspopup="true" class="menu-dropdown classic-menu-dropdown">
                         <a href="/webview/manage"> Manage Webview
                             <span class="arrow"></span>
                         </a>
@@ -129,7 +149,22 @@
                         </a>
                     </li>
                 </ul>
-            </li>
+                @if(\Illuminate\Support\Facades\Auth::user()->role_id == 1)
+                    <ul class="nav navbar-nav">
+                        <li aria-haspopup="true" class="menu-dropdown classic-menu-dropdown">
+                            <a href="/cities/manage"> Manage Cities
+                                <span class="arrow"></span>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav">
+                        <li aria-haspopup="true" class="menu-dropdown classic-menu-dropdown">
+                            <a href="/admin/manage"> Manage Admin
+                                <span class="arrow"></span>
+                            </a>
+                        </li>
+                    </ul>
+                @endif
         </div>
             <!-- END MEGA MENU -->
     </li>

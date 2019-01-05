@@ -14,6 +14,7 @@
 Route::get('/',array('uses' => 'Admin\AdminController@viewLogin'));
 Route::post('/authenticate',array('uses' => 'Auth\LoginController@login'));
 Route::get('/logout',array('uses' => 'Auth\LoginController@logout'));
+Route::post('/change-city',array('uses' => 'Auth\LoginController@changeCity'));
 
 Route::get('/dashboard',array('uses' => 'Admin\DashboardController@index'));
 
@@ -116,4 +117,14 @@ Route::group(['prefix' => 'suggestion'], function() {
     Route::get('/manage', array('uses' => 'Suggestion\SuggestionController@manage'));
     Route::post('/listing', array('uses' => 'Suggestion\SuggestionController@listing'));
     Route::get('/view/{id}', array('uses' => 'Suggestion\SuggestionController@view'));
+});
+
+Route::group(['prefix' => 'admin'], function() {
+    Route::get('/manage', array('uses' => 'ManageAdmins\ManageAdminController@manageAdmins'));
+    Route::get('/create', array('uses' => 'ManageAdmins\ManageAdminController@createView'));
+    Route::post('/create', array('uses' => 'ManageAdmins\ManageAdminController@create'));
+    Route::post('/listing', array('uses' => 'ManageAdmins\ManageAdminController@listing'));
+    Route::get('/edit/{id}', array('uses' => 'ManageAdmins\ManageAdminController@editView'));
+    Route::post('/edit/{id}', array('uses' => 'ManageAdmins\ManageAdminController@edit'));
+    Route::get('/change-status/{id}', array('uses' => 'ManageAdmins\ManageAdminController@changeStatus'));
 });

@@ -8,6 +8,8 @@
  */
 namespace App\Http\Controllers\Event;
 use App\Http\Controllers\Controller;
+use App\UserCities;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use App\Cities;
@@ -16,6 +18,7 @@ use App\EventImages;
 use App\EventsTranslations;
 use App\Languages;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Session;
 
 
 class EventController extends Controller
@@ -37,7 +40,13 @@ class EventController extends Controller
 
     public function createView(Request $request){
         try{
-            $cities = Cities::get();
+            if(Auth::user()->role_id == 1){
+                $cities = Cities::orderBy('name', 'asc')->get()->toArray();
+            }else {
+                $userId = Auth::user()->id;
+                $cityIds = UserCities::where('user_id', $userId)->pluck('city_id')->toArray();
+                $cities = Cities::whereIn('id', $cityIds)->orderBy('name', 'asc')->get()->toArray();
+            }
             return view('admin.events.create')->with(compact('cities'));
         }catch(\Exception $exception){
             $data = [
@@ -59,7 +68,6 @@ class EventController extends Controller
             $eventData['start_date'] = $data['en']['start_date'];
             $eventData['end_date'] = $data['en']['end_date'];
             $eventData['city_id'] = $data['en']['city'];
-            $eventData['is_active'] = false;
             $createEvent = Events::create($eventData);
             if($createEvent){
                 $request->session()->flash('success','Committee Created Successfully');
@@ -118,7 +126,15 @@ class EventController extends Controller
             $status = 200;
             $records['data'] = array();
             $records["draw"] = intval($request->draw);
-            $eventsData = Events::orderBy('created_at','desc')->pluck('id')->toArray();
+            $userId = Auth::user()->id;
+            $cities = UserCities::where('user_id',$userId)->pluck('city_id')->toArray();
+            $eventsData = Events::whereIn('city_id',$cities)
+                ->orderBy('created_at','desc')->pluck('id')->toArray();
+            if(Session::has('city')){
+                $cities = Session::get('city');
+                $eventsData = Events::where('city_id',$cities)
+                    ->orderBy('created_at','desc')->pluck('id')->toArray();
+            }
             $filterFlag = true;
             if($request->has('search_event')){
                 $eventsData = Events::where('event_name','ilike','%'.$request->search_event.'%')
@@ -130,6 +146,7 @@ class EventController extends Controller
             }
             if($filterFlag == true && $request->has('search_city') && $request->search_city != ''){
                 $eventsData = Events::join('cities','cities.id','=','events.city_id')
+                    ->whereIn('events.id',$eventsData)
                     ->where('cities.name','ilike','%'.$request->search_city.'%')
                     ->pluck('events.id')
                     ->toArray();
@@ -208,7 +225,13 @@ class EventController extends Controller
         try{
             $eventData = Events::where('id',$id)->first();
             $eventDataGujarati = EventsTranslations::where('event_id',$id)->first();
-            $cities = Cities::get();
+            if(Auth::user()->role_id == 1){
+                $cities = Cities::orderBy('name', 'asc')->get()->toArray();
+            } else {
+                $userId = Auth::user()->id;
+                $cityIds = UserCities::where('user_id', $userId)->pluck('city_id')->toArray();
+                $cities = Cities::whereIn('id', $cityIds)->orderBy('name', 'asc')->get()->toArray();
+            }
             $createEventDirectoryName = sha1($eventData->id);
             $images = EventImages::where('event_id',$id)->select('id','url')->get();
             if (count($images)>0) {
